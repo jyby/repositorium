@@ -14,11 +14,18 @@ Project for "CC5401 - Ingenieria de software" course of DCC UChile
 
 ** Getting the source
 
+*** Option 1. Using git
 
-Execute:
-
+Open a console and get the source
 
 =git clone git://github.com/mquezadav/repositorium.git=
+
+*** Option 2. Using the given cd (professors and client)
+
+The cd contains all the necessary files to use the application.
+
+** Configuration
+
 
 Then you’ll have a copy of the sources at local. Now you have to give permissions to some folders to get cake working properly:
 Una vez que se tiene una copia del repo en local, hay que darle permisos a ciertas carpetas para que cake funcione correctamente:
