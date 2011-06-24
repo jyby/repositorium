@@ -76,10 +76,10 @@ class DATABASE_CONFIG {
 	var $default = array(
 		'driver' => 'mysql',
 		'persistent' => false,
-		'host' => 'localhost',
-		'login' => 'cc51ag1_u',
-		'password' => 'Ittomese78',
-		'database' => 'cc51ag1_2011_1',
+		'host' => '<HOST>',
+		'login' => '<USER>',
+		'password' => '<PASSWORD>',
+		'database' => '<DBNAME>',
 		'prefix' => '',
 	);
 
