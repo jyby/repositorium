@@ -47,17 +47,17 @@ Change =<HOST>=, =<LOGIN>=, =<PASSWORD>= and =<DBNAME>= (database name) to the c
 
 ** Initial DB Dump
 
-To load the dump file (=bootstrap.sql=) with initial data (users: admin and anonymous). It contains no documents and no criteria. 
+1) To load the dump file (=bootstrap.sql=) with initial data (users: admin and anonymous). It contains no documents and no criteria. 
 
+   =mysql -u <LOGIN> -p <PASSWORD> <DBNAME> < bootstrap.sql=
 
-=mysql -u <LOGIN> -p <PASSWORD> <DBNAME> < bootstrap.sql=
-
-Now you have 2 users: anonymous and admin. The *admin* user has the following atributes
+2) Now you have 2 users: anonymous and admin. The *admin* user has the following atributes
     - Login: admin@example.com
     - Password: password
 
+3) Then add a criteria, and then some documents or users.
 
-If you want to see a demo of the application, load =bootstrap_demo.sql=, it contains some documents, criteria and statistics
+4) If you want to see a demo of the application, load =bootstrap_demo.sql=, it contains some documents, criteria and statistics
 
 ** Security 
 /Read only if you want to have mutiple copies of Repositorium running on the same machine/
