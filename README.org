@@ -27,27 +27,25 @@ The cd contains all the necessary files to use the application.
 ** Configuration
 
 
-Then you’ll have a copy of the sources at local. Now you have to give permissions to some folders to get cake working properly:
-Una vez que se tiene una copia del repo en local, hay que darle permisos a ciertas carpetas para que cake funcione correctamente:
+Then you’ll have a copy of the sources at local. Now you have to give permissions to some folders to get cake working properly. If they don't exist, you'll have to create them:
 
-
-- =chmod o+w /app/tmp=
-- =chmod o+w /app/tmp/cache=
-- =chmod -R o+w /app/tmp/cache/persistent=
-- =chmod -R o+w /app/tmp/cache/models=
-- =chmod -R o+w /app/tmp/logs=
+- =chmod o+w app/tmp=
+- =chmod o+w app/tmp/cache=
+- =chmod -R o+w app/tmp/cache/persistent=
+- =chmod -R o+w app/tmp/cache/models=
+- =chmod -R o+w app/tmp/logs=
 
 
 Edit =database.php= at =~/app/config=  at line 76 
-        var $default = array(
-                'driver' => 'mysql',
-                'persistent' => false,
-                'host' => '<HOST>',
-                'login' => '<LOGIN>',
-                'password' => '<PASSWORD>',
-                'database' => '<DBNAME>',
-                'prefix' => '',
-       );
+        =var $default = array(=
+                ='driver' => 'mysql',=
+                ='persistent' => false,=
+                ='host' => '<HOST>',=
+                ='login' => '<LOGIN>',=
+                ='password' => '<PASSWORD>',=
+                ='database' => '<DBNAME>',=
+                ='prefix' => '',=
+       =);=
 
 
 Change =<HOST>=, =<LOGIN>=, =<PASSWORD>= and =<DBNAME>= (database name) to the correspoding values in your system
