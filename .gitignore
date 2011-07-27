@@ -1,2 +1,9 @@
+# configuration files
+
 app/config/database.php
 app/config/core.php
+
+# cache and temporary files
+
+app/tmp/cache/*
+app/tmp/logs/*
