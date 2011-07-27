@@ -7,27 +7,22 @@ Project for "CC5401 - Ingenieria de software" course of DCC UChile
 * Installation
 ** Requirements
    
-   + MySQL >= 5.1 
-   + PHP >= 5.3
-   + Apache >= 2.2 
+   + MySQL 5.1 
+   + PHP 5.3 (any php5 should work fine too)
+   + Apache 2.2 
 
 
 ** Getting the source
-
-*** Option 1. Using git
 
 Open a console and get the source
 
 =git clone git://github.com/mquezadav/repositorium.git=
 
-*** Option 2. Using the given cd (professors and client)
-
-The cd contains all the necessary files to use the application.
-
 ** Configuration
 
-
-Then you’ll have a copy of the sources at local. Now you have to give permissions to some folders to get cake working properly. If they don't exist, you'll have to create them:
+Then you’ll have a copy of the source at local. 
+Now you have to give permissions to some folders to get cake working properly. 
+If they don't exist (like =cache/*=), you'll have to create them:
 
 - =chmod o+w app/tmp=
 - =chmod o+w app/tmp/cache=
@@ -36,16 +31,18 @@ Then you’ll have a copy of the sources at local. Now you have to give permissi
 - =chmod -R o+w app/tmp/logs=
 
 
-Edit =database.php= at =~/app/config=  at line 76 
-        =var $default = array(=
-                ='driver' => 'mysql',=
-                ='persistent' => false,=
-                ='host' => '<HOST>',=
-                ='login' => '<LOGIN>',=
-                ='password' => '<PASSWORD>',=
-                ='database' => '<DBNAME>',=
-                ='prefix' => '',=
-       =);=
+Copy or rename =database.php.default= to =database.php=, and =core.php.default= to =core.php= in =app/config=. 
+
+Edit =database.php= at line 76 
+        ~var $default = array(~
+                ~'driver' => 'mysql',~
+                ~'persistent' => false,~
+                ~'host' => '<HOST>',~
+                ~'login' => '<LOGIN>',~
+                ~'password' => '<PASSWORD>',~
+                ~'database' => '<DBNAME>',~
+                ~'prefix' => '',~
+       ~);~
 
 
 Change =<HOST>=, =<LOGIN>=, =<PASSWORD>= and =<DBNAME>= (database name) to the correspoding values in your system
@@ -67,15 +64,17 @@ Change =<HOST>=, =<LOGIN>=, =<PASSWORD>= and =<DBNAME>= (database name) to the c
 ** Security 
 /Read only if you want to have mutiple copies of Repositorium running on the same machine/
 
-At =core.php= file (=~/app/config/=), at lines 204 and 209, randomly modify some alphanumeric characters of the corresponding Salt and Cypher Seed. Those characters have to be replaced not addded (it would enlarge the string)
-Configure::write('Security.salt', 'HA87fmO43HdcmUD02nchqa*UN*dlbmqtycpkcbdy462nGV*kcm*2Gu'); -->  Configure::write('Security.salt', 'HA87fmO43HdcmUD02nchqa*16*dlbmqtycpkcbdy462nGVl*402*Gu');
+At =core.php= file (=~/app/config/=), at lines 204 and 209, randomly modify some alphanumeric characters of the corresponding Salt and Cypher Seed. 
+Example:
 
-This changes’ll avoid keeping the same session at different app clones.
+=Configure::write('Security.salt', '<SOME LONG RANDOM STRING>');=
+
+This changes’ll avoid keeping the same session at different app clones, and for security sake.
 
 
-* Staff
-1. jyby (our project client) 
-2. Hernan Fierro (project administrator) 
+* Credits
+1. Jérémy Barbay - jyby (our course client) 
+2. Hernan Fierro (project manager) 
 3. Pablo Estefo - pestefo (analyst) 
 4. Felipe Banados - fbanados (designer) 
 5. Nicolas Perez - thomaslight (developer) 
