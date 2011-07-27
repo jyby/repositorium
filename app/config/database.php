@@ -76,20 +76,20 @@ class DATABASE_CONFIG {
 	var $default = array(
 		'driver' => 'mysql',
 		'persistent' => false,
-		'host' => '<HOST>',
-		'login' => '<USER>',
-		'password' => '<PASSWORD>',
-		'database' => '<DBNAME>',
+		'host' => 'localhost',
+		'login' => 'root',
+		'password' => 'password',
+		'database' => 'repositorium',
 		'prefix' => '',
 	);
 
-	var $test = array(
-		'driver' => 'mysql',
-		'persistent' => false,
-		'host' => 'localhost',
-		'login' => 'cc51ag1_u',
-		'password' => 'Ittomese78',
-		'database' => 'cc51ag1_2011_1_test',
-		'prefix' => '',
-	);
+// 	var $test = array(
+// 		'driver' => 'mysql',
+// 		'persistent' => false,
+// 		'host' => 'localhost',
+// 		'login' => 'cc51ag1_u',
+// 		'password' => 'Ittomese78',
+// 		'database' => 'cc51ag1_2011_1_test',
+// 		'prefix' => '',
+// 	);
 }
