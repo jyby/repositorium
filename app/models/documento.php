@@ -124,7 +124,7 @@ class Documento extends AppModel {
 	}
 	
 	function afterFind($results) {		
-		$i = 0;
+		$i = 0;		
 		foreach($results as $r) {
 			$u = $this->Usuario->find('first', array(
 				'conditions' => array(

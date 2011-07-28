@@ -143,18 +143,9 @@ class Criterio extends AppModel {
 	// y los usuarios, con TamanoDesafio
 	function afterSave($created) {
 		if($created) {
-			App::import('Model', 'Documento');			
-			App::import('Model', 'Usuario');
-			
-			$Doc = new Documento;
-			$ID = new InformacionDesafio;
-			
-			$Usr = new Usuario;
-			$TD = new TamanoDesafio;
-			
-			$users = $Usr->find('all');
-			$docs = $Doc->find('all');
-			
+			$this->InformacionDesafio->massCreateAfterCriteria($this->id);
+			$this->TamanoDesafio->massCreateAfterCriteria($this->id, $this->field('tamano_minimo_desafio', array('id_criterio' => $this->id)));
+	/*			
 			foreach($docs as $doc) {
 				$this->InformacionDesafio->create();
 				$this->InformacionDesafio->set(
@@ -179,12 +170,13 @@ class Criterio extends AppModel {
 					array(
 						'id_usuario' => $user['Usuario']['id_usuario'],
 						'id_criterio' => $this->id,
-						'c_preguntas' => $this->field('tamano_minimo_desafio', array('id_criterio' => $this->id))
+						'c_preguntas' => )
 					)
 				);
 				$this->TamanoDesafio->save();
-			}
+			} */
 		}
+		
 	}
 
 }

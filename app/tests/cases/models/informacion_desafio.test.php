@@ -14,7 +14,7 @@ class InformacionDesafioTestCase extends CakeTestCase {
 		$this->InformacionDesafio->massCreateAfterCriteria($id_criterio);
 	
 		$documents = $this->InformacionDesafio->Documento->find('all', array(
-				'fields' => 'Documento.id_documento',
+				'fields' => array('Documento.id_documento', 'Documento.autor'),
 				'recursive' => -1,
 				'order' => 'Documento.id_documento'
 			)
@@ -22,9 +22,9 @@ class InformacionDesafioTestCase extends CakeTestCase {
 	
 		$ids = $this->InformacionDesafio->find('all', array(
 				'conditions' => array('InformacionDesafio.id_criterio' => $id_criterio), 
-				'fields' => 'Documento.id_documento', 
+				'fields' => array('Documento.id_documento', 'Documento.autor'), 
 				'order' => 'Documento.id_documento'
-		)
+			)
 		);
 	
 		$this->assertEqual($ids, $documents);

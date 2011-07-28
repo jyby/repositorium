@@ -111,7 +111,7 @@ class InformacionDesafio extends AppModel {
 	
 	function massCreateAfterCriteria($id_criterio) {
 		if(!is_null($id_criterio)) {
-			$docs = $this->Documento->find('all', array('fields' => 'Documento.id_documento', 'recursive' => -1));
+			$docs = $this->Documento->find('all', array('fields' => array('Documento.id_documento', 'Documento.autor'), 'recursive' => -1));
 			
 			foreach($docs as $doc) {
 				$this->create();
