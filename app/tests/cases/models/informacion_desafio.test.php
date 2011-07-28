@@ -29,6 +29,27 @@ class InformacionDesafioTestCase extends CakeTestCase {
 	
 		$this->assertEqual($ids, $documents);
 	}
+	
+	function testMassCreateAfterDocument() {
+		$id_documento = 42;
+		$this->InformacionDesafio->massCreateAfterDocument($id_documento);
+		
+		$crs = $this->InformacionDesafio->Criterio->find('all', array(
+				'fields' => array('Criterio.id_criterio'),
+				'recursive' => -1,
+				'order' => 'Criterio.id_criterio'
+			)
+		);
+		
+		$ids = $this->InformacionDesafio->find('all', array(
+				'conditions' => array('InformacionDesafio.id_documento' => $id_documento),
+				'fields' => array('InformacionDesafio.id_criterio'),
+				'order' => 'InformacionDesafio.id_criterio'
+			)
+		);		
+		
+		$this->assertEqual($ids, $crs);
+	}
 
 	function endTest() {
 		unset($this->InformacionDesafio);
