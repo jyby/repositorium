@@ -67,31 +67,50 @@ class Documento extends AppModel {
      */
     function saveWithTags($data = array(), $delimiter = ',') {
       if(!empty($data)) {
+      	$this->create();      	
 		$data['Documento']['id_dominio'] = 1;
 		$data['Documento']['premiado_validacion'] = false;
 		
-        if(isset($data['Documento']['tags'])) {
+		$there_are_tags = false;
+		if(isset($data['Documento']['tags'])) {
+			$dataSource = $this->getDataSource();
+			$there_are_tags = true;
+			$dataSource->begin($this); // BEGIN
+		}		
+		
+        if($there_are_tags) {
 		  $tags = explode($delimiter, $data['Documento']['tags']);
 		  $tags = array_map("trim", $tags);
           unset($data['Documento']['tags']);
         } 
 
 		$this->set($data);
-        if(!$this->save())
+        if(!$this->save()) {
+          if($there_are_tags)        	
+          	$dataSource->rollback($this); // ROLLBACK
           return false;
- 
-        $data = array();
-        $i = 0;
-        foreach($tags as $tag) {
-          $data[$i]['Tag'] = array(
-            'tag' => $tag,
-            'id_documento' => $this->id
-          );
-          $i += 1;
+      	}
+
+      	$id = $this->id;
+      	
+        if($there_are_tags) {
+        	$data = array();
+        	$i = 0;
+        	foreach($tags as $tag) {
+        		$data[$i]['Tag'] = array(
+        	            'tag' => $tag,
+        	            'id_documento' => $id
+        		);
+        		$i += 1;
+        	}
+        	
+        	if($this->Tag->saveAll($data)) {
+        		$dataSource->commit($this); // C0MMIT
+        		return true;
+        	} else {
+        		$dataSource->rollback($this); // ROLLBACK        		
+        	}        		
         }
-        
-        if($this->Tag->saveAll($data)) 
-          return true;        
       }
       return false;
     }

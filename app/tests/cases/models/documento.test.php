@@ -24,16 +24,16 @@ class DocumentoTestCase extends CakeTestCase {
 		);
 		
 		$this->Documento->saveWithTags($data);
-		
-		$doc = $this->Documento->findByTexto('floood');
+				
+		$doc = $this->Documento->findByTexto('floood');		
 		$this->assertFalse(empty($doc), 'document saved');
+				
 		$tags = $this->Documento->Tag->findAllByIdDocumento($doc['Documento']['id_documento'], array('tag'));
 		$expected = array(
 			array('Tag' => array('tag' => 'one')),
 			array('Tag' => array('tag' => 'two')),
 			array('Tag' => array('tag' => 'three')),		
 		);	
-		
 		$this->assertEqual($expected,$tags);
 	}
 
