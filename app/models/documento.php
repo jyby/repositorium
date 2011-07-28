@@ -100,6 +100,8 @@ class Documento extends AppModel {
 	// done: multiples criterios
 	function afterSave($created) {
 	  if($created) {
+	  	$this->InformacionDesafio->massCreateAfterDocument($this->id);	  	
+	  	/*
 		App::import('Model', 'Criterio');
 		$Criterio = new Criterio;
 		$criterios = $Criterio->find('all');
@@ -120,7 +122,8 @@ class Documento extends AppModel {
 		  );		  
 		  $this->InformacionDesafio->save();
 		}
-	  }
+		*/
+	  } 	  
 	}
 	
 	function afterFind($results) {		

@@ -25,8 +25,7 @@ class InformacionDesafioTestCase extends CakeTestCase {
 				'fields' => array('Documento.id_documento', 'Documento.autor'), 
 				'order' => 'Documento.id_documento'
 			)
-		);
-	
+		);		
 		$this->assertEqual($ids, $documents);
 	}
 	
@@ -43,11 +42,10 @@ class InformacionDesafioTestCase extends CakeTestCase {
 		
 		$ids = $this->InformacionDesafio->find('all', array(
 				'conditions' => array('InformacionDesafio.id_documento' => $id_documento),
-				'fields' => array('InformacionDesafio.id_criterio'),
-				'order' => 'InformacionDesafio.id_criterio'
+				'fields' => array('Criterio.id_criterio'),
+				'order' => 'Criterio.id_criterio'
 			)
 		);		
-		
 		$this->assertEqual($ids, $crs);
 	}
 

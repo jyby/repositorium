@@ -132,5 +132,28 @@ class InformacionDesafio extends AppModel {
 			}						
 		}
 	}
+	
+	function massCreateAfterDocument($id_documento = null) {
+		if(!is_null($id_documento)) {
+			$criterios = $this->Criterio->find('all');
+			foreach($criterios as $c) {
+				$this->create();
+				$this->set(
+					array(
+						'id_documento' => $id_documento,
+					  	'id_criterio' => $c['Criterio']['id_criterio'],
+					  	'total_respuestas_1_no_validado' => 0,
+					  	'total_respuestas_2_no_validado' => 0,
+					  	//'respuesta_oficial_de_un_experto' => ,
+					  	'total_respuestas_1_como_desafio' => 0,
+					  	'total_respuestas_2_como_desafio' => 0,
+				      	'confirmado' => false,
+						'preguntable' => true,
+					)
+				);
+				$this->save();
+			}
+		}				
+	}
 }
 ?>
