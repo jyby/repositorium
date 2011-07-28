@@ -1,5 +1,5 @@
 <?php
-/* InformacionDesafio Fixture generated on: 2011-04-22 22:22:09 : 1303525329 */
+/* InformacionDesafio Fixture generated on: 2011-07-27 19:17:16 : 1311808636 */
 class InformacionDesafioFixture extends CakeTestFixture {
 	var $name = 'InformacionDesafio';
 
@@ -9,7 +9,7 @@ class InformacionDesafioFixture extends CakeTestFixture {
 		'id_criterio' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 255),
 		'total_respuestas_1_no_validado' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 255),
 		'total_respuestas_2_no_validado' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 255),
-		'respuesta_oficial_de_un_experto' => array('type' => 'boolean', 'null' => false, 'default' => NULL),
+		'respuesta_oficial_de_un_experto' => array('type' => 'boolean', 'null' => true, 'default' => NULL),
 		'total_respuestas_1_como_desafio' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 255),
 		'total_respuestas_2_como_desafio' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 255),
 		'confirmado' => array('type' => 'boolean', 'null' => false, 'default' => NULL),

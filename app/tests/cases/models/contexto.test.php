@@ -1,5 +1,5 @@
 <?php
-/* Contexto Test cases generated on: 2011-04-22 22:15:36 : 1303524936*/
+/* Contexto Test cases generated on: 2011-07-27 19:18:27 : 1311808707*/
 App::import('Model', 'Contexto');
 
 class ContextoTestCase extends CakeTestCase {

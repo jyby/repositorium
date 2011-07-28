@@ -6,7 +6,12 @@ class TamanoDesafio extends AppModel {
 	  'Usuario' => array(
 		'className' => 'Usuario',
 		'foreignKey' => 'id_usuario'
-      ));
+      ),
+      'Criterio' => array(
+      	'className' => 'Criterio',
+      	'foreignKey' => 'id_criterio'
+      )		
+	);
 
 	var $validate = array(
 		'c_preguntas' => array(
@@ -20,5 +25,27 @@ class TamanoDesafio extends AppModel {
 			),
 		),
 	);
+	
+	
+	/*****************************************************************************************************************/
+	
+	function massCreateAfterCriteria($id_criterio = null, $tamano_minimo_desafio = null) {
+		if(!is_null($id_criterio) && !is_null($tamano_minimo_desafio)) {
+			$users = $this->Usuario->find('all', array('fields' => 'Usuario.id_usuario', 'recursive' => -1));
+			
+			foreach($users as $user) {
+				$this->create();
+				$this->set(
+					array(
+						'id_usuario' => $user['Usuario']['id_usuario'],
+						'id_criterio' => $id_criterio,
+						'c_preguntas' => $tamano_minimo_desafio					
+					)
+				);
+				$this->save();
+			}
+		}
+	}
+	
 }
 ?>

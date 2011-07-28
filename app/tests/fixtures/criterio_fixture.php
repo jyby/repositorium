@@ -1,10 +1,10 @@
 <?php
-/* Criterio Fixture generated on: 2011-04-22 22:19:43 : 1303525183 */
+/* Criterio Fixture generated on: 2011-07-27 19:17:04 : 1311808624 */
 class CriterioFixture extends CakeTestFixture {
 	var $name = 'Criterio';
 
 	var $fields = array(
-		'id_criterio' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'key' => 'primary'),
+		'id_criterio' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 255, 'key' => 'primary'),
 		'id_contexto' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 255),
 		'pregunta' => array('type' => 'text', 'null' => false, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'respuesta_1' => array('type' => 'text', 'null' => false, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),

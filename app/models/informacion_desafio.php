@@ -6,6 +6,10 @@ class InformacionDesafio extends AppModel {
 	  'Documento' => array(
         'className' => 'Documento',
         'foreignKey' => 'id_documento'
+      ),
+      'Criterio' => array(
+      	'className' => 'Criterio',
+      	'foreignKey' => 'id_criterio'
       )
     );
     
@@ -89,6 +93,7 @@ class InformacionDesafio extends AppModel {
 	);
 	
 	/******* methods *******/	
+	
 	/*function afterFind($results, $primary) {
 		if($primary) {
 			$i = 0;
@@ -102,5 +107,30 @@ class InformacionDesafio extends AppModel {
 		}
 		return $results;
 	}*/
+	
+	
+	function massCreateAfterCriteria($id_criterio) {
+		if(!is_null($id_criterio)) {
+			$docs = $this->Documento->find('all', array('fields' => 'Documento.id_documento', 'recursive' => -1));
+			
+			foreach($docs as $doc) {
+				$this->create();
+				$this->set(
+				array(
+					'id_documento' => $doc['Documento']['id_documento'],
+					'id_criterio' => $id_criterio,
+					'total_respuestas_1_no_validado' => 0,
+			    	'total_respuestas_2_no_validado' => 0,
+					//'respuesta_oficial_de_un_experto' => ,
+				    'total_respuestas_1_como_desafio' => 0,
+				    'total_respuestas_2_como_desafio' => 0,
+				    'confirmado' => false,
+				    'preguntable' => true,
+					) 
+				);
+				$this->save();
+			}						
+		}
+	}
 }
 ?>

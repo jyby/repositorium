@@ -9,6 +9,11 @@ class Criterio extends AppModel {
 			'className' => 'TamanoDesafio',
 			'foreignKey' => 'id_criterio',
 			'dependent' => true
+		),
+		'InformacionDesafio' => array(
+			'className' => 'InformacionDesafio',
+			'foreignKey' => 'id_criterio',
+			'dependent' => true
 		)
 	); 
 	var $validate = array(
@@ -138,10 +143,7 @@ class Criterio extends AppModel {
 	// y los usuarios, con TamanoDesafio
 	function afterSave($created) {
 		if($created) {
-			App::import('Model', 'InformacionDesafio');
-			App::import('Model', 'Documento');
-			
-			App::import('Model', 'TamanoDesafio');
+			App::import('Model', 'Documento');			
 			App::import('Model', 'Usuario');
 			
 			$Doc = new Documento;
@@ -154,8 +156,8 @@ class Criterio extends AppModel {
 			$docs = $Doc->find('all');
 			
 			foreach($docs as $doc) {
-				$ID->create();
-				$ID->set(
+				$this->InformacionDesafio->create();
+				$this->InformacionDesafio->set(
 					array(
 						'id_documento' => $doc['Documento']['id_documento'],
 						'id_criterio' => $this->id,
@@ -168,19 +170,19 @@ class Criterio extends AppModel {
 					    'preguntable' => true,
 					)
 				);
-				$ID->save();
+				$this->InformacionDesafio->save();
 			}
 						
 			foreach($users as $user) {
-				$TD->create();
-				$TD->set(
+				$this->TamanoDesafio->create();
+				$this->TamanoDesafio->set(
 					array(
 						'id_usuario' => $user['Usuario']['id_usuario'],
 						'id_criterio' => $this->id,
 						'c_preguntas' => $this->field('tamano_minimo_desafio', array('id_criterio' => $this->id))
 					)
 				);
-				$TD->save();
+				$this->TamanoDesafio->save();
 			}
 		}
 	}

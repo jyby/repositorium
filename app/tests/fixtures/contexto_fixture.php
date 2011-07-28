@@ -1,5 +1,5 @@
 <?php
-/* Contexto Fixture generated on: 2011-04-22 22:15:36 : 1303524936 */
+/* Contexto Fixture generated on: 2011-07-27 19:16:59 : 1311808619 */
 class ContextoFixture extends CakeTestFixture {
 	var $name = 'Contexto';
 

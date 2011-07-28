@@ -1,5 +1,5 @@
 <?php
-/* Experto Fixture generated on: 2011-04-22 22:21:26 : 1303525286 */
+/* Experto Fixture generated on: 2011-07-27 19:17:12 : 1311808632 */
 class ExpertoFixture extends CakeTestFixture {
 	var $name = 'Experto';
 
