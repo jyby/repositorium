@@ -157,7 +157,7 @@ class Criterio extends AppModel {
 	
 	
 	function getRandomCriteria() {
-		$criterios = $this->find('all');
+		$criterios = $this->find('all', array('recursive' => -1));
 		
 		if(empty($criterios))
 			return null;

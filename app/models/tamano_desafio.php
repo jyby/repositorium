@@ -49,5 +49,20 @@ class TamanoDesafio extends AppModel {
 		return true;
 	}
 	
+	function getC($usuario_id = null, $criterio_id = null) {
+		if(!is_null($usuario_id) && !is_null($criterio_id)) {
+			$td = $this->find('first', array(
+						'conditions' => array(
+							'TamanoDesafio.id_usuario' => $usuario_id,
+							'TamanoDesafio.id_criterio' => $criterio_id
+				)
+			));
+			if(!empty($td))		
+				return $td['TamanoDesafio']['c_preguntas'];			
+		}
+		
+		return null;		
+	}
+	
 }
 ?>

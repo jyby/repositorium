@@ -29,6 +29,25 @@ class TamanoDesafioTestCase extends CakeTestCase {
 		
 		$this->assertEqual($tds, $users);
 	}
+	
+	
+	function testGetC() {
+		$user_id = 1;
+		$criteria_id = 1;
+		
+		$c = $this->TamanoDesafio->getC($user_id, $criteria_id);
+		
+		$this->assertNotNull($c);		
+		$this->assertTrue($c >= 0);		
+		
+		
+		$user_id = 4;
+		$criteria_id = 1;
+		
+		$c = $this->TamanoDesafio->getC($user_id, $criteria_id);
+		
+		$this->assertNull($c);
+	}
 
 	function endTest() {
 		unset($this->TamanoDesafio);

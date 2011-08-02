@@ -21,7 +21,7 @@ class CriterioTestCase extends CakeTestCase {
 		// test again
 		$result = $this->Criterio->getRandomCriteria();
 		
-		$criterios = $this->Criterio->find('all');		
+		$criterios = $this->Criterio->find('all', array('recursive' => -1));
 		$this->assertTrue(in_array($result, $criterios));
 	}
 	
