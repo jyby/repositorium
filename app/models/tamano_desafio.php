@@ -42,9 +42,11 @@ class TamanoDesafio extends AppModel {
 						'c_preguntas' => $tamano_minimo_desafio					
 					)
 				);
-				$this->save();
+				if(!$this->save())
+					return false;
 			}
 		}
+		return true;
 	}
 	
 }

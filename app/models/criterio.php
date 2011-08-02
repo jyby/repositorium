@@ -143,40 +143,26 @@ class Criterio extends AppModel {
 	// y los usuarios, con TamanoDesafio
 	function afterSave($created) {
 		if($created) {
-			$this->InformacionDesafio->massCreateAfterCriteria($this->id);
-			$this->TamanoDesafio->massCreateAfterCriteria($this->id, $this->field('tamano_minimo_desafio', array('id_criterio' => $this->id)));
-	/*			
-			foreach($docs as $doc) {
-				$this->InformacionDesafio->create();
-				$this->InformacionDesafio->set(
-					array(
-						'id_documento' => $doc['Documento']['id_documento'],
-						'id_criterio' => $this->id,
-						'total_respuestas_1_no_validado' => 0,
-					    'total_respuestas_2_no_validado' => 0,
-					    //'respuesta_oficial_de_un_experto' => ,
-					    'total_respuestas_1_como_desafio' => 0,
-					    'total_respuestas_2_como_desafio' => 0,
-					    'confirmado' => false,
-					    'preguntable' => true,
-					)
-				);
-				$this->InformacionDesafio->save();
-			}
-						
-			foreach($users as $user) {
-				$this->TamanoDesafio->create();
-				$this->TamanoDesafio->set(
-					array(
-						'id_usuario' => $user['Usuario']['id_usuario'],
-						'id_criterio' => $this->id,
-						'c_preguntas' => )
-					)
-				);
-				$this->TamanoDesafio->save();
-			} */
-		}
+			$ds = $this->getDataSource();
+			
+			$ds->begin($this);
+			if(
+				$this->InformacionDesafio->massCreateAfterCriteria($this->id) &&
+				$this->TamanoDesafio->massCreateAfterCriteria($this->id, $this->field('tamano_minimo_desafio', array('id_criterio' => $this->id))))
+				$ds->commit($this);
+			else
+				$ds->rollback($this);
+		}		
+	}
+	
+	
+	function getRandomCriteria() {
+		$criterios = $this->find('all');
 		
+		if(empty($criterios))
+			return null;
+		
+		return $criterios[array_rand($criterios)];
 	}
 
 }

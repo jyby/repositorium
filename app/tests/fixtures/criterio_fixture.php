@@ -22,23 +22,23 @@ class CriterioFixture extends CakeTestFixture {
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
 
-	var $records = array(
-		array(
-			'id_criterio' => 1,
-			'id_contexto' => 1,
-			'pregunta' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-			'respuesta_1' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-			'respuesta_2' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
-			'tamano_pack' => 1,
-			'costo_pack' => 1,
-			'costo_envio' => 1,
-			'bono_documento_enviado_validado' => 1,
-			'funcion_penalizacion_a' => 1,
-			'funcion_penalizacion_b' => 1,
-			'funcion_despenalizacion_a' => 1,
-			'funcion_despenalizacion_b' => 1,
-			'tamano_minimo_desafio' => 1
-		),
-	);
+// 	var $records = array(
+// 		array(
+// 			'id_criterio' => 1,
+// 			'id_contexto' => 1,
+// 			'pregunta' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+// 			'respuesta_1' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+// 			'respuesta_2' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+// 			'tamano_pack' => 1,
+// 			'costo_pack' => 1,
+// 			'costo_envio' => 1,
+// 			'bono_documento_enviado_validado' => 1,
+// 			'funcion_penalizacion_a' => 1,
+// 			'funcion_penalizacion_b' => 1,
+// 			'funcion_despenalizacion_a' => 1,
+// 			'funcion_despenalizacion_b' => 1,
+// 			'tamano_minimo_desafio' => 1
+// 		),
+// 	);
 }
 ?>

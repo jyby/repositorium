@@ -128,9 +128,11 @@ class InformacionDesafio extends AppModel {
 				    'preguntable' => true,
 					) 
 				);
-				$this->save();
+				if(!$this->save())
+					return false;
 			}						
 		}
+		return true;
 	}
 	
 	function massCreateAfterDocument($id_documento = null) {
