@@ -31,6 +31,18 @@ class UsuarioFixture extends CakeTestFixture {
 			'created' => '2011-07-27 19:17:32',
 			'modified' => '2011-07-27 19:17:32'
 		),
+		array(
+			'id_usuario' => 2,
+			'email' => 'Lorem ipsum dolor sit amet',
+			'nombre' => 'Lorem ipsum dolor sit amet',
+			'apellido' => 'Lorem ipsum dolor sit amet',
+			'password' => 'Lorem ipsum dolor sit amet',
+			'salt' => 'Lorem ipsum dolor sit amet',
+			'puntos' => 1,
+			'es_administrador' => 1,
+			'created' => '2011-07-27 19:17:32',
+			'modified' => '2011-07-27 19:17:32'
+		),
 	);
 }
 ?>

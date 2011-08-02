@@ -16,7 +16,7 @@ class CriterioTestCase extends CakeTestCase {
 		$this->assertNull($result);
 		
 		// insert new data
-		$this->_savetwice();
+		$this->_generateRecords(3);
 		
 		// test again
 		$result = $this->Criterio->getRandomCriteria();
@@ -26,7 +26,7 @@ class CriterioTestCase extends CakeTestCase {
 	}
 	
 	
-	function _savetwice() {
+	function _generateRecords($qty = 2) {
 		$records = array(
 			'Criterio' => array(
 					'id_contexto' => 1,
@@ -45,8 +45,25 @@ class CriterioTestCase extends CakeTestCase {
 			),
 		);
 		
-		$this->Criterio->save($records);
-		$this->Criterio->save($records);
+		$ds = $this->Criterio->getDataSource();
+		$ds->begin($this->Criterio);
+		for($i=0;$i<$qty;$i++) {
+			$this->Criterio->save($records);
+		}
+		$ds->commit($this->Criterio);		
+	}
+	
+	function testGenerateChallenge() {
+		$proportion = 0.5;
+		$user_id = 2; // (s)he has c=5, therefore 5 questions
+		$c = 5;
+				
+		$validated = ceil($c*$proportion);
+		$nvalidated = floor($c*$proportion);
+		
+		$this->_generateRecords(5);
+		$challenge = $this->Criterio->generateChallenge($user_id, $proportion);
+		//pr($challenge);
 	}
 	
 	function endTest() {

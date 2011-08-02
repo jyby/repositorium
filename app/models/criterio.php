@@ -164,6 +164,44 @@ class Criterio extends AppModel {
 		
 		return $criterios[array_rand($criterios)];
 	}
+	
+	function generateChallenge($user_id = null, $proportion = 0.5) {
+		if(is_null($user_id)) 
+			return null;
+
+		$criterio = $this->getRandomCriteria();		
+		
+		if(is_null($criterio))
+			return null;
+		
+		$criterio_id = $criterio['Criterio']['id_criterio'];
+		$c = $this->TamanoDesafio->getC($user_id, $criterio_id);
+	
+		$qty_of_validated    = ceil($proportion * $c);
+		$qty_of_nonvalidated = floor((1 - $proportion) * $c);
+		
+		$v_params = array(
+			'criteria_id' => $criterio_id,
+			'confirmado' => true,
+			'quantity' => $qty_of_validated 
+		);
+		
+		$n_params = array(
+			'criteria_id' => $criterio_id,
+			'confirmado' => false,
+			'quantity' => $qty_of_nonvalidated 
+		);
+		
+		$validated = $this->InformacionDesafio->getRandomDocuments($v_params);
+		$nonvalidated = $this->InformacionDesafio->getRandomDocuments($n_params);
+
+		$challenge = array_merge($validated, $nonvalidated);
+		shuffle($challenge);
+		
+// 		pr($challenge);
+		
+		return $challenge;
+	}
 
 }
 ?>

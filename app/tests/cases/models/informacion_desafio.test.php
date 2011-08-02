@@ -92,15 +92,13 @@ class InformacionDesafioTestCase extends CakeTestCase {
 			$this->assertFalse(empty($v['Documento']));
 		}
 	}
-	
-	
-	
+		
 	/*
 	 * Genera $docs documentos en la tabla test, 1/$cri de cada uno de $cri criterios
 	 * la mitad de ellos está validado, y la otra no
 	 */
 	function _generateRecords() {				
-		$docs = 6;
+		$docs = 10;
 		$cri = $this->criteria_qty;
 		
 		$ds = $this->InformacionDesafio->getDataSource();

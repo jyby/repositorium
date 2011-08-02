@@ -19,6 +19,12 @@ class TamanoDesafioFixture extends CakeTestFixture {
 			'id_criterio' => 1,
 			'c_preguntas' => 1
 		),
+		array(
+			'id_desafio' => 2,
+			'id_usuario' => 2,
+			'id_criterio' => 1,
+			'c_preguntas' => 5
+		),
 	);
 }
 ?>
