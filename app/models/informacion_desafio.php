@@ -157,5 +157,36 @@ class InformacionDesafio extends AppModel {
 			}
 		}				
 	}
+	
+	/**
+	 * $data = compact('criteria_id', 'confirmado', 'preguntable', 'quantity');
+	 */
+	function getRandomDocuments($data = null) {
+		if(!isset($data['confirmado']) || !isset($data['criteria_id']) || !isset($data['quantity']))
+			return null;
+
+		// we only want InformacionDesafio and Documento entries
+		$this->unbindModel(array('belongsTo' => array('Criterio')));
+		
+		$preguntable 	= (isset($data['preguntable']) ? $data['preguntable'] : true) ;
+		$criteria_id 	= $data['criteria_id'];
+		$confirmado 	= $data['confirmado'];		
+		$quantity 		= $data['quantity'];
+
+		$ids = $this->find('all', array(
+			'conditions' => array(
+				'InformacionDesafio.id_criterio' => $criteria_id,
+				'InformacionDesafio.confirmado' => $confirmado,
+				'InformacionDesafio.preguntable' => $preguntable,
+				),			
+			)
+		);
+		
+		// shuffles the result and then extract the first $quantity $ids
+		shuffle($ids);
+		$result = array_slice($ids, 0, $quantity);
+// 		pr($result); 
+		return $result;
+	}
 }
 ?>
