@@ -65,13 +65,10 @@ class DesafiosController extends AppController {
   	$criterio = $this->Session->read('Desafio.criterio');
   	
   	$desafio_correcto = $this->InformacionDesafio->validateChallenge($this->data['Desafio']);
-	
-  	if($desafio_correcto)
-  		$this->InformacionDesfio->saveStatistics($this->data, $desafio_correcto);
-  	
+	$this->InformacionDesfio->saveStatistics($this->data, $desafio_correcto);
   	$this->TamanoDesafio->saveNextC($user['Usuario']['id_usuario'], $criterio, $desafio_correcto);
   	
-  	$this->_dispatch($desafio_correcto);  	
+  	$this->_dispatch();  	
   }
   
   /**
