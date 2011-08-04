@@ -104,15 +104,15 @@
                 <div class="box userbox">
                     <ul class="nav topmenu">
                         <?php if(!$this->Session->check('Usuario.id')) { ?>
-                        <li><?php echo $this->Html->link('Sign in', '/registro', array('escape' => false)); ?></li>
-                        <li><?php echo $this->Html->link('Log in', '/iniciar_sesion', array('escape' => false)); ?></li>
+                        <li><?php echo $this->Html->link('Sign in', array('controller' => 'register'), array('escape' => false)); ?></li>
+                        <li><?php echo $this->Html->link('Log in', array('controller' => 'login'), array('escape' => false)); ?></li>
                         <?php } else {
                             $nombre = $this->Session->read('Usuario.nombre');
 		                    $puntos = $this->Session->read('Usuario.puntos');
                         ?>
                         <li>Hey, <?php echo $nombre.'! ('.$puntos.' points)';?></li>
-                        <li><?php echo $this->Html->link('Edit profile', '/usuarios'); ?></li>
-                        <li><?php echo $this->Html->link('Logout', '/iniciar_sesion/logout'); ?></li>
+                        <li><?php echo $this->Html->link('Edit profile', array('controller' => 'usuarios')); ?></li>
+                        <li><?php echo $this->Html->link('Logout', '/logout'); ?></li>
                         <?php } ?>
                     </ul>
                 </div>
@@ -132,7 +132,7 @@
                     </div>
                     <ul class="nav subtopmenu">
                         <?php if($this->Session->check('Usuario.esAdmin') or $this->Session->check('Usuario.esExperto')): ?>
-	                    <li><?php echo $this->Html->link('Manage', '/admin_documentos');?></li>
+	                    <li><?php echo $this->Html->link('Manage', array('controller' => 'admin_documentos'));?></li>
                     	<?php endif; ?>                        
                         <li><?php echo $this->Html->link('Add document', array('controller' => 'subir_documento', 'action' => 'index'));?></li>
                         <?php if($this->Session->check('Usuario.id') and $this->Session->read('Usuario.id') > 1): ?>

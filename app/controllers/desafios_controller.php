@@ -15,7 +15,7 @@ class DesafiosController extends AppController {
    * available actions:
    * - earn
    * - upload
-   * - download
+   * - view
    */
   function action($action = null) {
   	if(is_null($action))
