@@ -1,4 +1,10 @@
 <?php
+/**
+ * 
+ * Enter description here ...
+ * @author mquezada
+ *
+ */
 class TamanoDesafio extends AppModel {
 	var $name = 'TamanoDesafio';
 	var $primaryKey = 'id_desafio';

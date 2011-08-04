@@ -81,4 +81,9 @@ class AppController extends Controller {
 		  return false;
 	    }		
 	}
+	
+	
+	function e404() {
+		$this->cakeError('error404');
+	}
 }
