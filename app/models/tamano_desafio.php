@@ -49,19 +49,47 @@ class TamanoDesafio extends AppModel {
 		return true;
 	}
 	
-	function getC($usuario_id = null, $criterio_id = null) {
-		if(!is_null($usuario_id) && !is_null($criterio_id)) {
-			$td = $this->find('first', array(
-						'conditions' => array(
-							'TamanoDesafio.id_usuario' => $usuario_id,
-							'TamanoDesafio.id_criterio' => $criterio_id
-				)
-			));
-			if(!empty($td))		
-				return $td['TamanoDesafio']['c_preguntas'];			
+	function _entry($user_id = null, $criteria_id = null) {
+		if(is_null($user_id) || is_null($criteria_id))
+			return null;
+			
+		return $this->find('first', array(
+			'conditions' => array(
+				'TamanoDesafio.id_usuario' => $user_id,
+				'TamanoDesafio.id_criterio' => $criteria_id
+			)
+		));
+	}
+	
+	function getC($user_id = null, $criteria_id = null) {
+		$td = $this->_entry($user_id, $criteria_id);
+		
+		if($td)		
+			return $td['TamanoDesafio']['c_preguntas'];			
+				
+		return null;		
+	}
+	
+	function saveNextC($user_id = null, $criteria_id = null, $challengeCorrect = false) {
+		$td = $this->_entry($user_id, $criteria_id);
+		$des = ($challengeCorrect ? 'des' : '');
+		
+		if($td) {
+			$cr = $td['Criterio'];
+			$td = $td['TamanoDesafio'];
+			
+			$c = $this->getC($user_id, $criteria_id);
+			$new_value = $cr['funcion_'.$des.'penalizacion_a']*$c + $cr['funcion_'.$des.'penalizacion_b'];
+			
+			if($new_value < $cr['tamano_minimo_desafio'])
+				$new_value = $cr['tamano_minimo_desafio'];
+			
+			$this->id = $td['id_desafio'];			
+			if($this->saveField('c_preguntas', $new_value));
+				return true;	
 		}
 		
-		return null;		
+		return false;
 	}
 	
 }

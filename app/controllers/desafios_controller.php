@@ -1,13 +1,12 @@
 <?php
-/*
+/**
  * Teh most important class
  *
  * 
  * the cake is a lie
- * bird is the word
  * esa no es mi billetera
  *
- * waX
+ * @author waX
  *  
  */
 class DesafiosController extends AppController {
@@ -54,13 +53,22 @@ class DesafiosController extends AppController {
 	$this->set(compact('documentos', 'criterio', 'puntos'));	
   }
   
-  function validar() {
+  function validate_challenge() {
+  	if(empty($this->data))
+  		$this->redirect('/');
   	
+  	$user = $this->_get_user();
+  	$criterio = $this->Session->read('Desafio.criterio');
+  	
+  	$desafio_correcto = $this->InformacionDesafio->validateChallenge($this->data['Desafio']);
+	
+  	if($desafio_correcto)
+  		$this->InformacionDesfio->saveStatistics($this->data, $desafio_correcto);
+  	
+  	$this->TamanoDesafio->saveNextC($user['Usuario']['id_usuario'], $criterio, $desafio_correcto);
+  	
+  	$this->_dispatch($desafio_correcto);  	
   }
-  
-  
-  
-  
   
   
   function saltar() {
@@ -132,6 +140,10 @@ class DesafiosController extends AppController {
 	$this->set(compact('documentos', 'criterio', 'puntos'));	
   }
 
+  /**
+   * 
+   * @deprecated
+   */
   function procesar() {
 	if(empty($this->data)) {
 	  $this->redirect('/');
@@ -204,6 +216,10 @@ class DesafiosController extends AppController {
 	$this->_dispatch($desafio_correcto);
   }
 
+  /**
+   * 
+   * @deprecated
+   */
   function _calcular_c($desafio_correcto) {
 	/* TODO 2º ITERACION */
 	//$cr = $this->Criterio->find('first');

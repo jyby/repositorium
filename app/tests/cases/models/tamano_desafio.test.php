@@ -48,7 +48,59 @@ class TamanoDesafioTestCase extends CakeTestCase {
 		
 		$this->assertNull($c);
 	}
+	
+	function testsaveNextCChallengeCorrect() {
+		$user_id = 1;
+		$criteria_id = 1;		
+		$c = $this->TamanoDesafio->getC($user_id, $criteria_id); // 5
+		
+//		c = 5
+// 		'funcion_penalizacion_a' => 1.5,
+// 		'funcion_penalizacion_b' => 0.5,
+// 		'funcion_despenalizacion_a' => 1,
+// 		'funcion_despenalizacion_b' => -1,
+// 		'tamano_minimo_desafio' => 3
 
+		$this->TamanoDesafio->saveNextC($user_id, $criteria_id, $challengeCorrect = true);
+		
+		$this->assertTrue( $this->TamanoDesafio->getC($user_id, $criteria_id) == 4 );		
+	}
+	
+	function testsaveNextCChallengeIncorrect() {
+		$user_id = 1;
+		$criteria_id = 1;
+		$c = $this->TamanoDesafio->getC($user_id, $criteria_id); // 5
+	
+		//		c = 5
+		// 		'funcion_penalizacion_a' => 1.5,
+		// 		'funcion_penalizacion_b' => 0.5,
+		// 		'funcion_despenalizacion_a' => 1,
+		// 		'funcion_despenalizacion_b' => -1,
+		// 		'tamano_minimo_desafio' => 3
+	
+		$this->TamanoDesafio->saveNextC($user_id, $criteria_id, $challengeCorrect = false);
+	
+		$this->assertTrue( $this->TamanoDesafio->getC($user_id, $criteria_id) == 8 );
+	}
+	
+	// in case that new_c < min_c
+	function testsaveNextCChallengeBoundary() {
+		$user_id = 1;
+		$criteria_id = 2;
+		$c = $this->TamanoDesafio->getC($user_id, $criteria_id); // 5
+	
+//		c = 5
+// 		'funcion_penalizacion_a' => 1.5,
+// 		'funcion_penalizacion_b' => 0.5,
+// 		'funcion_despenalizacion_a' => 1,
+// 		'funcion_despenalizacion_b' => -1,
+// 		'tamano_minimo_desafio' => 5
+	
+		$this->TamanoDesafio->saveNextC($user_id, $criteria_id, $challengeCorrect = true);
+	
+		$this->assertTrue( $this->TamanoDesafio->getC($user_id, $criteria_id) == 5 );
+	}
+	
 	function endTest() {
 		unset($this->TamanoDesafio);
 		ClassRegistry::flush();

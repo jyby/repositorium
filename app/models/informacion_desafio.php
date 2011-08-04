@@ -190,5 +190,101 @@ class InformacionDesafio extends AppModel {
 // 		pr($result); 
 		return $result;
 	}
+	
+	/*
+	 * first reCaptcha validation
+	 * returns true if validated documents are well answered
+	 * false otherwise
+	 */
+	function validateChallenge($data = null) {
+		if(is_null($data) || !is_array($data))
+			return false;
+		
+		$docs = array();		
+		// first, identify which documents are which
+		foreach($data as $d) {			
+			if(!isset($d['id_criterio']) || !isset($d['id_documento']) || !isset($d['respuesta']))
+				return false;
+
+			$info = $this->_validatedEntry($d);
+			
+			if(!is_null($info)) {
+				$answer = $info['InformacionDesafio']['respuesta_oficial_de_un_experto'];
+				$given = $d['respuesta'];
+				
+				/* answer : 0, 1
+				 * given  :    1, 2	 */	
+				if(	$answer+1 != $given )
+					return false;	
+			}				
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * if $d: informacion_desafio entry
+	 * corresponds to a validated document
+	 * then returns that entry
+	 * 
+	 * null otherwise
+	 * 
+	 */
+	function _validatedEntry($d = null) {
+		$info = $this->entry($d);
+		
+		if($info['InformacionDesafio']['confirmado'] === '1')
+			return $info;
+		return null;			
+	}
+	
+	/**
+	 * 
+	 * returns info_desafio of given id_criterio and id_documento
+	 * @param array $d
+	 */
+	function entry($d = null) {
+		$info = $this->find('first', array(
+			'recursive' => -1,
+ 			'fields' => array('id_estadisticas' ,'confirmado', 'respuesta_oficial_de_un_experto', 'total_respuestas_1_como_desafio', 'total_respuestas_2_como_desafio'),
+			'conditions' => array(
+			'InformacionDesafio.id_criterio' => $d['id_criterio'],
+			'InformacionDesafio.id_documento' => $d['id_documento']
+			)
+		));
+		
+		return $info;
+	}
+	
+	/**
+	 * 
+	 * saves answer statistics
+	 * if $correctChallenge then save all data
+	 * otherwise, only validated documents
+	 * 
+	 * @param array $data
+	 * @param boolean $correctChallenge
+	 */
+	function saveStatistics($data = null, $correctChallenge = false) {
+		if(is_null($data)) return;
+		
+		foreach($data as $d) {
+			$info = $this->entry($d);
+				
+			/*
+			 * if challenge was correct, then save all documents' statistics
+			 * otherwise, only validated documents' statistcs
+			 */
+			if($info && ($info['InformacionDesafio']['confirmado'] === '1' || $correctChallenge)) {
+				$id = $info['InformacionDesafio']['id_estadisticas'];
+				
+				$ans = $d['respuesta'];
+				$new_value = $info['InformacionDesafio']['total_respuestas_'.$ans.'_como_desafio'] + 1;
+									
+				$this->id = $id;
+				$this->saveField('total_respuestas_'.$ans.'_como_desafio', $new_value);
+			}
+		}		
+	}
 }
 ?>

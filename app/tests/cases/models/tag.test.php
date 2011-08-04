@@ -6,11 +6,11 @@ class TagTestCase extends CakeTestCase {
 	var $fixtures = array('app.tag', 'app.documento', 'app.usuario', 'app.tamano_desafio', 'app.criterio', 'app.informacion_desafio', 'app.experto');
 
 	function startTest() {
-		$this->Tag =& ClassRegistry::init('Tag');
+		$this->cTag =& ClassRegistry::init('Tag');
 	}
 
 	function endTest() {
-		unset($this->Tag);
+		unset($this->cTag);
 		ClassRegistry::flush();
 	}
 
@@ -46,22 +46,22 @@ class TagTestCase extends CakeTestCase {
 			)
 		);
 		
-		$this->Tag->Documento->saveWithTags($doc1);
-		$this->Tag->Documento->saveWithTags($doc2);
-		$this->Tag->Documento->saveWithTags($doc3);
-		$this->Tag->Documento->saveWithTags($doc4);
+		$this->cTag->Documento->saveWithTags($doc1);
+		$this->cTag->Documento->saveWithTags($doc2);
+		$this->cTag->Documento->saveWithTags($doc3);
+		$this->cTag->Documento->saveWithTags($doc4);
 		
 		//pr($this->Tag->find('all'));
 		
-		$set1 = $this->Tag->findDocumentsByTags(array('one','two','three'));
-		$set2 = $this->Tag->findDocumentsByTags(array('three'));
-		$set3 = $this->Tag->findDocumentsByTags(array('two'));
-		$set4 = $this->Tag->findDocumentsByTags(array('one'));
-		$set5 = $this->Tag->findDocumentsByTags(array());
+		$set1 = $this->cTag->findDocumentsByTags(array('one','two','three'));
+		$set2 = $this->cTag->findDocumentsByTags(array('three'));
+		$set3 = $this->cTag->findDocumentsByTags(array('two'));
+		$set4 = $this->cTag->findDocumentsByTags(array('one'));
+		$set5 = $this->cTag->findDocumentsByTags(array());
 		
-		$set6 = $this->Tag->findDocumentsByTags(array('one', 'three'));
-		$set7 = $this->Tag->findDocumentsByTags(array('one', 'two'));
-		$set8 = $this->Tag->findDocumentsByTags(array('two', 'three'));
+		$set6 = $this->cTag->findDocumentsByTags(array('one', 'three'));
+		$set7 = $this->cTag->findDocumentsByTags(array('one', 'two'));
+		$set8 = $this->cTag->findDocumentsByTags(array('two', 'three'));
 
 		//pr($this->Tag->Documento->find('all', array('recursive' => -1	)));
 		//pr($this->Tag->find('all', array('recursive' => -1	)));

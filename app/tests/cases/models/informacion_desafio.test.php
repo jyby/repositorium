@@ -124,7 +124,105 @@ class InformacionDesafioTestCase extends CakeTestCase {
 		}
 		$ds->commit($this->InformacionDesafio);
 	}
+	
+	function testValidateChallenge() {
+		/*
+		 * challenge correct
+		 */
+		$data = array(
+			array('respuesta' => 2, 'id_criterio' => 1, 'id_documento' => 1),
+			array('respuesta' => 1, 'id_criterio' => 1, 'id_documento' => 2)
+		);
+		
+		$this->assertTrue($this->InformacionDesafio->validateChallenge($data));
+		
+		/*
+		 * challenge incorrect
+		 */
+		$data = array(
+			array('respuesta' => 1, 'id_criterio' => 1, 'id_documento' => 3),
+			array('respuesta' => 1, 'id_criterio' => 1, 'id_documento' => 4)
+		);
+	
+		$this->assertFalse($this->InformacionDesafio->validateChallenge($data));
 
+		/*
+		 * challenge with no official answer
+		 */
+		$data = array(
+			array('respuesta' => 2, 'id_criterio' => 2, 'id_documento' => 1),
+			array('respuesta' => 1, 'id_criterio' => 2, 'id_documento' => 2)
+		);
+		
+		$this->assertTrue($this->InformacionDesafio->validateChallenge($data));
+	}
+	
+	function testSaveStatisticsCorrect() {
+		/*
+		 * challenge correct
+		 * id_estadisticas 1,2
+		 */
+		$data = array(
+			array('respuesta' => 2, 'id_criterio' => 1, 'id_documento' => 1), //valid
+			array('respuesta' => 1, 'id_criterio' => 1, 'id_documento' => 2) //nonvalid
+		);
+		
+		$this->InformacionDesafio->saveStatistics($data, true);
+		$info1 = $this->InformacionDesafio->find('first', array('conditions' => array('InformacionDesafio.id_estadisticas' => 1)));
+		$info2 = $this->InformacionDesafio->find('first', array('conditions' => array('InformacionDesafio.id_estadisticas' => 2)));
+		
+		/*
+		 * yes +1
+		 */
+		$this->assertTrue($info1['InformacionDesafio']['total_respuestas_1_como_desafio'] === '1');
+		$this->assertTrue($info1['InformacionDesafio']['total_respuestas_2_como_desafio'] === '2');
+		
+		/*
+		 * no +1
+		 */
+		$this->assertTrue($info2['InformacionDesafio']['total_respuestas_1_como_desafio'] === '2');
+		$this->assertTrue($info2['InformacionDesafio']['total_respuestas_2_como_desafio'] === '1');
+	}
+	
+	function testSaveStatisticIncorrect() {
+		/*
+		 * challenge incorrect
+		 * id_estadisticas 3,4
+		 */
+		$data = array(
+			array('respuesta' => 1, 'id_criterio' => 1, 'id_documento' => 3), // validated
+			array('respuesta' => 1, 'id_criterio' => 1, 'id_documento' => 4) // non-valid
+		);
+		
+		$this->InformacionDesafio->saveStatistics($data, false);
+		$info1 = $this->InformacionDesafio->find('first', array('conditions' => array('InformacionDesafio.id_estadisticas' => 3)));
+		$info2 = $this->InformacionDesafio->find('first', array('conditions' => array('InformacionDesafio.id_estadisticas' => 4)));
+		
+		/*
+		 * no +1
+		 */
+		$this->assertTrue($info1['InformacionDesafio']['total_respuestas_1_como_desafio'] === '2');
+		$this->assertTrue($info1['InformacionDesafio']['total_respuestas_2_como_desafio'] === '1');
+		
+		/*
+		 * no changes
+		 */
+		$this->assertTrue($info2['InformacionDesafio']['total_respuestas_1_como_desafio'] === '1');
+		$this->assertTrue($info2['InformacionDesafio']['total_respuestas_2_como_desafio'] === '1');
+	}
+
+	
+	function testEntry() {
+		$data = array(
+			'id_criterio' => 100,
+			'id_documento' => 100
+		);
+		
+		$info = $this->InformacionDesafio->entry($data);
+		
+		$this->assertFalse($info);
+	}
+	
 	function endTest() {
 		unset($this->InformacionDesafio);
 		ClassRegistry::flush();

@@ -1,4 +1,10 @@
 <?php
+/**
+ * 
+ * hey apple!
+ * @author mquezada
+ *
+ */
 class Criterio extends AppModel {
 	var $name = 'Criterio';
 	var $displayField = 'pregunta';
