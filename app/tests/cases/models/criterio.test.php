@@ -9,7 +9,7 @@ class CriterioTestCase extends CakeTestCase {
 		$this->Criterio =& ClassRegistry::init('Criterio');	
 	}	
 
-	function testgetRandomCriteria() {
+	function testGetRandomCriteria() {
 		$result = $this->Criterio->getRandomCriteria();
 		
 		// there's no data so far
@@ -63,7 +63,9 @@ class CriterioTestCase extends CakeTestCase {
 		
 		$this->_generateRecords(5);
 		$challenge = $this->Criterio->generateChallenge($user_id, $proportion);
-		//pr($challenge);
+		
+		/* (aun?) no se puede garantizar de que hayan suficientes documentos */
+		$this->assertTrue(5 >= count($challenge));
 	}
 	
 	function endTest() {

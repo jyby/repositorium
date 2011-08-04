@@ -159,7 +159,7 @@ class InformacionDesafio extends AppModel {
 	}
 	
 	/**
-	 * $data = compact('criteria_id', 'confirmado', 'preguntable', 'quantity');
+	 * $data = compact('criteria_id', 'confirmado', 'preguntable', 'quantity', 'user_id');
 	 */
 	function getRandomDocuments($data = null) {
 		if(!isset($data['confirmado']) || !isset($data['criteria_id']) || !isset($data['quantity']))
@@ -169,8 +169,9 @@ class InformacionDesafio extends AppModel {
 		$this->unbindModel(array('belongsTo' => array('Criterio')));
 		
 		$preguntable 	= (isset($data['preguntable']) ? $data['preguntable'] : true) ;
+		$usuario_id 	= (isset($data['user_id']) ? $data['user_id'] : 1) ;
 		$criteria_id 	= $data['criteria_id'];
-		$confirmado 	= $data['confirmado'];		
+		$confirmado 	= $data['confirmado'];
 		$quantity 		= $data['quantity'];
 
 		$ids = $this->find('all', array(
@@ -178,7 +179,8 @@ class InformacionDesafio extends AppModel {
 				'InformacionDesafio.id_criterio' => $criteria_id,
 				'InformacionDesafio.confirmado' => $confirmado,
 				'InformacionDesafio.preguntable' => $preguntable,
-				),			
+				'Documento.autor <>' => $usuario_id
+				),
 			)
 		);
 		

@@ -13,20 +13,55 @@
 class DesafiosController extends AppController {
   var $uses = array('Usuario', 'Documento', 'TamanoDesafio', 'InformacionDesafio', 'Criterio');
 
-  function index() {	
-	$this->redirect('/');
-  }
+  /*function index() {
+  	$this->redirect('/');
+  }*/
   
   function _get_user() {
-	if(!$this->Session->check('Usuario.id')) {
-	  /* anon */
-	  $uid = 1;
-	} else { 
-	  /* registered */
-	  $uid = $this->Session->read('Usuario.id');
-	}
-	return $this->Usuario->read(null, $uid);	
+  	if(!$this->Session->check('Usuario.id')) {
+  		/* anon */
+  		$uid = 1;
+  	} else {
+  		/* registered */
+  		$uid = $this->Session->read('Usuario.id');
+  	}
+  	return $this->Usuario->read(null, $uid);
   }
+  
+  function index() {	
+	$user = $this->_get_user();
+	$criterio = $this->Criterio->getRandomCriteria();
+	
+	if(is_null($criterio))
+		pr('criterio')/* pass */;
+	
+	$documentos = $this->Criterio->generateChallenge($user['Usuario']['id_usuario'], $criterio);
+	
+	if(count($documentos) == 0) 
+		pr('document')/* pass */;
+	
+	$this->Session->write('Desafio.criterio', $documentos[0]['InformacionDesafio']['id_criterio']);
+	$to = $this->Session->read('Desafio.goto');
+	
+	if(strcmp($to, 'subir') == 0) {
+		$puntos = $criterio['Criterio']['costo_envio'];
+	} elseif(strcmp($to, 'bajar') == 0) {
+		$puntos = $criterio['Criterio']['costo_pack'];
+	} else {
+		$puntos = null;
+	}
+	
+	$this->set(compact('documentos', 'criterio', 'puntos'));	
+  }
+  
+  function validar() {
+  	
+  }
+  
+  
+  
+  
+  
   
   function saltar() {
   	if(!$this->Session->read('Desafio.criterio'))
@@ -57,7 +92,11 @@ class DesafiosController extends AppController {
   	$this->redirect('pass');
   }
   
-  function pass() {
+  /**
+   * 
+   * @deprecated
+   */
+  function _pass() {
 	$u = $this->_get_user();
 	/*
 	 * elige un criterio al azar
@@ -95,7 +134,7 @@ class DesafiosController extends AppController {
 
   function procesar() {
 	if(empty($this->data)) {
-	  $this->redirect('index');
+	  $this->redirect('/');
 	} else {
 	  $desafio_correcto = true;
 	  $no_validados = array();
@@ -247,6 +286,11 @@ class DesafiosController extends AppController {
 	//	$this->Session->delete('Desafio');
   }
 
+  
+  /**
+   * 
+   * @deprecated
+   */
   function _choose($c, $num_validados, $num_novalidados) {
 	$validados = $this->InformacionDesafio->find('all', array(
 	  'conditions' => array(

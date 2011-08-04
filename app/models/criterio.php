@@ -165,41 +165,46 @@ class Criterio extends AppModel {
 		return $criterios[array_rand($criterios)];
 	}
 	
-	function generateChallenge($user_id = null, $proportion = 0.5) {
+	function generateChallenge($user_id = null, $criterio = null, $proportion = 0.5) {
 		if(is_null($user_id)) 
 			return null;
-
-		$criterio = $this->getRandomCriteria();		
+	
+		if(is_null($criterio) || !isset($criterio['Criterio']['id_criterio']))
+			$criterio = $this->getRandomCriteria();		
 		
 		if(is_null($criterio))
 			return null;
-		
+				
 		$criterio_id = $criterio['Criterio']['id_criterio'];
 		$c = $this->TamanoDesafio->getC($user_id, $criterio_id);
-	
+		
 		$qty_of_validated    = ceil($proportion * $c);
 		$qty_of_nonvalidated = floor((1 - $proportion) * $c);
 		
 		$v_params = array(
 			'criteria_id' => $criterio_id,
+			'user_id' => $user_id,
 			'confirmado' => true,
 			'quantity' => $qty_of_validated 
 		);
 		
 		$n_params = array(
 			'criteria_id' => $criterio_id,
+			'user_id' => $user_id,
 			'confirmado' => false,
 			'quantity' => $qty_of_nonvalidated 
 		);
 		
 		$validated = $this->InformacionDesafio->getRandomDocuments($v_params);
+		
+		if(count($validated) < $qty_of_validated)
+			$n_params['quantity'] = $qty_of_nonvalidated + ($qty_of_validated - count($validated));
+		
 		$nonvalidated = $this->InformacionDesafio->getRandomDocuments($n_params);
 
 		$challenge = array_merge($validated, $nonvalidated);
 		shuffle($challenge);
-		
-// 		pr($challenge);
-		
+				
 		return $challenge;
 	}
 
