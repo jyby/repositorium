@@ -82,6 +82,16 @@ class AppController extends Controller {
 	    }		
 	}
 	
+	function _get_user() {
+		if(!$this->Session->check('Usuario.id')) {
+			/* anon */
+			$uid = 1;
+		} else {
+			/* registered */
+			$uid = $this->Session->read('Usuario.id');
+		}
+		return $this->Usuario->read(null, $uid);
+	}
 	
 	function e404() {
 		$this->cakeError('error404');

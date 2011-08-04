@@ -136,7 +136,7 @@
                     	<?php endif; ?>                        
                         <li><?php echo $this->Html->link('Add document', array('controller' => 'subir_documento', 'action' => 'index'));?></li>
                         <?php if($this->Session->check('Usuario.id') and $this->Session->read('Usuario.id') > 1): ?>
-                        <li><?php echo $this->Html->link('Earn points', array('controller' => 'desafios', 'action' => 'earn')); ?></li>
+                        <li><?php echo $this->Html->link('Earn points', array('controller' => 'desafios', 'action' => 'action', 'earn')); ?></li>
                         <?php endif; ?>
                     </ul>                    
                 </div>

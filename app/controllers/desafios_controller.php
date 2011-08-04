@@ -24,20 +24,8 @@ class DesafiosController extends AppController {
   	$this->Session->write('Desafio.goto', $action);
   	$this->redirect('index');
   }
-  
-  function _get_user() {
-  	if(!$this->Session->check('Usuario.id')) {
-  		/* anon */
-  		$uid = 1;
-  	} else {
-  		/* registered */
-  		$uid = $this->Session->read('Usuario.id');
-  	}
-  	return $this->Usuario->read(null, $uid);
-  }
-  
+ 
   /**
-   * 
    * play the game
    */
   function index() {	
@@ -45,12 +33,12 @@ class DesafiosController extends AppController {
 	$criterio = $this->Criterio->getRandomCriteria();
 	
 	if(is_null($criterio))
-		pr('criterio')/* pass */;
+		$this->_skip();
 	
 	$documentos = $this->Criterio->generateChallenge($user['Usuario']['id_usuario'], $criterio);
 	
 	if(count($documentos) == 0) 
-		pr('document')/* pass */;
+		$this->_skip();
 	
 	$this->Session->write('Desafio.criterio', $documentos[0]['InformacionDesafio']['id_criterio']);
 	$to = $this->Session->read('Desafio.goto');
@@ -67,7 +55,6 @@ class DesafiosController extends AppController {
   }
 
   /**
-   * 
    * check how good it was
    */
   function validate_challenge() {
@@ -86,8 +73,27 @@ class DesafiosController extends AppController {
   	
   	$this->_dispatch($desafio_correcto);  	
   }
-
-  function _dispatch($desafio_correcto, $flash = true) {
+  
+  /**
+   * skip challenge
+   */
+  function _skip() {
+  	$this->Session->write('Desafio.passed', true);
+  	$this->_dispatch();
+  }
+  
+  function _dispatch() {
+  	$go_to = $this->Session->read('Desafio.goto');
+  	
+  	if(strcmp($go_to,'earn') == 0 ) {
+  		$this->Session->setFlash('Task finished / Points earned (if any)');
+  		$this->redirect('/');
+  	}
+  	
+  	$this->redirect(array('controller' => $go_to));
+  }
+ 
+  function __dispatch($desafio_correcto, $flash = true) {
   	$criterio = $this->Criterio->findByIdCriterio($this->Session->read('Desafio.criterio'));
   	 
   	if($desafio_correcto) {
@@ -152,12 +158,6 @@ class DesafiosController extends AppController {
 	    $this->redirect('failure');
   	}
   }
-  
-  function earn() {
-  	$this->Session->write('Desafio.goto', 'earn');
-  	$this->redirect('pass');
-  }
-  
   
   
   function failure() {
