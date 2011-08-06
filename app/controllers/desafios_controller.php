@@ -18,7 +18,7 @@ class DesafiosController extends AppController {
    * - view
    */
   function action($action = null) {
-  	if(is_null($action))
+  	if(is_null($action) or !in_array($action, array('earn', 'upload', 'view')))
   		$this->e404();
   	
   	$this->Session->write('Desafio.goto', $action);
@@ -79,6 +79,10 @@ class DesafiosController extends AppController {
   	$this->_dispatch();
   }
   
+  /**
+   * 
+   * dispatch
+   */
   function _dispatch() {
   	$go_to = $this->Session->read('Desafio.goto');
   	
