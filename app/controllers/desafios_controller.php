@@ -12,20 +12,6 @@ class DesafiosController extends AppController {
   var $uses = array('Usuario', 'Documento', 'TamanoDesafio', 'InformacionDesafio', 'Criterio');
 
   /**
-   * available actions:
-   * - earn
-   * - upload
-   * - view
-   */
-  function action($action = null) {
-  	if(is_null($action) or !in_array($action, array('earn', 'upload', 'view')))
-  		$this->e404();
-  	
-  	$this->Session->write('Desafio.goto', $action);
-  	$this->redirect('index');
-  }
- 
-  /**
    * play the game
    */
   function index() {	
