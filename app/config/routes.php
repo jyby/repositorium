@@ -38,6 +38,7 @@
   	Router::connect('/manage', array('controller' => 'admin_documentos'));  	
   	Router::connect('/upload', array('controller' => 'subir_documento'));
   	Router::connect('/view', array('controller' => 'bajar_documento'));
+  	Router::connect('/challenges', array('controller' => 'desafios'));
   	Router::connect('/profile', array('controller' => 'usuarios'));
   	Router::connect('/register', array('controller' => 'registro'));
   	Router::connect('/login', array('controller' => 'iniciar_sesion'));

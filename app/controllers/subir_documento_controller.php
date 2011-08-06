@@ -8,7 +8,7 @@ class SubirDocumentoController extends AppController {
 	if(!$this->Session->read('Desafio.passed') and !$this->Session->check('Usuario.esAdmin') and !$this->Session->check('Usuario.esExperto')) {
 	  $this->Session->setFlash('Before you add a new document, you must pass the following challenge!');
 	  $this->Session->write('Desafio.goto', 'subir');
-	  $this->redirect(array('controller' => 'desafios', 'action' => 'pass'));
+	  $this->redirect(array('controller' => 'desafios', 'action' => 'index'));
 	}
   }
 
