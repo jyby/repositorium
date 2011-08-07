@@ -97,6 +97,10 @@ class CriteriasDocument extends AppModel {
 	function massCreateAfterDocument($id_documento = null) {
 		if(!is_null($id_documento)) {
 			$criterios = $this->Criteria->find('all', array('fields' => 'Criteria.id', 'recursive' => -1));
+			
+			$ds = $this->getDataSource();
+			$ds->begin($this);
+			
 			foreach($criterios as $c) {
 				$this->create();
 				$this->set(
@@ -109,9 +113,16 @@ class CriteriasDocument extends AppModel {
 						'challengeable' => true,
 						)
 					);
-				$this->save();
-			}
+				if(!$this->save()) {
+					$ds->rollback($this);
+					return false;
+				}
+			}	
+			$ds->commit($this);
+			return true;
 		}
+		
+		return false;
 	}
 	
 	/**

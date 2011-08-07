@@ -48,9 +48,35 @@ class CriteriasUser extends AppModel {
 						)
 				);
 				if(!$this->save())
-				return false;
+					return false;
 			}
 		}
+		return true;
+	}
+	
+	function massCreateAfterUser($user_id = null) {
+		if(is_null($user_id)) 
+			return false;
+		
+		$criterias = $this->Criteria->find('all', array('fields' => array('Criteria.id', 'Criteria.minchallenge_size'), 'recursive' => -1));
+		
+		$ds = $this->getDataSource();
+		foreach($criterias as $c) {
+			$this->create();
+			$this->set(
+				array(
+					'user_id' => $user_id,
+					'criteria_id' => $c['Criteria']['id'],
+					'challenge_size' => $c['Criteria']['minchallenge_size']
+				) 
+			);
+			
+			if(!$this->save()) {
+				$ds->rollback($this);
+				return false;
+			}				
+		}
+		$ds->commit($this);
 		return true;
 	}
 	

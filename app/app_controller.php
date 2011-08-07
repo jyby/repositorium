@@ -40,7 +40,7 @@ class AppController extends Controller {
 	App::import('Model','User');
 	$User = new User;
 	$data = Sanitize::clean($data);
-    $usuario = $User->iniciar_sesion($data);
+    $usuario = $User->getUser($data);
 	if( isset($usuario['User']['id']) ) {
 	  if(!empty($usuario['Expert'])) 
 	 	$this->Session->write('User.esExperto', true);

@@ -11,25 +11,46 @@ class CriteriasUserTestCase extends CakeTestCase {
 
 	function testMassCreateAfterCriteria() {
 		$id_criterio = 42;
-		$this->CriteriasUser->massCreateAfterCriteria($id_criterio, 1);
+		$this->CriteriasUser->massCreateAfterCriteria($id_criterio, $minchallenge_size = 1);
 	
 		$users = $this->CriteriasUser->User->find('all', array(
 				'fields' => 'User.id',
 				'recursive' => -1,
 				'order' => 'User.id'
-		)
+			)
 		);
 	
 		$tds = $this->CriteriasUser->find('all', array(
 				'conditions' => array('CriteriasUser.criteria_id' => $id_criterio), 
 				'fields' => 'User.id', 
 				'order' => 'User.id'
-		)
+			)
 		);
 	
 		$this->assertEqual($tds, $users);
 	}
 	
+	function testMassCreateAfterUser() {
+		$user_id = 5;
+		$this->CriteriasUser->massCreateAfterUser($user_id);
+		
+		$criterias = $this->CriteriasUser->Criteria->find('all', array(
+			'fields' => array('Criteria.id'), // 'Criteria.minchallenge_size'),
+			'recursive' => -1,
+			'order' => 'Criteria.id' 
+			)		
+		);
+		
+		$tds = $this->CriteriasUser->find('all', array(
+			'conditions' => array('CriteriasUser.user_id' => $user_id),
+			'fields' => array('Criteria.id'),// 'CriteriasUser.challenge_size'),
+			'order' => 'Criteria.id'
+			)
+		);
+		
+// 		pr($criterias); pr($tds); exit;
+		$this->assertEqual($criterias, $tds);
+	}
 	
 	function testGetC() {
 		$user_id = 1;

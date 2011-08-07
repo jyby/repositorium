@@ -21,11 +21,11 @@ class UserFixture extends CakeTestFixture {
 	var $records = array(
 		array(
 			'id' => 1,
-			'email' => 'Lorem ipsum dolor sit amet',
-			'first_name' => 'Lorem ipsum dolor sit amet',
-			'last_name' => 'Lorem ipsum dolor sit amet',
-			'password' => 'Lorem ipsum dolor sit amet',
-			'salt' => 'Lorem ipsum dolor sit amet',
+			'email' => 'test2@example.com',
+			'first_name' => 'Foo',
+			'last_name' => 'Bar',
+			'password' => '0420244221694ed6acf002c13d55f70cbe217092',
+			'salt' => '123456789',
 			'is_administrator' => 1,
 			'created' => '2011-07-27 19:17:32',
 			'modified' => '2011-07-27 19:17:32'

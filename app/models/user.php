@@ -16,7 +16,7 @@ class User extends AppModel {
 		'first_name' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				//'message' => 'Your custom message here',
+				'message' => 'Please give your first name',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -26,7 +26,7 @@ class User extends AppModel {
 		'last_name' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				//'message' => 'Your custom message here',
+				'message' => 'Please give your last name',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -36,7 +36,7 @@ class User extends AppModel {
 		'password' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				//'message' => 'Your custom message here',
+				'message' => 'You need to put a password',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -122,6 +122,10 @@ class User extends AppModel {
 	
 	/* ==================== METHODS ====================== */
 	
+	/**
+	 * DO NOT change this method unless you know what are you doing
+	 * 
+	 */
 	function beforeSave($options) {
 		if(!empty($this->data['User']['password'])) {
 			$this->data['User']['salt'] = mt_rand();
@@ -138,13 +142,13 @@ class User extends AppModel {
 	 */
 	function register($data=array()) {
 		if(empty($data) || !array_key_exists('User', $data))
-		return false;
+			return false;
 	
 		$t = array(
-		array_key_exists('email', $data['User']),
-		array_key_exists('first_name', $data['User']),
-		array_key_exists('last_name', $data['User']),
-		array_key_exists('password', $data['User']),
+			array_key_exists('email', $data['User']),
+			array_key_exists('first_name', $data['User']),
+			array_key_exists('last_name', $data['User']),
+			array_key_exists('password', $data['User']),
 		);
 	
 		if(!($t[0] and $t[1] and $t[2] and $t[3]))
@@ -152,6 +156,7 @@ class User extends AppModel {
 	
 		$data['User']['is_administrator'] = false;
 	
+		// register user
 		$user = $this->save($data);
 		return $user;
 	}
@@ -161,9 +166,9 @@ class User extends AppModel {
 	 * @param array $data with email and username as subkeys of User
 	 * @returns the corresponding user object, null otherwise
 	 */
-	function iniciar_sesion($data = array()) {
-		if(empty($data))
-		return null;
+	function getUser($data = array()) {
+		if(empty($data) or !isset($data['User']['email']) or !isset($data['User']['password']))
+			return null;
 		$d = $this->findByEmail($data['User']['email']);
 	
 		$pass_to_check = $d['User']['password'];
@@ -174,30 +179,16 @@ class User extends AppModel {
 		return null;
 	}
 	
-	/* afterShave */
+	/**
+	 *  
+	 */
 	function afterSave($created) {
-		if($created) {
-	
+		if($created) {	
 			/* on create */
 			if(!empty($this->data['User']['es_experto'])) {
 				$this->_expert_create($this->id);
-			}
-	
-			App::import('Model','Criteria');
-			$Criteria = new Criteria;
-			$criterios = $Criteria->find('all');
-			foreach($criterios as $c) {
-				$this->CriteriasUser->create();
-	
-				$this->CriteriasUser->set(array(
-					'user_id' => $this->id,
-					'criteria_id' => $c['Criteria']['id'],
-					'challenge_size' => $c['Criteria']['minchallenge_size'],
-				));
-	
-				$this->CriteriasUser->save();
-			}
-	
+			}			
+			$this->CriteriasUser->massCreateAfterUser($this->id);
 			CakeLog::write('activity', 'User '.$this->id. ' created');
 		} else {
 			/* on update */
