@@ -9,30 +9,30 @@
  *  
  */
 class DesafiosController extends AppController {
-  var $uses = array('Usuario', 'Documento', 'TamanoDesafio', 'InformacionDesafio', 'Criterio');
+  var $uses = array('User', 'Document', 'CriteriasUser', 'CriteriasDocument', 'Criteria');
 
   /**
    * play the game
    */
   function index() {	
 	$user = $this->_get_user();
-	$criterio = $this->Criterio->getRandomCriteria();
+	$criterio = $this->Criteria->getRandomCriteria();
 	
 	if(is_null($criterio))
 		$this->_skip();
 	
-	$documentos = $this->Criterio->generateChallenge($user['Usuario']['id_usuario'], $criterio);
+	$documentos = $this->Criteria->generateChallenge($user['User']['id'], $criterio);
 	
 	if(count($documentos) == 0) 
 		$this->_skip();
 	
-	$this->Session->write('Desafio.criterio', $documentos[0]['InformacionDesafio']['id_criterio']);
+	$this->Session->write('Desafio.criterio', $documentos[0]['CriteriasDocument']['criteria_id']);
 	$to = $this->Session->read('Desafio.goto');
 	
 	if(strcmp($to, 'subir') == 0) {
-		$puntos = $criterio['Criterio']['costo_envio'];
+		$puntos = $criterio['Criteria']['documentupload_cost'];
 	} elseif(strcmp($to, 'bajar') == 0) {
-		$puntos = $criterio['Criterio']['costo_pack'];
+		$puntos = $criterio['Criteria']['documentpack_cost'];
 	} else {
 		$puntos = null;
 	}
@@ -50,9 +50,9 @@ class DesafiosController extends AppController {
   	$user = $this->_get_user();
   	$criterio = $this->Session->read('Desafio.criterio');
   	
-  	$desafio_correcto = $this->InformacionDesafio->validateChallenge($this->data['Desafio']);
-	$this->InformacionDesfio->saveStatistics($this->data, $desafio_correcto);
-  	$this->TamanoDesafio->saveNextC($user['Usuario']['id_usuario'], $criterio, $desafio_correcto);
+  	$desafio_correcto = $this->CriteriasDocument->validateChallenge($this->data['Desafio']);
+	$this->CriteriasDocument->saveStatistics($this->data, $desafio_correcto);
+  	$this->CriteriasUser->saveNextC($user['User']['id'], $criterio, $desafio_correcto);
   	
   	$this->_dispatch();  	
   }
@@ -81,12 +81,12 @@ class DesafiosController extends AppController {
   }
  
   function __dispatch($desafio_correcto, $flash = true) {
-  	$criterio = $this->Criterio->findByIdCriterio($this->Session->read('Desafio.criterio'));
+  	$criterio = $this->Criteria->findByIdCriteria($this->Session->read('Desafio.criterio'));
   	 
   	if($desafio_correcto) {
   		$this->Session->write('Desafio.passed', true);
   		$to = $this->Session->read('Desafio.goto');
-  		$puntos = $criterio['Criterio']['costo_envio'];
+  		$puntos = $criterio['Criteria']['costo_envio'];
   		 
   		if(strcmp($to, 'subir') == 0) {
   			if($flash) $this->Session->setFlash(
@@ -98,7 +98,7 @@ class DesafiosController extends AppController {
   			$this->redirect(array('controller' => 'subir_documento'));
   			// ingresar puntos?
   		} elseif(strcmp($to, 'bajar') == 0) {
-  			$puntos = $criterio['Criterio']['costo_pack'];
+  			$puntos = $criterio['Criteria']['costo_pack'];
   			if($flash) $this->Session->setFlash(
   		  'You have passed the challenge and earned '.$puntos.' points!. Now you can get your new Documents. Thank you!');
   
@@ -106,7 +106,7 @@ class DesafiosController extends AppController {
   			$this->_addPoints($puntos);
   			$this->redirect(array('controller' => 'bajar_documento'));
   		} else {
-  			$puntos = $criterio['Criterio']['costo_pack'];
+  			$puntos = $criterio['Criteria']['costo_pack'];
   			if($flash) $this->Session->setFlash(
   		  'You have passed the challenge and earned '.$puntos.' points!');
   
@@ -126,16 +126,16 @@ class DesafiosController extends AppController {
   	if(!$this->Session->read('Desafio.criterio'))
   		$this->redirect($this->referer());
   		
-  	$criterio = $this->Criterio->findByIdCriterio($this->Session->read('Desafio.criterio'));
+  	$criterio = $this->Criteria->findByIdCriteria($this->Session->read('Desafio.criterio'));
   	$to = $this->Session->read('Desafio.goto');
   	
   	if(strcmp($to, 'subir') == 0) {
-  		$puntos = $criterio['Criterio']['costo_envio'];
+  		$puntos = $criterio['Criteria']['costo_envio'];
   	} else {
-  		$puntos = $criterio['Criterio']['costo_pack'];
+  		$puntos = $criterio['Criteria']['costo_pack'];
   	}
   	
-  	if($this->Session->check('Usuario.id') && $this->Session->read('Usuario.puntos') >= $puntos) {	    
+  	if($this->Session->check('User.id') && $this->Session->read('User.puntos') >= $puntos) {	    
 	    $this->Session->write('Desafio.passed', true);	    
 	    $this->_addPoints(-2*intval($puntos));
 	    $this->_dispatch(true, false);  	        

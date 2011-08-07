@@ -21,7 +21,7 @@ class TagsController extends AppController {
 	if (empty($this->data) or trim($this->data['Tag']['search']) == '') {
 	  $this->redirect('/');
 	}
-	CakeLog::write('activity', 'User '. $this->Session->read('Usuario.id') . ' has searched for: ['. $this->data['Tag']['search'] .']');
+	CakeLog::write('activity', 'User '. $this->Session->read('User.id') . ' has searched for: ['. $this->data['Tag']['search'] .']');
 	$tags = explode(' ', trim($this->data['Tag']['search']));
 	
 	$documents = $this->Tag->findDocumentsByTags($tags);
@@ -37,7 +37,7 @@ class TagsController extends AppController {
 		($c>1 ? 'y ' : 'ies ') . 
 		'that term. ';
 
-	  if(!$this->Session->check('Usuario.esAdmin') and !$this->Session->check('Usuario.esExperto'))
+	  if(!$this->Session->check('User.esAdmin') and !$this->Session->check('User.esExperto'))
 		$msg .= 
 		  'In order to get '. 
 		  ($c>1 ? 'some of these ' : 'this ') . 

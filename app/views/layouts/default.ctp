@@ -56,30 +56,6 @@
 					}
 			}}});
 	}
-
-//	function add_close_button(){
-//		var flash=$("#flashMessage");
-//		//Create the Div
-//		var div_close = $("<div></div>");
-//		div_close.css({'float' : 'right', 'text-align' : 'right'});
-//		//Create the A
-//		var a_close = $("<a></a>");
-//		a_close.css({'color' : '#333', 'cursor' : 'pointer'});
-//		a_close.html("X");
-//		a_close.click(close_flashMessage);
-//		//Append A to Div
-//		div_close.append(a_close);
-//		//Append the Div to the flashMessage Div
-//		flash.append(div_close);
-//	}
-//	
-//	function close_flashMessage(){
-//		$("#flashMessage").hide('slow');
-//	}
-//	
-//	$(function(){
-//		add_close_button();
-//	});
 	
 	//Improve the flashMessage
 	$("#flashMessage").addClass("ui-state-highlight ui-corner-all flash-style");
@@ -103,12 +79,12 @@
                 </div>
                 <div class="box userbox">
                     <ul class="nav topmenu">
-                        <?php if(!$this->Session->check('Usuario.id')) { ?>
+                        <?php if(!$this->Session->check('User.id')) { ?>
                         <li><?php echo $this->Html->link('Sign in', array('controller' => 'register'), array('escape' => false)); ?></li>
                         <li><?php echo $this->Html->link('Log in', array('controller' => 'login'), array('escape' => false)); ?></li>
                         <?php } else {
-                            $nombre = $this->Session->read('Usuario.nombre');
-		                    $puntos = $this->Session->read('Usuario.puntos');
+                            $nombre = $this->Session->read('User.nombre');
+		                    $puntos = $this->Session->read('User.puntos');
                         ?>
                         <li>Hey, <?php echo $nombre.'! ('.$puntos.' points)';?></li>
                         <li><?php echo $this->Html->link('Edit profile', array('controller' => 'usuarios')); ?></li>
@@ -131,11 +107,11 @@
                         -->
                     </div>
                     <ul class="nav subtopmenu">
-                        <?php if($this->Session->check('Usuario.esAdmin') or $this->Session->check('Usuario.esExperto')): ?>
+                        <?php if($this->Session->check('User.esAdmin') or $this->Session->check('User.esExperto')): ?>
 	                    <li><?php echo $this->Html->link('Manage', array('controller' => 'admin_documentos'));?></li>
                     	<?php endif; ?>                        
                         <li><?php echo $this->Html->link('Add document', array('controller' => 'subir_documento', 'action' => 'index'));?></li>
-                        <?php if($this->Session->check('Usuario.id') and $this->Session->read('Usuario.id') > 1): ?>
+                        <?php if($this->Session->check('User.id') and $this->Session->read('User.id') > 1): ?>
                         <li><?php echo $this->Html->link('Earn points', array('controller' => 'desafios', 'action' => 'action', 'earn')); ?></li>
                         <?php endif; ?>
                     </ul>                    

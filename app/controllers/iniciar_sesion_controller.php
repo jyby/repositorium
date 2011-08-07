@@ -2,10 +2,10 @@
 App::import('Sanitize');
 
 class IniciarSesionController extends AppController {
-  var $uses = array('Usuario');
+  var $uses = array('User');
 
   function beforeRender() {
-	if($this->Session->check('Usuario.id'))
+	if($this->Session->check('User.id'))
 	  $this->redirect('/');
   }
 

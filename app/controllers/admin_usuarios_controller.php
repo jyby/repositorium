@@ -10,18 +10,18 @@
  */
 
 class AdminUsuariosController extends AppController {
-  var $uses = array('Usuario','Experto');
+  var $uses = array('User','Expert');
   var $paginate = array(
-	  'Usuario' => array(
+	  'User' => array(
 		'limit' => '15',
 		'order' => array(
-		  'Usuario.created' => 'asc'
+		  'User.created' => 'asc'
 		),
 		'recursive' => -1,
   ));
 
   function beforeFilter() {
-	if(!$this->Session->check('Usuario.esAdmin')) {
+	if(!$this->Session->check('User.esAdmin')) {
 	  $this->Session->setFlash('You don\'t have permission to access this page');
 	  $this->redirect(array('controller' => 'pages'));
 	}
@@ -32,8 +32,8 @@ class AdminUsuariosController extends AppController {
   }
 
   function listar() {
-	$debug = $data = $this->paginate('Usuario');
-	$experts = $this->Experto->find('all', array('recursive' => -1));
+	$debug = $data = $this->paginate('User');
+	$experts = $this->Expert->find('all', array('recursive' => -1));
 	$current = 'usuarios';
 	$this->set(compact('data', 'current', 'debug', 'experts'));
   }
@@ -41,18 +41,18 @@ class AdminUsuariosController extends AppController {
   function add() {
   	$this->set('current', 'usuarios');	
 	if (!empty($this->data)) {
-	  if ($this->Usuario->save($this->data)) {
+	  if ($this->User->save($this->data)) {
 		$this->Session->setFlash('User added successfully');		
 		$this->redirect('listar');
 	  } else {
-		$this->Session->setFlash($this->Usuario->invalidFields(), 'flash_errors');		
+		$this->Session->setFlash($this->User->invalidFields(), 'flash_errors');		
 	  }
 	}
   }
 
   function remove($id = null) {
 	if (!is_null($id)) {
-	  if($this->Usuario->delete($id)) {
+	  if($this->User->delete($id)) {
 		$this->Session->setFlash('User '.$id.' deleted');
 		CakeLog::write('activity','User '.$id.' deleted' );
 	  } else {
@@ -64,32 +64,32 @@ class AdminUsuariosController extends AppController {
 
   function edit($id = null) {
   	$this->set('current', 'usuarios');	
-	$this->Usuario->id = $id;
+	$this->User->id = $id;
 	if (empty($this->data)) {
-	  $this->data = $this->Usuario->read();
+	  $this->data = $this->User->read();
 	} else {
 	  // password validation
-	  if(!empty($this->data['Usuario']['tmp_password'])) {
-		$p1 = $this->data['Usuario']['tmp_password'];
-		$p2 = $this->data['Usuario']['tmp_password2'];
+	  if(!empty($this->data['User']['tmp_password'])) {
+		$p1 = $this->data['User']['tmp_password'];
+		$p2 = $this->data['User']['tmp_password2'];
 		if(strcmp($p1,$p2) == 0) {
-		  $this->data['Usuario']['password'] = $p1;
+		  $this->data['User']['password'] = $p1;
 		} else {
 		  $this->Session->setFlash('Passwords don\'t match');
 		  $this->redirect(array('action' => 'edit', $id));
 		}
 	  }
 	    
-	  $this->Usuario->set($this->data);
-	  if ($this->Usuario->validates()) {
+	  $this->User->set($this->data);
+	  if ($this->User->validates()) {
 		// saves edited data
-		if($this->Usuario->save($this->data)) {
+		if($this->User->save($this->data)) {
 		  $this->Session->setFlash('The user was modified');
 		  CakeLog::write('activity', 'User '.$id.' was modified');
 		  $this->redirect('index');
 		}
 	  } else {
-		$this->Session->setFlash($this->Usuario->invalidFields(),'flash_errors');
+		$this->Session->setFlash($this->User->invalidFields(),'flash_errors');
 		$this->redirect(array('action' => 'edit', $id));
 	  }
 	}

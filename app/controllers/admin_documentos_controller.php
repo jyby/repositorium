@@ -11,10 +11,10 @@
 
 class AdminDocumentosController extends AppController {
   
-  var $uses = array('Criterio', 'Documento', 'InformacionDesafio', 'Tag', 'Usuario');
+  var $uses = array('Criteria', 'Document', 'CriteriasDocument', 'Tag', 'User');
   var $helpers = array('Text', 'Number');
   var $paginate = array(
-	'InformacionDesafio' => array(
+	'CriteriasDocument' => array(
 	  'limit' => 5,
 	  'order' => array(
 		'total_respuestas' => 'desc'
@@ -23,8 +23,8 @@ class AdminDocumentosController extends AppController {
   );
 
   function beforeFilter() {
-	if(!$this->Session->check('Usuario.esExperto') && !$this->Session->check('Usuario.esAdmin')) {
-		if($this->Session->check('Usuario.id')) {
+	if(!$this->Session->check('User.esExperto') && !$this->Session->check('User.esAdmin')) {
+		if($this->Session->check('User.id')) {
 	  		$this->Session->setFlash('You do not have permission to access this page');
 	  		$this->redirect(array('controller' => 'pages'));
 		} else {
@@ -32,10 +32,10 @@ class AdminDocumentosController extends AppController {
 			$this->redirect(array('controller' => 'iniciar_sesion'));
 		}
 	}
-	if($this->Session->check('InformacionDesafio.limit'))
-		$this->paginate['InformacionDesafio']['limit'] = $this->Session->read('InformacionDesafio.limit');
-	if($this->Session->check('InformacionDesafio.order'))
-		$this->paginate['InformacionDesafio']['order'] = $this->_strToArray($this->Session->read('InformacionDesafio.order'));
+	if($this->Session->check('CriteriasDocument.limit'))
+		$this->paginate['CriteriasDocument']['limit'] = $this->Session->read('CriteriasDocument.limit');
+	if($this->Session->check('CriteriasDocument.order'))
+		$this->paginate['CriteriasDocument']['order'] = $this->_strToArray($this->Session->read('CriteriasDocument.order'));
   }
 
   function index() {
@@ -43,46 +43,46 @@ class AdminDocumentosController extends AppController {
   }
   
   function _beforeList($confirmado, $all = false) {
-  	$criterio_list = $this->Criterio->find('list');
+  	$criterio_list = $this->Criteria->find('list');
   	$criterio_n = 1;  	
   	if(!empty($this->data)) {
-  		if(!empty($this->data['Criterio']['pregunta'])) {
-  			$criterio_n = $this->data['Criterio']['pregunta'];
-  			$this->Session->write('InformacionDesafio.criterio', $criterio_n);  		
+  		if(!empty($this->data['Criteria']['pregunta'])) {
+  			$criterio_n = $this->data['Criteria']['pregunta'];
+  			$this->Session->write('CriteriasDocument.criterio', $criterio_n);  		
   		}
   		
-  		if(!empty($this->data['Documento']['limit'])) {
-  			$this->paginate['InformacionDesafio']['limit'] = $this->data['Documento']['limit'];
-  			$this->Session->write('InformacionDesafio.limit', $this->data['Documento']['limit']);
+  		if(!empty($this->data['Document']['limit'])) {
+  			$this->paginate['CriteriasDocument']['limit'] = $this->data['Document']['limit'];
+  			$this->Session->write('CriteriasDocument.limit', $this->data['Document']['limit']);
   		}
   		
-  		if(!empty($this->data['InformacionDesafio']['order'])) {  			
-  			$this->paginate['InformacionDesafio']['order'] = $this->_strToArray($this->data['InformacionDesafio']['order']);
-  			$this->Session->write('InformacionDesafio.order', $this->_arrayToStr($this->paginate['InformacionDesafio']['order']));  			
+  		if(!empty($this->data['CriteriasDocument']['order'])) {  			
+  			$this->paginate['CriteriasDocument']['order'] = $this->_strToArray($this->data['CriteriasDocument']['order']);
+  			$this->Session->write('CriteriasDocument.order', $this->_arrayToStr($this->paginate['CriteriasDocument']['order']));  			
   		}
   		
-  		if(!empty($this->data['InformacionDesafio']['filter'])) {
-  			$this->Session->write('InformacionDesafio.filter', $this->data['InformacionDesafio']['filter']);
+  		if(!empty($this->data['CriteriasDocument']['filter'])) {
+  			$this->Session->write('CriteriasDocument.filter', $this->data['CriteriasDocument']['filter']);
   		}
   	}
   	
   	// filter
   	$cond = array();
-  	if($this->Session->check('InformacionDesafio.filter')) {
-  		$cond = $this->_strToFilterArray($this->Session->read('InformacionDesafio.filter'));
+  	if($this->Session->check('CriteriasDocument.filter')) {
+  		$cond = $this->_strToFilterArray($this->Session->read('CriteriasDocument.filter'));
   	} else {
   		$cond = array('1' => '1');
   	}
   	
   	if($all) {
-  		$data = $this->paginate('InformacionDesafio', array(
-		  'InformacionDesafio.id_criterio' => ($this->Session->read('InformacionDesafio.criterio') ? $this->Session->read('InformacionDesafio.criterio') : $criterio_n),
+  		$data = $this->paginate('CriteriasDocument', array(
+		  'CriteriasDocument.criteria_id' => ($this->Session->read('CriteriasDocument.criterio') ? $this->Session->read('CriteriasDocument.criterio') : $criterio_n),
 		  $cond		  		  
 		));	
   	} else {
-  		$data = $this->paginate('InformacionDesafio', array(
-		  'InformacionDesafio.id_criterio' => ($this->Session->read('InformacionDesafio.criterio') ? $this->Session->read('InformacionDesafio.criterio') : $criterio_n),
-		  'InformacionDesafio.confirmado' => $confirmado,
+  		$data = $this->paginate('CriteriasDocument', array(
+		  'CriteriasDocument.criteria_id' => ($this->Session->read('CriteriasDocument.criterio') ? $this->Session->read('CriteriasDocument.criterio') : $criterio_n),
+		  'CriteriasDocument.validated' => $confirmado,
 		  $cond
 		));  		
   	}
@@ -93,12 +93,12 @@ class AdminDocumentosController extends AppController {
   function validados() {
   	$d = $this->_beforeList(1);
 	$current = 'validados';
-	$criterio_n = $this->Session->read('InformacionDesafio.criterio') ? $this->Session->read('InformacionDesafio.criterio') : $d['criterio_n'];
+	$criterio_n = $this->Session->read('CriteriasDocument.criterio') ? $this->Session->read('CriteriasDocument.criterio') : $d['criterio_n'];
 	$criterio_list = $d['criterio_list'];
 	$data = $d['data'];	
-	$limit = $this->Session->read('InformacionDesafio.limit') ? $this->Session->read('InformacionDesafio.limit') : $this->paginate['InformacionDesafio']['limit'];
-	$ordering = $this->Session->read('InformacionDesafio.order') ? $this->Session->read('InformacionDesafio.order') : $this->_arrayToStr($this->paginate['InformacionDesafio']['order']);
-	$filter = $this->Session->read('InformacionDesafio.filter') ? $this->Session->read('InformacionDesafio.filter') : 'all';
+	$limit = $this->Session->read('CriteriasDocument.limit') ? $this->Session->read('CriteriasDocument.limit') : $this->paginate['CriteriasDocument']['limit'];
+	$ordering = $this->Session->read('CriteriasDocument.order') ? $this->Session->read('CriteriasDocument.order') : $this->_arrayToStr($this->paginate['CriteriasDocument']['order']);
+	$filter = $this->Session->read('CriteriasDocument.filter') ? $this->Session->read('CriteriasDocument.filter') : 'all';
 	
 	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter'));
 	$this->render('listar');
@@ -107,12 +107,12 @@ class AdminDocumentosController extends AppController {
   function no_validados() {	
 	$d = $this->_beforeList(0);
 	$current = 'no_validados';
-	$criterio_n = $this->Session->read('InformacionDesafio.criterio') ? $this->Session->read('InformacionDesafio.criterio') : $d['criterio_n'];
+	$criterio_n = $this->Session->read('CriteriasDocument.criterio') ? $this->Session->read('CriteriasDocument.criterio') : $d['criterio_n'];
 	$criterio_list = $d['criterio_list'];
 	$data = $d['data'];
-	$limit = $this->Session->read('InformacionDesafio.limit') ? $this->Session->read('InformacionDesafio.limit') : $this->paginate['InformacionDesafio']['limit'];
-	$ordering = $this->Session->read('InformacionDesafio.order') ? $this->Session->read('InformacionDesafio.order') : $this->_arrayToStr($this->paginate['InformacionDesafio']['order']);
-	$filter = $this->Session->read('InformacionDesafio.filter') ? $this->Session->read('InformacionDesafio.filter') : 'all';
+	$limit = $this->Session->read('CriteriasDocument.limit') ? $this->Session->read('CriteriasDocument.limit') : $this->paginate['CriteriasDocument']['limit'];
+	$ordering = $this->Session->read('CriteriasDocument.order') ? $this->Session->read('CriteriasDocument.order') : $this->_arrayToStr($this->paginate['CriteriasDocument']['order']);
+	$filter = $this->Session->read('CriteriasDocument.filter') ? $this->Session->read('CriteriasDocument.filter') : 'all';
 		
 	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter'));
 	$this->render('listar');
@@ -121,12 +121,12 @@ class AdminDocumentosController extends AppController {
   function all() {
   	$d = $this->_beforeList(null, true);
 	$current = 'all';
-	$criterio_n = $this->Session->read('InformacionDesafio.criterio') ? $this->Session->read('InformacionDesafio.criterio') : $d['criterio_n'];
+	$criterio_n = $this->Session->read('CriteriasDocument.criterio') ? $this->Session->read('CriteriasDocument.criterio') : $d['criterio_n'];
 	$criterio_list = $d['criterio_list'];
 	$data = $d['data'];
-	$limit = $this->Session->read('InformacionDesafio.limit') ? $this->Session->read('InformacionDesafio.limit') : $this->paginate['InformacionDesafio']['limit'];
-	$ordering = $this->Session->read('InformacionDesafio.order') ? $this->Session->read('InformacionDesafio.order') : $this->_arrayToStr($this->paginate['InformacionDesafio']['order']);
-	$filter = $this->Session->read('InformacionDesafio.filter') ? $this->Session->read('InformacionDesafio.filter') : 'all';
+	$limit = $this->Session->read('CriteriasDocument.limit') ? $this->Session->read('CriteriasDocument.limit') : $this->paginate['CriteriasDocument']['limit'];
+	$ordering = $this->Session->read('CriteriasDocument.order') ? $this->Session->read('CriteriasDocument.order') : $this->_arrayToStr($this->paginate['CriteriasDocument']['order']);
+	$filter = $this->Session->read('CriteriasDocument.filter') ? $this->Session->read('CriteriasDocument.filter') : 'all';
 	
 	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter'));
 	$this->render('listar');
@@ -140,12 +140,12 @@ class AdminDocumentosController extends AppController {
   function edit($id = null, $criterio = 1) {
   	if(empty($this->data)) {		
 	  // stats
-	  $this->data = $this->InformacionDesafio->find(
+	  $this->data = $this->CriteriasDocument->find(
 		'first',
 		array(
 			'conditions' => array(
-				'InformacionDesafio.id_documento' => $id,
-				'InformacionDesafio.id_criterio' => $criterio
+				'CriteriasDocument.document_id' => $id,
+				'CriteriasDocument.criteria_id' => $criterio
 			)
 		));
 		
@@ -154,31 +154,31 @@ class AdminDocumentosController extends AppController {
 	  }
 	  
 	  // tags
-	  $raw_tags = $this->Tag->find('all', array('conditions' => array('Tag.id_documento' => $id), 'recursive' => -1));
+	  $raw_tags = $this->Tag->find('all', array('conditions' => array('Tag.document_id' => $id), 'recursive' => -1));
 	  $tags = array();	  
 	  foreach($raw_tags as $t)
 		$tags[] = $t['Tag']['tag'];	  
-	  $this->data['Documento']['tags'] = implode($tags,', ');
+	  $this->data['Document']['tags'] = implode($tags,', ');
 	  
 	  // user
-	  $raw_user = $this->Usuario->find('first', array('conditions' => array('Usuario.id_usuario' => $this->data['Documento']['autor']), 'recursive' => -1));
-	  $this->data['Usuario']['autor'] = $raw_user['Usuario']['nombre'] . ' '. $raw_user['Usuario']['apellido'] . ' ('.$raw_user['Usuario']['email'].')';
+	  $raw_user = $this->User->find('first', array('conditions' => array('User.id' => $this->data['Document']['user_id']), 'recursive' => -1));
+	  $this->data['User']['user_id'] = $raw_user['User']['first_name'] . ' '. $raw_user['User']['last_name'] . ' ('.$raw_user['User']['email'].')';
 	  
 	  // criteria
-	  $criterios_list = $this->Criterio->find('list');
+	  $criterios_list = $this->Criteria->find('list');
 	  $criterios_n = $criterio;
 	  
 	  $this->set('data',$this->data);
 	  $this->set(compact('criterios_list', 'criterios_n'));	  
 	} else {
 	  // save stats info
-	  if($this->InformacionDesafio->save($this->data))
+	  if($this->CriteriasDocument->save($this->data))
 	  	;	  
 	  // save tags and basics
-	  $this->Tag->deleteAll(array('Tag.id_documento' => $id));
-	  $this->data['Documento']['id_documento'] = $id;
-	  if ($this->Documento->saveWithTags($this->data)) {
-		$this->Session->setFlash('Document "'. $this->data['Documento']['titulo'] .'" edited successfully');
+	  $this->Tag->deleteAll(array('Tag.document_id' => $id));
+	  $this->data['Document']['id'] = $id;
+	  if ($this->Document->saveWithTags($this->data)) {
+		$this->Session->setFlash('Document "'. $this->data['Document']['title'] .'" edited successfully');
 		CakeLog::write('activity', 'Document '.$id.'\'s content modified');
 		$this->redirect($this->data['Action']['current']);
 	  }
@@ -199,7 +199,7 @@ class AdminDocumentosController extends AppController {
 
   function remove($id = null, $redirect = true, $flash = true) {
 	if (!is_null($id)) {
-	  if($this->Documento->delete($id)) {
+	  if($this->Document->delete($id)) {
 		if($flash) $this->Session->setFlash('Document no. '.$id.' removed');
 		CakeLog::write('activity', 'Document '.$id.' deleted');	
 	  } else {
@@ -209,38 +209,38 @@ class AdminDocumentosController extends AppController {
    	if($redirect) $this->redirect($this->referer());	
   }
 
-  /* InformacionDesafio */
+  /* CriteriasDocument */
   function set_field($field = null, $id = null, $bool = null, $redirect = true) {
 	if(!is_null($field) and !is_null($id) and !is_null($bool)) {
 	  
 	  /* blacklist */
-	  if(in_array($field, array('id_estadisticas', 'id_documento'))) {
+	  if(in_array($field, array('id', 'document_id'))) {
 		if($redirect) $this->redirect($this->referer());
 	  }
   
-	  $this->InformacionDesafio->set(array(
-		'id_estadisticas' => $id,
+	  $this->CriteriasDocument->set(array(
+		'CriteriasDocument.id' => $id,
 		$field => $bool
 	  ));
 	  
-	  if(!$this->InformacionDesafio->save())
+	  if(!$this->CriteriasDocument->save())
 		return false;
 	
-	  CakeLog::write('activity', "InformacionDesafio id=$id modified: [field: $field, new value: $bool]");
+	  CakeLog::write('activity', "CriteriasDocument id=$id modified: [field: $field, new value: $bool]");
 	}	
 	if($redirect) $this->redirect($this->referer());
   }
 
   function _reset_stats($id = null, $criteria = null) {
 	if(!is_null($id) && !is_null($criteria)) {
-	 $this->InformacionDesafio->updateAll(
+	 $this->CriteriasDocument->updateAll(
 	 	array(
-			'InformacionDesafio.total_respuestas_1_como_desafio' => 0,
-			'InformacionDesafio.total_respuestas_2_como_desafio' => 0,
+			'CriteriasDocument.total_answers_1' => 0,
+			'CriteriasDocument.total_answers_2' => 0,
 		),
 		array(
-			'InformacionDesafio.id_documento' => $id,
-	  		'InformacionDesafio.id_criterio' => $criteria	
+			'CriteriasDocument.document_id' => $id,
+	  		'CriteriasDocument.criteria_id' => $criteria	
 		));	  
 	  CakeLog::write('activity', "Document $id modified: stats restarted");
 	}
@@ -257,24 +257,24 @@ class AdminDocumentosController extends AppController {
   	if(!empty($this->data) && !is_null($criteria)) {
   		/* reset stats */
   		if(strcmp($this->data['Action']['mass_action'], 'reset') == 0) {
-  			foreach($this->data['Documento'] as $d) {
-  				$id = $d['id_documento'];	
+  			foreach($this->data['Document'] as $d) {
+  				$id = $d['document_id'];	
   				$this->_reset_stats($id, $criteria);  			 
   			}
   			$this->Session->setFlash('Documents\' statistics restarted successfully');
   			
   		/* validate docs */
   		} else if(strcmp($this->data['Action']['mass_action'], 'validate') == 0) {
-  			foreach($this->data['Documento'] as $doc) {  				
-  				$id = $doc['id_documento'];
+  			foreach($this->data['Document'] as $doc) {  				
+  				$id = $doc['document_id'];
   				$this->validate_document($id, $criteria ,false);
   			}  	
   			$this->Session->setFlash('Documents changed successfully');
   			
   		/* delete docs */
   		} else if(strcmp($this->data['Action']['mass_action'], 'delete') == 0) {
-  			foreach($this->data['Documento'] as $d) {
-  				$id = $d['id_documento'];
+  			foreach($this->data['Document'] as $d) {
+  				$id = $d['document_id'];
   				$this->remove($id, false, false);
   			}  			
   			$this->Session->setFlash('Documents removed successfully');
@@ -291,17 +291,17 @@ class AdminDocumentosController extends AppController {
   function validate_document($id = null, $criteria = null, $redirect = true) {
   	
   	if(!is_null($id) && !is_null($criteria)) {  	  	  				
-		$doc = $this->InformacionDesafio->find( 'first', array(
+		$doc = $this->CriteriasDocument->find( 'first', array(
 			'conditions' => array(
-				'InformacionDesafio.id_documento' => $id,
-				'InformacionDesafio.id_criterio' => $criteria)			
+				'CriteriasDocument.document_id' => $id,
+				'CriteriasDocument.criteria_id' => $criteria)			
 		));
 		
 		// set respuesta_oficial to 1 if not set  				  				
-		if($doc['InformacionDesafio']['respuesta_oficial_de_un_experto'] === null) {			
-			$this->set_field('respuesta_oficial_de_un_experto', $doc['InformacionDesafio']['id_estadisticas'], 1, false);
+		if($doc['CriteriasDocument']['is_positive'] === null) {			
+			$this->set_field('respuesta_oficial_de_un_experto', $doc['CriteriasDocument']['id'], 1, false);
 		} 				
-		$this->set_field('confirmado', $doc['InformacionDesafio']['id_estadisticas'] , ($doc['InformacionDesafio']['confirmado']+1)%2, false);
+		$this->set_field('validated', $doc['CriteriasDocument']['id'] , ($doc['CriteriasDocument']['validated']+1)%2, false);
   	}
   	if($redirect) $this->redirect($this->referer());
   }
@@ -348,19 +348,19 @@ class AdminDocumentosController extends AppController {
   function _strToFilterArray($fil = '') {
   	if(strcmp('app', $fil) == 0) {
   		return array(
-  			'InformacionDesafio.total_app >' => '50' 
+  			'CriteriasDocument.total_app >' => '50' 
   		);
   	} elseif(strcmp('dis', $fil) == 0) {
   		return array(
-  			'InformacionDesafio.total_app <=' => '50' 
+  			'CriteriasDocument.total_app <=' => '50' 
   		);
   	} elseif(strcmp('con', $fil) == 0) {
   		return array(
-  			'InformacionDesafio.consenso >' => '50' 
+  			'CriteriasDocument.consenso >' => '50' 
   		);
   	} elseif(strcmp('don', $fil) == 0) {
   		return array(
-  			'InformacionDesafio.consenso <=' => '50' 
+  			'CriteriasDocument.consenso <=' => '50' 
   		);
   	} else { // all
   		return array(

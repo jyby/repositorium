@@ -20,8 +20,8 @@ $this->Html->addCrumb($title);
 
 <?php echo
           $this->element('menu_administrar', array(
-                'isLogged' => $this->Session->check('Usuario.id'),
-                'isAdmin' => $this->Session->check('Usuario.esAdmin'),
+                'isLogged' => $this->Session->check('User.id'),
+                'isAdmin' => $this->Session->check('User.esAdmin'),
 				'current' => $current
           ));      
        
@@ -52,28 +52,28 @@ $this->Html->addCrumb($title);
 <table class="ui-widget ui-widget-content tabla" style="width: 100%">
   <thead>
 	<tr class="ui-widget-header"> 
-		  <th><?php echo $this->Paginator->sort('ID', 'Usuario.id_usuario');?></th>
-	  <th><?php echo $this->Paginator->sort('E-mail', 'Usuario.email'); ?></th>
-	  <th><?php echo $this->Paginator->sort('First name', 'Usuario.nombre'); ?></th>
-	  <th><?php echo $this->Paginator->sort('Last name', 'Usuario.apellido'); ?></th>
-	  <th><?php echo $this->Paginator->sort('Points', 'Usuario.puntos'); ?></th>
-	  <th><?php echo $this->Paginator->sort('Is Admin?', 'Usuario.es_administrador'); ?></th>
-	  <th><?php echo $this->Paginator->sort('Is Expert?', 'Usuario.es_experto'); ?></th>
+		  <th><?php echo $this->Paginator->sort('ID', 'User.id');?></th>
+	  <th><?php echo $this->Paginator->sort('E-mail', 'User.email'); ?></th>
+	  <th><?php echo $this->Paginator->sort('First name', 'User.first_name'); ?></th>
+	  <th><?php echo $this->Paginator->sort('Last name', 'User.last_name'); ?></th>
+	  <th><?php //echo $this->Paginator->sort('Points', 'User.puntos'); ?></th>
+	  <th><?php echo $this->Paginator->sort('Is Admin?', 'User.is_administrator'); ?></th>
+	  <th><?php echo $this->Paginator->sort('Is Expert?', 'User.es_experto'); ?></th>
 	  <th width="100">Options</th>
 	</tr>
   </thead>
   <tbody>
 	<?php foreach($data as $u): ?>
 	<tr>
-	  <td><?php echo $u['Usuario']['id_usuario']; ?></td>
-	  <td><?php echo $this->Html->link($u['Usuario']['email'], 
-									   array('action' => 'edit', $u['Usuario']['id_usuario'])); ?></td>
-	  <td><?php echo $u['Usuario']['nombre']; ?></td>
-	  <td><?php echo $u['Usuario']['apellido']; ?></td>
-	  <td><?php echo $u['Usuario']['puntos']; ?></td>
+	  <td><?php echo $u['User']['id']; ?></td>
+	  <td><?php echo $this->Html->link($u['User']['email'], 
+									   array('action' => 'edit', $u['User']['id'])); ?></td>
+	  <td><?php echo $u['User']['first_name']; ?></td>
+	  <td><?php echo $u['User']['last_name']; ?></td>
+	  <td><?php // echo $u['User']['puntos']; ?></td>
 	  <td>
 		<?php
-		   if($u['Usuario']['es_administrador'])
+		   if($u['User']['is_administrator'])
 		   echo 'Yes';
 		   else echo 'No'; 
 		   ?>
@@ -83,7 +83,7 @@ $this->Html->addCrumb($title);
 		   /* busqueda secuencial...*/
 		   $pass = true;
 		   foreach($experts as $e) {
-		   	if($e['Experto']['id_usuario'] == $u['Usuario']['id_usuario']) {
+		   	if($e['Expert']['user_id'] == $u['User']['id']) {
 		   		echo 'Yes';
 		   		$pass = false;
 		   		break;
@@ -94,9 +94,9 @@ $this->Html->addCrumb($title);
 	  </td>
 	  <td>
 	  	<div class="admin-doc-edit">
-		  <?php echo $this->Html->link('Edit', array('action' => 'edit' , $u['Usuario']['id_usuario'])); ?>
+		  <?php echo $this->Html->link('Edit', array('action' => 'edit' , $u['User']['id'])); ?>
 		  &nbsp; | &nbsp;
-		  <?php echo $this->Html->link('Remove', array('action' => 'remove' , $u['Usuario']['id_usuario']), null, 'Are you sure?'); ?>
+		  <?php echo $this->Html->link('Remove', array('action' => 'remove' , $u['User']['id']), null, 'Are you sure?'); ?>
 		</div>
 	  </td>
 	</tr>

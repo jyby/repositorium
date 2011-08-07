@@ -40,7 +40,7 @@ if($isAdmin) {
 	        					array('criterios' => 'Criteria'),
 								array(
 									'value' => $current , 
-									'onClick' => 'document.location="'.Router::url('/',true).'/criterios/index";'));
+									'onClick' => 'document.location="'.Router::url('/',true).'/criterias/index";'));
 								
 	echo $this->Form->radio('radiomenu',
 	        					array('usuarios' => 'Users'),

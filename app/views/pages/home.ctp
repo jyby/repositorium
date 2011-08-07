@@ -19,4 +19,3 @@
 <script language="javascript" type="text/javascript">
 	add_textboxlist("#TagSearch");
 </script>
-

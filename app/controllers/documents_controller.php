@@ -19,6 +19,8 @@ class DocumentsController extends AppController {
   		$this->e404();
   	
   	$this->Session->write('Document.goto', $action);
+  	
+  	
   }
   
 }

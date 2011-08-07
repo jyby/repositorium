@@ -102,8 +102,8 @@
 <div class="clearicon"></div>
 <?php echo 
 	   $this->element('menu_administrar', array(
-		 'isLogged' => $this->Session->check('Usuario.id'), 
-		 'isAdmin' => $this->Session->check('Usuario.esAdmin'),
+		 'isLogged' => $this->Session->check('User.id'), 
+		 'isAdmin' => $this->Session->check('User.esAdmin'),
          'current' => $current
 	   ));       
 ?> 
@@ -122,7 +122,7 @@
 					'20' => '20 documents',
 					'50' => '50 documents' 
 				);
-				echo $this->Form->select('Documento.limit', $options, $limit, array('empty' => false, 'onChange' => 'select_limit.submit()'));			   
+				echo $this->Form->select('Document.limit', $options, $limit, array('empty' => false, 'onChange' => 'select_limit.submit()'));			   
 			?>
 			</form>
 		</div>
@@ -139,7 +139,7 @@
 					'more-cs' => 'More consensus',
 					'less-cs' => 'Less consensus'
 				);						 
-				echo $this->Form->select('InformacionDesafio.order', $options, $ordering, array('empty' => false, 'onChange' => 'ordering.submit()'));
+				echo $this->Form->select('CriteriasDocument.order', $options, $ordering, array('empty' => false, 'onChange' => 'ordering.submit()'));
 				echo $this->Form->end(); 
 			?>
 		</div>
@@ -170,7 +170,7 @@
 					'con' => 'Documents with 50% or more consensus',
 					'don' => 'Documents with 50% or less consensus'
 				);						 
-				echo $this->Form->select('InformacionDesafio.filter', $options, $filter, array('empty' => false, 'onChange' => 'select_filter.submit()'));
+				echo $this->Form->select('CriteriasDocument.filter', $options, $filter, array('empty' => false, 'onChange' => 'select_filter.submit()'));
 				echo $this->Form->end(); 
 			?>
 		</div>
@@ -201,7 +201,7 @@
 	<tr class="ui-widget-header">
 	  <th width="3%" style="text-align:center;font-size:9px" class="clickable"><input type="checkbox" id="select-all" /><label for="select-all">select</label></th> 
 	  <th width="55%">Document</th>
-	  <th width="27%">Statistics <?php /* echo $this->Paginator->sort('Statistics', "InformacionDesafio.total_respuestas_2_{$rest}"); */ ?></th>
+	  <th width="27%">Statistics <?php /* echo $this->Paginator->sort('Statistics', "CriteriasDocument.total_respuestas_2_{$rest}"); */ ?></th>
 	  <th width="15%">Options</th>
 	</tr>
   </thead>
@@ -209,22 +209,22 @@
   <?php 
   	$i = 0;
   	foreach($data as $d):  
-  		$id = $d['Documento']['id_documento'];  	
+  		$id = $d['Document']['id_documento'];  	
   ?>
 	<tr>
-		<td class="clickable"><div class="adm-checkbox" style="font-size:9px"><?php echo $this->Form->checkbox('Documento.'.$i.'.id_documento', array('value' => $id, 'class' => 'adm-checkbox-form')); 
-						    echo "<label for='Documento".$i."IdDocumento'>check</label>"; ?></div></td>
+		<td class="clickable"><div class="adm-checkbox" style="font-size:9px"><?php echo $this->Form->checkbox('Document.'.$i.'.id_documento', array('value' => $id, 'class' => 'adm-checkbox-form')); 
+						    echo "<label for='Document".$i."IdDocument'>check</label>"; ?></div></td>
 		<td>
 			<!-- doc -->
 			<span class="admin-doc-titulo">
-				<?php echo $this->Html->link(Sanitize::html($d['Documento']['titulo']), array('action' => 'view', $id), array('escape' => false)) ;?>
+				<?php echo $this->Html->link(Sanitize::html($d['Document']['title']), array('action' => 'view', $id), array('escape' => false)) ;?>
 			</span>
 			<div class="admin-doc-texto">			
 				<?php echo $this->Text->truncate(
 					str_replace(
 						'\n', 
 						'<br />', 
-						Sanitize::html($d['Documento']['texto'])), 
+						Sanitize::html($d['Document']['content'])), 
 					350, 
 					array(
 						'ending' => '<a href="'.$this->Html->url(array('controller' => 'admin_documentos', 'action' => 'edit', $id)).'">...</a>', 
@@ -233,21 +233,21 @@
 				?>				
 			</div>
 			<div class="created-by">
-				Created on <?php echo $d['Documento']['created']; ?> by <?php echo $d['Documento']['nombre_autor']; ?>. 
+				Created on <?php echo $d['Document']['created']; ?> by <?php echo $d['Document']['nombre_autor']; ?>. 
 			</div>
 		</td>
 		<td>
 			<!-- consenso -->
 			<?php				
 				// convencion............. 1 = no, 2 = si
-				$no = $d['InformacionDesafio']["total_respuestas_1_como_desafio"];
-				$si = $d['InformacionDesafio']["total_respuestas_2_como_desafio"];
+				$no = $d['CriteriasDocument']["total_answers_1"];
+				$si = $d['CriteriasDocument']["total_answers_2"];
 				$tot = $no + $si;
 				
 				$pno = porcentaje($no, $tot);
 				$psi = porcentaje($si, $tot);				
 			?>
-			<?php if($d['InformacionDesafio']['total_respuestas']>0): ?>
+			<?php if($d['CriteriasDocument']['total_respuestas']>0): ?>
 			<div style="width: 95%; clear:both; margin: 0 auto; height: 2em">
 				<div style="float:left;"><?php echo 'Yes ('.$this->Number->precision($psi, 1).'%)'; ?></div>
 				<div style="float:right;"><?php echo 'No ('.$this->Number->precision($pno, 1).'%)'; ?></div>				
@@ -255,8 +255,8 @@
 			<div class="progressbar-doc-<?php echo $id; ?>" style="width: 95%; margin: 0 auto;background-image:none;background-color:#E79A3D"></div>
 			<script>$('.progressbar-doc-<?php echo $id; ?>').progressbar({value: <?php echo $psi; ?>});</script>
 			<div style="text-align:center;width:95%;clear:both; margin: 0 auto; height: 2em">
-				<?php echo $d['InformacionDesafio']['total_respuestas'] ; ?> 
-				answers<?php if($d['InformacionDesafio']['confirmado']==1){echo ", official ".(($d['InformacionDesafio']['respuesta_oficial_de_un_experto']==0)?("No"):("Yes")) ;} ?>
+				<?php echo $d['CriteriasDocument']['total_respuestas'] ; ?> 
+				answers<?php if($d['CriteriasDocument']['validated']==1){echo ", official ".(($d['CriteriasDocument']['is_positive']==0)?("No"):("Yes")) ;} ?>
 			</div>
 			<?php else: ?>
 				<div style="text-align:center">

@@ -1,81 +1,80 @@
 <?php
-/* Tag Test cases generated on: 2011-07-27 21:06:06 : 1311815166*/
+/* Tag Test cases generated on: 2011-08-06 19:19:50 : 1312672790*/
 App::import('Model', 'Tag');
 
 class TagTestCase extends CakeTestCase {
-	var $fixtures = array('app.tag', 'app.documento', 'app.usuario', 'app.tamano_desafio', 'app.criterio', 'app.informacion_desafio', 'app.experto');
+	var $fixtures = array('app.tag', 'app.document', 'app.user', 'app.expert', 'app.repository', 'app.repositories_user', 'app.criteria', 'app.criterias_document', 'app.criterias_user');
 
 	function startTest() {
-		$this->cTag =& ClassRegistry::init('Tag');
+		$this->Tag =& ClassRegistry::init('Tag');
 	}
-
-	function endTest() {
-		unset($this->cTag);
-		ClassRegistry::flush();
-	}
-
+	
 	function testFindDocumentsByTags() {
 		$doc1 = array(
-			'Documento' => array(
-				'titulo' => 'Doc1',
-				'texto' => 'contenido',
-				'tags' => 'one,two,three'
-			)
+				'Document' => array(
+					'title' => 'Doc1',
+					'content' => 'contenido',
+					'tags' => 'one,two,three'
+		)
 		);
-		
+	
 		$doc2 = array(
-			'Documento' => array(
-				'titulo' => 'Doc2',
-				'texto' => 'contenido',
-				'tags' => 'one,three'
-			)
+				'Document' => array(
+					'title' => 'Doc2',
+					'content' => 'contenido',
+					'tags' => 'one,three'
+		)
 		);
-		
+	
 		$doc3 = array(
-			'Documento' => array(
-				'titulo' => 'Doc3',
-				'texto' => 'contenido',
-				'tags' => 'two,three'
-			)
+				'Document' => array(
+					'title' => 'Doc3',
+					'content' => 'contenido',
+					'tags' => 'two,three'
+		)
 		);
-		
+	
 		$doc4 = array(
-			'Documento' => array(
-				'titulo' => 'Doc4',
-				'texto' => 'contenido',
-			)
+				'Document' => array(
+					'title' => 'Doc4',
+					'content' => 'contenido',
+		)
 		);
-		
-		$this->cTag->Documento->saveWithTags($doc1);
-		$this->cTag->Documento->saveWithTags($doc2);
-		$this->cTag->Documento->saveWithTags($doc3);
-		$this->cTag->Documento->saveWithTags($doc4);
-		
+	
+		$this->Tag->Document->saveWithTags($doc1);
+		$this->Tag->Document->saveWithTags($doc2);
+		$this->Tag->Document->saveWithTags($doc3);
+		$this->Tag->Document->saveWithTags($doc4);
+	
 		//pr($this->Tag->find('all'));
-		
-		$set1 = $this->cTag->findDocumentsByTags(array('one','two','three'));
-		$set2 = $this->cTag->findDocumentsByTags(array('three'));
-		$set3 = $this->cTag->findDocumentsByTags(array('two'));
-		$set4 = $this->cTag->findDocumentsByTags(array('one'));
-		$set5 = $this->cTag->findDocumentsByTags(array());
-		
-		$set6 = $this->cTag->findDocumentsByTags(array('one', 'three'));
-		$set7 = $this->cTag->findDocumentsByTags(array('one', 'two'));
-		$set8 = $this->cTag->findDocumentsByTags(array('two', 'three'));
-
-		//pr($this->Tag->Documento->find('all', array('recursive' => -1	)));
+	
+		$set1 = $this->Tag->findDocumentsByTags(array('one','two','three'));
+		$set2 = $this->Tag->findDocumentsByTags(array('three'));
+		$set3 = $this->Tag->findDocumentsByTags(array('two'));
+		$set4 = $this->Tag->findDocumentsByTags(array('one'));
+		$set5 = $this->Tag->findDocumentsByTags(array());
+	
+		$set6 = $this->Tag->findDocumentsByTags(array('one', 'three'));
+		$set7 = $this->Tag->findDocumentsByTags(array('one', 'two'));
+		$set8 = $this->Tag->findDocumentsByTags(array('two', 'three'));
+		//pr($this->Tag->Document->find('all', array('recursive' => -1	)));
 		//pr($this->Tag->find('all', array('recursive' => -1	)));
-		
+	
 		$this->assertEqual(count($set1), 1, "looking for all tags matches 1 document. [%s]");
 		$this->assertEqual(count($set2), 3, "looking for \"three\" matches 3 documents. [%s]");
 		$this->assertEqual(count($set3), 2, "looking for \"two\" matches 2 documents. [%s]");
 		$this->assertEqual(count($set4), 2, "looking for \"one\" matches 2 documents. [%s]");
 		$this->assertEqual(count($set5), 4, "looking for nothing yield all documents. [%s]");
-		
+	
 		$this->assertEqual(count($set6), 2, "looking for \"one\" and \"three\" matches 2 documents. [%s]");
 		$this->assertEqual(count($set7), 1, "looking for \"one\" and \"two\" matches 1 document. [%s]");
 		$this->assertEqual(count($set8), 2, "looking for \"two\" and \"three\" matches 2 documents. [%s]");
-				
+	
+	}
+
+	function endTest() {
+		unset($this->Tag);
+		ClassRegistry::flush();
 	}
 
 }

@@ -37,23 +37,22 @@ App::import('Sanitize');
 class AppController extends Controller {
 
   function _login($data) {
-	App::import('Model','Usuario');
-	$Usuario = new Usuario;
+	App::import('Model','User');
+	$User = new User;
 	$data = Sanitize::clean($data);
-    $usuario = $Usuario->iniciar_sesion($data);
-	if( isset($usuario['Usuario']['id_usuario']) ) {
-	  if(!empty($usuario['Experto'])) 
-	 	$this->Session->write('Usuario.esExperto', true);
-	  if(!empty($usuario['Usuario']['es_administrador']))
-		 $this->Session->write('Usuario.esAdmin', true);
-	  $this->Session->write('Usuario.id', $usuario['Usuario']['id_usuario']);	 
-	  $this->Session->write('Usuario.nombre', $usuario['Usuario']['nombre']);
-	  $this->Session->write('Usuario.apellido', $usuario['Usuario']['apellido']);
-	  $this->Session->write('Usuario.puntos', $usuario['Usuario']['puntos']); //
-	  $this->Session->setFlash('Welcome, ' . $usuario['Usuario']['nombre']);
+    $usuario = $User->iniciar_sesion($data);
+	if( isset($usuario['User']['id']) ) {
+	  if(!empty($usuario['Expert'])) 
+	 	$this->Session->write('User.esExperto', true);
+	  if(!empty($usuario['User']['is_administrator']))
+		 $this->Session->write('User.esAdmin', true);
+	  $this->Session->write('User.id', $usuario['User']['id']);	 
+	  $this->Session->write('User.first_name', $usuario['User']['first_name']);
+	  $this->Session->write('User.last_name', $usuario['User']['last_name']);
+	  $this->Session->setFlash('Welcome, ' . $usuario['User']['first_name']);
 	  CakeLog::write('activity', 
-		'User '. $usuario['Usuario']['nombre'] . ' ' . 
-		$usuario['Usuario']['apellido'] . ' (' .$usuario['Usuario']['id_usuario'] . ') has logged in');      	  
+		'User '. $usuario['User']['first_name'] . ' ' . 
+		$usuario['User']['last_name'] . ' (' .$usuario['User']['id'] . ') has logged in');      	  
 	  return true;
 	} else {
       $this->Session->setFlash('Incorrect user and/or password');
@@ -62,20 +61,20 @@ class AppController extends Controller {
   }
   
     function _addPoints($num) {
-		App::import('Model','Usuario');
-		$Usuario = new Usuario;
-		if($this->Session->check('Usuario.id') && $this->Session->read('Usuario.id') > 1) {
-			$id = $this->Session->read('Usuario.id');
-			$usuario = $Usuario->findByIdUsuario($id);
-		  	$this->Usuario->updateAll(
+		App::import('Model','User');
+		$User = new User;
+		if($this->Session->check('User.id') && $this->Session->read('User.id') > 1) {
+			$id = $this->Session->read('User.id');
+			$usuario = $User->findByIdUser($id);
+		  	$this->User->updateAll(
 		  		array(
-		  			'Usuario.puntos' => (intval($usuario['Usuario']['puntos']) + $num)
+		  			'User.puntos' => (intval($usuario['User']['puntos']) + $num)
 		  		),
 		  		array(
-		  			'Usuario.id_usuario' => $id
+		  			'User.id_usuario' => $id
 		  		)
 		  	);
-		  	$this->Session->write('Usuario.puntos', (intval($usuario['Usuario']['puntos']) + $num));
+		  	$this->Session->write('User.puntos', (intval($usuario['User']['puntos']) + $num));
 		  	return true;		  	
 		} else {
 		  return false;
@@ -83,14 +82,14 @@ class AppController extends Controller {
 	}
 	
 	function _get_user() {
-		if(!$this->Session->check('Usuario.id')) {
+		if(!$this->Session->check('User.id')) {
 			/* anon */
 			$uid = 1;
 		} else {
 			/* registered */
-			$uid = $this->Session->read('Usuario.id');
+			$uid = $this->Session->read('User.id');
 		}
-		return $this->Usuario->read(null, $uid);
+		return $this->User->read(null, $uid);
 	}
 	
 	function e404() {

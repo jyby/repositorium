@@ -8,8 +8,8 @@ function porcentaje($q,$tot) {
 	echo $this->Html->script('https://www.google.com/jsapi');
 	echo $this->Html->script('piecharts');	
 	//pr($this->data);
-	$id = $this->data['Documento']['id_documento'];
-	$en_valid = ($this->data['InformacionDesafio']['confirmado'] == 1) ? true : false;
+	$id = $this->data['Document']['id'];
+	$en_valid = ($this->data['CriteriasDocument']['validated'] == 1) ? true : false;
 	$current = 	($en_valid ? 'validados' : 'no_validados');
 	$title = "Edit document";	
 	$this->viewVars['title_for_layout'] = $title;
@@ -72,8 +72,8 @@ echo $this->Form->end();
 
 <?php //echo 
 	   $this->element('menu_administrar', array(
-		 'isLogged' => $this->Session->check('Usuario.id'), 
-		 'isAdmin' => $this->Session->check('Usuario.esAdmin'),
+		 'isLogged' => $this->Session->check('User.id'), 
+		 'isAdmin' => $this->Session->check('User.esAdmin'),
          'current' => $current
 	   ));       
 ?> 
@@ -107,7 +107,7 @@ echo $this->Form->end();
 			<h2>Document's Basics</h2>
 			<div style="clear: both; height: 10px;"></div>
 			<?php								
-				echo $this->Form->input('Documento.titulo', array(
+				echo $this->Form->input('Document.title', array(
 				  'label' => 'Document title ',
 				  'class' => 'edit',
 				  'style' => 'width: 90%;',
@@ -115,7 +115,7 @@ echo $this->Form->end();
 				echo '<div style="clear: both; height: 10px;"></div>';
 				
 				echo "<div style='width: 90%'>";
-				echo $this->Form->input('Documento.tags', array(
+				echo $this->Form->input('Document.tags', array(
 				  'label' => 'Tags <span style="font-size: .9em; font-style: italic; color: #777">(Separate tags with commas)</span>',
 				  'class' => 'edit',
 				  'style' => 'width: 90%;',
@@ -123,19 +123,19 @@ echo $this->Form->end();
 				echo "</div>";
 				
 				echo '<div style="clear: both; height: 10px;"></div>';
-				echo $this->Form->input('Documento.texto', array(
+				echo $this->Form->input('Document.content', array(
 				  'label' => 'Content ',
-				  'value' => stripslashes(str_replace('\n',"\n",$this->data['Documento']['texto'])),
+				  'value' => stripslashes(str_replace('\n',"\n",$this->data['Document']['content'])),
 				  'style' => 'width: 90%; height: 300px;'
 				  //'rows' => 14,
 				  //'cols' => 60,
 				));	
 			?>
 				<div class="created-by">
-					<span>Created by <?php echo $this->Text->autoLinkEmails($this->data['Usuario']['autor']); ?> on <?php echo $this->data['Documento']['created']; ?></span> 
+					<span>Created by <?php echo $this->Text->autoLinkEmails($this->data['User']['autor']); ?> on <?php echo $this->data['Document']['created']; ?></span> 
 				</div>
 			<script type="text/javascript">
-				add_textboxlist("#DocumentoTags");
+				add_textboxlist("#DocumentTags");
 			</script>
 		</div>
 	</div>
@@ -147,48 +147,44 @@ echo $this->Form->end();
 			<div style="padding: 15px 0;">												
 				<label for="CriterioPregunta" style="display:inline; font-weight: normal;">Current criteria: </label>
 				<?php			 
-					echo $this->Form->select('Criterio.id_criterio', $criterios_list, $criterios_n, array('empty' => false, 'class' => 'adm-select-criteria'));
+					echo $this->Form->select('Criteria.id', $criterios_list, $criterios_n, array('empty' => false, 'class' => 'adm-select-criteria'));
 					// see #adm-form-criteria 
 				?>						
 			</div>
 			<h3>Challenge information</h3>
 			<?php
-				$est = $this->data['InformacionDesafio'];
+				$est = $this->data['CriteriasDocument'];
 				// official data				
-				$off_answer = (is_null($est['respuesta_oficial_de_un_experto']) ? '' : $est['respuesta_oficial_de_un_experto']);
-				$off_type = $est['confirmado'];
+				$off_answer = (is_null($est['is_positive']) ? '' : $est['is_positive']);
+				$off_type = $est['validated'];
 				
 				// possible data 
 				$answers = array('0' => 'No', '1' => 'Yes');
 				$type = array('0' => 'Non validated', '1' => 'Validated');
 			?>
 			<div style="clear: both; height: 10px;"></div>
-			<?php 
-				echo $this->Form->hidden('InformacionDesafio.id_estadisticas');
-				//echo $this->Form->hidden('InformacionDesafio.id_criterio', array('value' => $criterios_n));
-				//	echo $this->Form->hidden('InformacionDesafio.id_documento', array('value' => $id)); 
-			?>			
+			<?php echo $this->Form->hidden('CriteriasDocument.id'); ?>			
 			
-			<label for="InformacionDesafioRespuestaOficialDeUnExperto" style="display:inline; font-weight: normal;">Official answer:</label>
-			<?php echo $this->Form->select('InformacionDesafio.respuesta_oficial_de_un_experto', $answers, $off_answer); ?>
+			<label for="CriteriasDocumentIsPositive" style="display:inline; font-weight: normal;">Official answer:</label>
+			<?php echo $this->Form->select('CriteriasDocument.is_positive', $answers, $off_answer); ?>
 			
 			<div style="clear: both; height: 10px;"></div>
 			
-			<label for="InformacionDesafioConfirmado" style="display:inline; font-weight: normal;">Document type:</label>			
-			<?php echo $this->Form->select('InformacionDesafio.confirmado', $type, $off_type, array('empty' => false)); ?>
+			<label for="CriteriasDocumentValidated" style="display:inline; font-weight: normal;">Document type:</label>			
+			<?php echo $this->Form->select('CriteriasDocument.validated', $type, $off_type, array('empty' => false)); ?>
 			
 			<div style="clear: both; height: 10px;"></div>
 			
-			<?php echo $this->Form->checkbox('InformacionDesafio.preguntable'); ?>
-			<label for="InformacionDesafioPreguntable" style="display:inline; font-weight: normal;">Include in challenges</label>
+			<?php echo $this->Form->checkbox('CriteriasDocument.challengeable'); ?>
+			<label for="CriteriasDocumentChallengeable" style="display:inline; font-weight: normal;">Include in challenges</label>
 			
 			<div style="clear: both; height: 10px;"></div>
 						
 			<h3>Statistics</h3>
 			
 			<?php				
-				$si = $est['total_respuestas_2_como_desafio'];
-				$no =  $est['total_respuestas_1_como_desafio'];
+				$si = $est['total_answers_2'];
+				$no =  $est['total_answers_1'];
 				$total = $si+$no;
 				if($si > 0 && $no > 0):
 			?>
