@@ -95,4 +95,8 @@ class AppController extends Controller {
 	function e404() {
 		$this->cakeError('error404');
 	}
+	
+	function getConnectedUser() {
+		
+	}
 }
