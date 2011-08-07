@@ -3,7 +3,7 @@
 <div class="pointsprofile">
 <?php //	You have <?php echo $this->data['User']['puntos']; points. ?>
 </div>
-<?php echo $this->Form->create('User', array('url' => '/usuarios/edit/'. $this->data['User']['id']));?>
+<?php echo $this->Form->create('User', array('url' => '/users/edit/'. $this->data['User']['id']));?>
 <?php echo $this->Form->input('id', array('type' => 'hidden')); ?>
 <?php echo $this->Form->input('first_name', array('label' => 'Name')); ?><br/>
 <?php echo $this->Form->input('last_name', array('label' => 'Last Name')); ?><br/>

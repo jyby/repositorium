@@ -92,6 +92,11 @@ class AppController extends Controller {
 		return $this->User->read(null, $uid);
 	}
 	
+	
+	
+	
+	
+	
 	function e404() {
 		$this->cakeError('error404');
 	}
