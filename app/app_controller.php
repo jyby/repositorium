@@ -97,6 +97,12 @@ class AppController extends Controller {
 	}
 	
 	function getConnectedUser() {
+		if($this->Session->check('User.id'))
+			$user_id = $this->Session->read('User.id');
+		else
+			$user_id = 1;
+		
+		return $this->User->find('first', array('conditions' => array('User.id' => $user_id), 'recursive' => -1));
 		
 	}
 }

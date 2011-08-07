@@ -209,11 +209,11 @@
   <?php 
   	$i = 0;
   	foreach($data as $d):  
-  		$id = $d['Document']['id_documento'];  	
+  		$id = $d['Document']['id'];  	
   ?>
 	<tr>
-		<td class="clickable"><div class="adm-checkbox" style="font-size:9px"><?php echo $this->Form->checkbox('Document.'.$i.'.id_documento', array('value' => $id, 'class' => 'adm-checkbox-form')); 
-						    echo "<label for='Document".$i."IdDocument'>check</label>"; ?></div></td>
+		<td class="clickable"><div class="adm-checkbox" style="font-size:9px"><?php echo $this->Form->checkbox('Document.'.$i.'.id', array('value' => $id, 'class' => 'adm-checkbox-form')); 
+						    echo "<label for='Document".$i."Id'>check</label>"; ?></div></td>
 		<td>
 			<!-- doc -->
 			<span class="admin-doc-titulo">

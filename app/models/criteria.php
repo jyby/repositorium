@@ -75,7 +75,7 @@ class Criteria extends AppModel {
 		),
 		'penalization_a' => array(
 			'decimal' => array(
-				'rule' => array('decimal'),
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -85,7 +85,7 @@ class Criteria extends AppModel {
 		),
 		'penalization_b' => array(
 			'decimal' => array(
-				'rule' => array('decimal'),
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -95,7 +95,7 @@ class Criteria extends AppModel {
 		),
 		'depenalization_a' => array(
 			'decimal' => array(
-				'rule' => array('decimal'),
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,
@@ -105,7 +105,7 @@ class Criteria extends AppModel {
 		),
 		'depenalization_b' => array(
 			'decimal' => array(
-				'rule' => array('decimal'),
+				'rule' => array('numeric'),
 				//'message' => 'Your custom message here',
 				//'allowEmpty' => false,
 				//'required' => false,

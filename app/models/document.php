@@ -93,7 +93,7 @@ class Document extends AppModel {
 			$this->set($data);
 			if(!$this->save()) {
 				if($there_are_tags)
-				$dataSource->rollback($this); // ROLLBACK
+					$dataSource->rollback($this); // ROLLBACK
 				return false;
 			}
 	

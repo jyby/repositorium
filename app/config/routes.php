@@ -36,7 +36,7 @@
   * custom routes
   */
   	Router::connect('/manage', array('controller' => 'admin_documentos'));  	
-  	Router::connect('/upload', array('controller' => 'subir_documento'));
+  	Router::connect('/upload', array('controller' => 'documents', 'action' => 'upload'));
   	Router::connect('/view', array('controller' => 'bajar_documento'));
   	
   	Router::connect('/profile', array('controller' => 'usuarios'));
