@@ -83,11 +83,10 @@
                         <li><?php echo $this->Html->link('Sign in', array('controller' => 'register'), array('escape' => false)); ?></li>
                         <li><?php echo $this->Html->link('Log in', array('controller' => 'login'), array('escape' => false)); ?></li>
                         <?php } else {
-                            $nombre = $this->Session->read('User.nombre');
-		                    $puntos = $this->Session->read('User.puntos');
+                            $nombre = $this->Session->read('User.first_name');
                         ?>
-                        <li>Hey, <?php echo $nombre.'! ('.$puntos.' points)';?></li>
-                        <li><?php echo $this->Html->link('Edit profile', array('controller' => 'usuarios')); ?></li>
+                        <li>Hey, <?php echo $nombre.'!';// ('.$puntos.' points)';?></li>
+                        <li><?php echo $this->Html->link('Edit profile', array('controller' => 'users')); ?></li>
                         <li><?php echo $this->Html->link('Logout', '/logout'); ?></li>
                         <?php } ?>
                     </ul>

@@ -8,6 +8,6 @@
 echo $this->Form->create(null, array('action' => 'login'));
 echo $this->Form->input('email');
 echo $this->Form->input('password');
-echo $this->Form->end('Entrar');
+echo $this->Form->end('Log in');
 ?>
 </fieldset>

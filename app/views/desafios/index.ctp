@@ -56,7 +56,7 @@
 
 <p>To solve this challenge you must answer correctly the following questions:</p>
 
-<?php if($this->Session->check('Usuario.id') and $this->Session->read('Usuario.id') > 0): ?>
+<?php if($this->Session->check('User.id') and $this->Session->read('User.id') > 0): ?>
 <div class="ui-widget">
 	<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 10px .7em;"> 
 		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
@@ -68,7 +68,7 @@
 	</div>
 </div>
 <?php endif; ?>
-<?php if(!$this->Session->check('Usuario.id') || !$this->Session->read('Usuario.id') > 0): ?>
+<?php if(!$this->Session->check('User.id') || !$this->Session->read('User.id') > 0): ?>
 <div class="ui-widget">
 	<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 10px .7em;"> 
 		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
@@ -94,33 +94,33 @@
 
 			<h3 style="width:100%">
 				<a href="#">
-				<?php echo Sanitize::html($d['Documento']['titulo']); ?>
+				<?php echo Sanitize::html($d['Document']['title']); ?>
 				<span id="span<?php echo $i; ?>" style="float:right;text-align:right;" class="desafio-not-ready">Not Ready</span>	
 				</a>
 			</h3>
 			<div> 
-				<div><?php echo stripslashes(str_replace('\n', '<br />', Sanitize::html($d['Documento']['texto']))); ?></div>
+				<div><?php echo stripslashes(str_replace('\n', '<br />', Sanitize::html($d['Document']['content']))); ?></div>
 				<div>
 					<?php
 					
 					$script_click = "setReady(".$i.", ".$total." );" ;
 					
 					$options = array(
-					'1' => $criterio['Criterio']['respuesta_1'],
-					'2' => $criterio['Criterio']['respuesta_2']);  	
+					'1' => $criterio['Criteria']['answer_1'],
+					'2' => $criterio['Criteria']['answer_2']);  	
 					$attr = array(
-					'onClick' => $script_click,
-					'label' => true,
-					'legend' => false);
+						'onClick' => $script_click,
+						'label' => true,
+						'legend' => false);
 					?>
-					<p style="font-weight:bold;margin-top:10px;color:#D97C19"><?php echo $criterio['Criterio']['pregunta']; ?></p>
+					<p style="font-weight:bold;margin-top:10px;color:#D97C19"><?php echo $criterio['Criteria']['question']; ?></p>
 
 					<div class="radios">
 					<?php echo $this->Form->radio('Desafio.'.$i.'.respuesta', $options, $attr);?>
 					</div>
 					<?php
-					echo $this->Form->hidden('Desafio.'.$i.'.id_criterio', array('value' => $criterio['Criterio']['id_criterio']));
-					echo $this->Form->hidden('Desafio.'.$i.'.id_documento', array('value' => $d['Documento']['id_documento']));
+					echo $this->Form->hidden('Desafio.'.$i.'.criteria_id', array('value' => $criterio['Criteria']['id']));
+					echo $this->Form->hidden('Desafio.'.$i.'.document_id', array('value' => $d['Document']['id']));
 					$i++;
 					?>
 				</div>

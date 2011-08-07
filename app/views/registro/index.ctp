@@ -7,10 +7,10 @@
 <?php
 echo $this->Form->create(null, array('action' => '/', 'inputDefaults' => array('error' => false)));
 echo $this->Form->input('email');
-echo $this->Form->input('nombre');
-echo $this->Form->input('apellido');
-echo $this->Form->input('password', array('label' => 'Contraseña'));
-echo $this->Form->input('password2', array('label' => 'Repita la contraseña', 'type' => 'password'));
-echo $this->Form->end('Registrarse');
+echo $this->Form->input('first_name');
+echo $this->Form->input('last_name');
+echo $this->Form->input('password', array('label' => 'Password'));
+echo $this->Form->input('password2', array('label' => 'Repeat Password', 'type' => 'password'));
+echo $this->Form->end('Sign In');
 
 ?>

@@ -1,7 +1,7 @@
 # eclipse useless files
 .buildpath
 .project
-.settings
+.settings/*
 
 # configuration files
 app/config/database.php
