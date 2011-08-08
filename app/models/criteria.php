@@ -6,7 +6,7 @@ class Criteria extends AppModel {
 		'question' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				//'message' => 'Your custom message here',
+				'message' => 'The question cannot be empty',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -16,7 +16,7 @@ class Criteria extends AppModel {
 		'answer_1' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				//'message' => 'Your custom message here',
+				'message' => 'Must give a answer',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -26,7 +26,7 @@ class Criteria extends AppModel {
 		'answer_2' => array(
 			'notempty' => array(
 				'rule' => array('notempty'),
-				//'message' => 'Your custom message here',
+				'message' => 'Must give a answer',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -36,47 +36,63 @@ class Criteria extends AppModel {
 		'documentpack_size' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
+				'message' => 'Document pack size must be a number',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
+			'positive' => array(
+				'rule' => array('positive', 'documentpack_size'),
+				'message' => 'Document pack size must be a positive number',
+			)
 		),
 		'documentpack_cost' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
+				'message' => 'Document pack cost must be a number',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
+			'positive' => array(
+				'rule' => array('positive', 'documentpack_cost'),
+				'message' => 'Document pack cost must be a positive number',
+			)
 		),
 		'documentupload_cost' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
+				'message' => 'Document upload cost must be a number',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
+			'positive' => array(
+				'rule' => array('positive', 'documentupload_cost'),
+				'message' => 'Document upload cost must be a positive number',
+			)
 		),
 		'documentvalidation_reward' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
+				'message' => 'Document validation points must be a number',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
+			'positive' => array(
+				'rule' => array('positive', 'documentvalidation_reward'),
+				'message' => 'Document validation points must be a positive number',
+			)
 		),
 		'penalization_a' => array(
 			'decimal' => array(
 				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
+				'message' => 'The penalization factor \'a\' must be a number',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -86,7 +102,7 @@ class Criteria extends AppModel {
 		'penalization_b' => array(
 			'decimal' => array(
 				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
+				'message' => 'The penalization factor \'b\' must be a number',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -96,7 +112,7 @@ class Criteria extends AppModel {
 		'depenalization_a' => array(
 			'decimal' => array(
 				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
+				'message' => 'The depenalization factor \'a\' must be a number',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -106,7 +122,7 @@ class Criteria extends AppModel {
 		'depenalization_b' => array(
 			'decimal' => array(
 				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
+				'message' => 'The depenalization factor \'b\' must be a number',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
@@ -116,22 +132,30 @@ class Criteria extends AppModel {
 		'minchallenge_size' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
+				'message' => 'Min. challenge size must be a number',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
+			'positive' => array(
+				'rule' => array('positive', 'minchallenge_size'),
+				'message' => 'Min. challenge size must be a positive number',
+			)
 		),
 		'maxchallenge_size' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
+				'message' => 'Max. challenge size must be a number',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
+		'positive' => array(
+				'rule' => array('positive', 'maxchallenge_size'),
+				'message' => 'Max. challenge size must be a positive number',
+		)
 		),
 	);
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -172,6 +196,10 @@ class Criteria extends AppModel {
 			'insertQuery' => ''
 		)
 	);
+	
+	function positive($value, $key) {
+		return $value[$key] > 0;
+	}
 	
 	// actualiza los documentos agregando el nuevo criterio a InfoDesafio
 	// y los usuarios, con TamanoDesafio

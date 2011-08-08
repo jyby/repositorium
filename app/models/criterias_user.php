@@ -5,12 +5,16 @@ class CriteriasUser extends AppModel {
 		'challenge_size' => array(
 			'numeric' => array(
 				'rule' => array('numeric'),
-				//'message' => 'Your custom message here',
+				'message' => 'The challenge size must be a number',
 				//'allowEmpty' => false,
 				//'required' => false,
 				//'last' => false, // Stop validation after this rule
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
+			'positive' => array(
+				'rule' => array('positive'),
+				'message' => 'The challenge size must be a positive number'
+			)
 		),
 	);
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
@@ -33,6 +37,10 @@ class CriteriasUser extends AppModel {
 	);
 	
 	/*****************************************************************************************************************/
+	
+	function positive($value) {
+		return $value['challenge_size'] > 0;
+	}
 	
 	function massCreateAfterCriteria($id_criterio = null, $tamano_minimo_desafio = null) {
 		if(!is_null($id_criterio) && !is_null($tamano_minimo_desafio)) {

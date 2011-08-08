@@ -73,13 +73,9 @@ class RepositoriesUser extends AppModel {
 		if(!is_null($user_id) && !is_null($repository_id)) {
 			$ru = $this->find('first', array('conditions' => compact('user_id', 'repository_id'), 'recursive' => -1));
 			$new_value = $ru['RepositoriesUser']['points'] - $points;
-			
-// 				validation should do the trick
-//  			if($new_value < 0) 
-//  				return false;
-			
+		
 			$this->id = $ru['RepositoriesUser']['id'];
-			if($this->saveField('points', $new_value, true))
+			if($this->saveField($field = 'points', $new_value, $validate = true))
 				return true;
 		}
 		return false;
