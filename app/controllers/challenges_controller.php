@@ -8,7 +8,7 @@
  * @author mquezada
  *  
  */
-class DesafiosController extends AppController {
+class ChallengesController extends AppController {
   var $uses = array('User', 'Document', 'CriteriasUser', 'CriteriasDocument', 'Criteria');
 
   /**

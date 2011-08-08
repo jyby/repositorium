@@ -1,5 +1,3 @@
-﻿
-
 <?php if(empty($premio)) { ?>
 <span class="info">There  isn't any document that matches with your search terms!</span>
 <?php } else { ?>
@@ -39,7 +37,3 @@
 </div>
 <?php endforeach;}?>
 <br />
-
-
-
-
