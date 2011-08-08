@@ -13,6 +13,42 @@ class RepositoriesUserTestCase extends CakeTestCase {
 		unset($this->RepositoriesUser);
 		ClassRegistry::flush();
 	}
+	
+	function testAddPoints() {
+		$user_id = 1;
+		$points = 10;
+		$repository_id = 1;
+		
+		$result = $this->RepositoriesUser->addPoints($user_id, $repository_id, $points);
+		$ru = $this->RepositoriesUser->find('first', array('conditions' => compact('user_id', 'repository_id'), 'recursive' => -1));
+				
+		$this->assertTrue($result);
+		$this->assertTrue($ru['RepositoriesUser']['points'] == 20);
+	}
+	
+	function testDiscountPoints() {
+		$user_id = 1;
+		$points = 10;
+		$repository_id = 1;
+		
+		$result = $this->RepositoriesUser->discountPoints($user_id, $repository_id, $points);
+		$ru = $this->RepositoriesUser->find('first', array('conditions' => compact('user_id', 'repository_id'), 'recursive' => -1));
+		
+		$this->assertTrue($result);
+		$this->assertTrue($ru['RepositoriesUser']['points'] == 0);
+	}
+	
+	function testDiscountPointsNegative() {
+		$user_id = 1;
+		$points = 20;
+		$repository_id = 1;
+		
+		$result = $this->RepositoriesUser->discountPoints($user_id, $repository_id, $points);
+		$ru = $this->RepositoriesUser->find('first', array('conditions' => compact('user_id', 'repository_id'), 'recursive' => -1));
+		
+		$this->assertFalse($result);
+		$this->assertTrue($ru['RepositoriesUser']['points'] == 10);
+	}
 
 }
 ?>
