@@ -36,6 +36,13 @@ App::import('Sanitize');
 
 class AppController extends Controller {
 
+	/**
+	 * 
+	 * Anonymous user representation, use with AppController::getConnectedUser()
+	 * @var integer
+	 */
+	var $annonymous = 1;
+	
   function _login($data) {
 	App::import('Model','User');
 	$User = new User;
@@ -105,7 +112,7 @@ class AppController extends Controller {
 		if($this->Session->check('User.id'))
 			$user_id = $this->Session->read('User.id');
 		else
-			$user_id = 1;
+			return $this->annonymous;
 		
 		return $this->User->find('first', array('conditions' => array('User.id' => $user_id), 'recursive' => -1));
 		
