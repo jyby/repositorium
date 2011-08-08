@@ -41,69 +41,33 @@ class AppController extends Controller {
 	 * Anonymous user representation, use with AppController::getConnectedUser()
 	 * @var integer
 	 */
-	var $annonymous = 1;
+	var $anonymous = 1;
 	
-  function _login($data) {
-	App::import('Model','User');
-	$User = new User;
-	$data = Sanitize::clean($data);
-    $usuario = $User->getUser($data);
-	if( isset($usuario['User']['id']) ) {
-	  if(!empty($usuario['Expert'])) 
-	 	$this->Session->write('User.esExperto', true);
-	  if(!empty($usuario['User']['is_administrator']))
-		 $this->Session->write('User.esAdmin', true);
-	  $this->Session->write('User.id', $usuario['User']['id']);	 
-	  $this->Session->write('User.first_name', $usuario['User']['first_name']);
-	  $this->Session->write('User.last_name', $usuario['User']['last_name']);
-	  $this->Session->setFlash('Welcome, ' . $usuario['User']['first_name']);
-	  CakeLog::write('activity', 
-		'User '. $usuario['User']['first_name'] . ' ' . 
-		$usuario['User']['last_name'] . ' (' .$usuario['User']['id'] . ') has logged in');      	  
-	  return true;
-	} else {
-      $this->Session->setFlash('Incorrect user and/or password');
-	  return false;
-    }
-  }
-  
-    function _addPoints($num) {
+	function login($data = array()) {
 		App::import('Model','User');
 		$User = new User;
-		if($this->Session->check('User.id') && $this->Session->read('User.id') > 1) {
-			$id = $this->Session->read('User.id');
-			$usuario = $User->findByIdUser($id);
-		  	$this->User->updateAll(
-		  		array(
-		  			'User.puntos' => (intval($usuario['User']['puntos']) + $num)
-		  		),
-		  		array(
-		  			'User.id_usuario' => $id
-		  		)
-		  	);
-		  	$this->Session->write('User.puntos', (intval($usuario['User']['puntos']) + $num));
-		  	return true;		  	
+		
+		$data = Sanitize::clean($data);
+		$usuario = $User->getUser($data);
+		
+		if( isset($usuario['User']['id']) ) {
+			if(!empty($usuario['Expert']))
+				$this->Session->write('User.esExperto', true);
+			if(!empty($usuario['User']['is_administrator']))
+				$this->Session->write('User.esAdmin', true);
+			$this->Session->write('User.id', $usuario['User']['id']);
+			$this->Session->write('User.first_name', $usuario['User']['first_name']);
+			$this->Session->write('User.last_name', $usuario['User']['last_name']);
+			$this->Session->setFlash('Welcome, ' . $usuario['User']['first_name']);
+			CakeLog::write('activity',
+				'User '. $usuario['User']['full_name'] . ' (' .$usuario['User']['id'] . ') has logged in');
+			return true;
 		} else {
-		  return false;
-	    }		
-	}
-	
-	function _get_user() {
-		if(!$this->Session->check('User.id')) {
-			/* anon */
-			$uid = 1;
-		} else {
-			/* registered */
-			$uid = $this->Session->read('User.id');
+			$this->Session->setFlash('Incorrect user and/or password', 'flash_errors');
+			return false;
 		}
-		return $this->User->read(null, $uid);
-	}
-	
-	
-	
-	
-	
-	
+	}	
+  
 	function e404() {
 		$this->cakeError('error404');
 	}
@@ -112,7 +76,7 @@ class AppController extends Controller {
 		if($this->Session->check('User.id'))
 			$user_id = $this->Session->read('User.id');
 		else
-			return $this->annonymous;
+			return $this->anonymous;
 		
 		return $this->User->find('first', array('conditions' => array('User.id' => $user_id), 'recursive' => -1));
 		

@@ -40,8 +40,7 @@
   	Router::connect('/view', array('controller' => 'bajar_documento'));
   	
   	Router::connect('/profile', array('controller' => 'usuarios'));
-  	Router::connect('/login', array('controller' => 'iniciar_sesion'));
-  	Router::connect('/logout', array('controller' => 'iniciar_sesion', 'action' => 'logout'));
+  	Router::connect('/logout', array('controller' => 'login', 'action' => 'logout'));
   	
 /**
  * challenges

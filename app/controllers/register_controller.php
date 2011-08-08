@@ -5,7 +5,7 @@ class RegisterController extends AppController{
   var $uses = array('User');
   
   function beforeFilter() {
-	if($this->getConnectedUser() != $this->annonymous)
+	if($this->getConnectedUser() != $this->anonymous)
 		$this->redirect('/');
   }
   
@@ -30,7 +30,7 @@ class RegisterController extends AppController{
 
 		} else {	  
 		  if($user = $this->User->register($this->data)) {
-			AppController::_login($this->data);			
+			$this->login($this->data);			
 			$this->redirect('/');
 		  }		
 		}  		

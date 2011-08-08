@@ -5,7 +5,7 @@
 <div class="clearicon"></div>
 <fieldset class="datafields">
 <?php
-echo $this->Form->create(null, array('action' => 'login'));
+echo $this->Form->create(null, array('action' => 'authenticate'));
 echo $this->Form->input('email');
 echo $this->Form->input('password');
 echo $this->Form->end('Log in');
