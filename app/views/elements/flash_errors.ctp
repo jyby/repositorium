@@ -13,10 +13,9 @@
 					<strong>Error:</strong>
 					<ul>
 					<?php foreach($message as $m=>$v) { ?>
-						<li>li/<
+						<li><?php echo $v; ?></li>
 					<?php } ?>
-					</ul> 
-					<?php echo $v; ?>
+					</ul> 					
 				</p>
 			</div>
 		</div>	
