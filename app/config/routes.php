@@ -42,7 +42,3 @@
   	Router::connect('/profile', array('controller' => 'usuarios'));
   	Router::connect('/logout', array('controller' => 'login', 'action' => 'logout'));
   	
-/**
- * challenges
- */
-  	Router::connect('/challenges', array('controller' => 'desafios'));

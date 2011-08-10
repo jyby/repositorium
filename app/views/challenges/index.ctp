@@ -25,7 +25,7 @@
 			modal: true,
 			buttons: {
 				Register: function(){
-					document.location="<?php echo $this->Html->url(array('controller' => 'registro', 'action' => 'index')); ?>";
+					document.location="<?php echo $this->Html->url(array('controller' => 'register', 'action' => 'index')); ?>";
 				}
 				,Close: function() {
 					$( this ).dialog( "close" );

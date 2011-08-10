@@ -4,21 +4,18 @@ class DocumentsController extends AppController {
 	var $name = 'Documents';
 	var $uses = array('Document', 'User');
 	
-	/**
-	 * 
-	 * Posible actions:
-	 * 
-	 * upload (a document)
-	 * download (documents from search)
-	 * list (own documents)
-	 * 
-	 * @param string $action
-	 */
-  function index($action = null) {
-  	if(is_null($action) or !in_array($action, array('earn', 'upload', 'view')))
-  		$this->e404();
-  	
-  	$this->Session->write('Document.goto', $action);  	  	
+	
+	function beforeFilter() {
+		if(!$this->isAdmin() || !$this->Session->check('Challenge.passed')) {
+			$this->Session->write('Document.goto', $this->action);
+			$this->Session->write('Points.check', true);
+			
+			$this->redirect(array('controller' => 'points', 'action' => 'checkPoints'));	
+		}
+	}
+	
+  function index() {
+	$this->e404();
   }
   
   /**

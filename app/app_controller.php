@@ -41,9 +41,12 @@ class AppController extends Controller {
 	 * Anonymous user representation, use with AppController::getConnectedUser()
 	 * @var integer
 	 */
-	var $anonymous = 1;
+	var $anonymous = array(
+		'User' => array('id' => 1)
+	);
 	
 	function login($data = array()) {
+		$this->Session->destroy();
 		App::import('Model','User');
 		$User = new User;
 		
@@ -80,5 +83,20 @@ class AppController extends Controller {
 		
 		return $this->User->find('first', array('conditions' => array('User.id' => $user_id), 'recursive' => -1));
 		
+	}
+	
+	/**
+	 * 
+	 * @TODO this method
+	 */
+	function getCurrentRepository() {
+		
+	}
+	
+	function isAdmin() {
+		$u = $this->getConnectedUser();
+		if(isset($u['User']['is_administrator']))
+			return $u['User']['is_administrator'];
+		return false;
 	}
 }
