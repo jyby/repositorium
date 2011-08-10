@@ -42,3 +42,5 @@
   	Router::connect('/profile', array('controller' => 'usuarios'));
   	Router::connect('/logout', array('controller' => 'login', 'action' => 'logout'));
   	
+  	Router::connect('/repositories/new', array('controller' => 'repositories', 'action' => 'create'));
+  	
