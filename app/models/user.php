@@ -120,6 +120,10 @@ class User extends AppModel {
 			'finderQuery' => '',
 			'deleteQuery' => '',
 			'insertQuery' => ''
+		),
+		'RepositoriesUser' => array(
+			'className' => 'RepositoriesUser',
+			'foreignKey' => 'user_id'
 		)
 	);
 	

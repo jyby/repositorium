@@ -88,28 +88,13 @@ class Repository extends AppModel {
 			'exclusive' => '',
 			'finderQuery' => '',
 			'counterQuery' => ''
+		),
+		'RepositoriesUser' => array(
+			'className' => 'RepositoriesUser',
+			'foreignKey' => 'repository_id'
 		)
 	);
 
-
-	var $hasAndBelongsToMany = array(
-		'User' => array(
-			'className' => 'User',
-			'joinTable' => 'repositories_users',
-			'foreignKey' => 'repository_id',
-			'associationForeignKey' => 'user_id',
-			'unique' => true,
-			'conditions' => '',
-			'fields' => '',
-			'order' => '',
-			'limit' => '',
-			'offset' => '',
-			'finderQuery' => '',
-			'deleteQuery' => '',
-			'insertQuery' => ''
-		)
-	);
-	
 	/*******************************************************/
 	
 	function createNewRepository($data) {		
