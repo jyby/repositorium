@@ -6,7 +6,6 @@
  * 
  * @package   views
  * @author    Mauricio Quezada <mquezada@dcc.uchile.cl>
- * @copyright Copyright (c) 2011 
  */
 ?>
 <!DOCTYPE html>

@@ -35,22 +35,61 @@
 /**
   * custom routes
   */
-  	Router::connect('/manage', array('controller' => 'admin_documentos'));  	
   	Router::connect('/upload', array('controller' => 'documents', 'action' => 'upload'));
   	Router::connect('/view', array('controller' => 'bajar_documento'));
   	
-  	Router::connect('/profile', array('controller' => 'usuarios'));
+  	Router::connect('/profile', array('controller' => 'users'));
   	Router::connect('/logout', array('controller' => 'login', 'action' => 'logout'));
   	
   	Router::connect('/repositories/new', array('controller' => 'repositories', 'action' => 'create'));
+  	
+  	
+/**
+ * controllers
+ * @TODO add blacklist
+ */  	
+  	Router::connect('/manage', 			array('controller' => 'admin_documentos'));
+  	Router::connect('/manage-users', 	array('controller' => 'admin_usuarios'));
+  	Router::connect('/challenges', 		array('controller' => 'challenges'));
+  	Router::connect('/criterias', 		array('controller' => 'criterias'));
+  	Router::connect('/documents', 		array('controller' => 'documents'));
+  	Router::connect('/login', 			array('controller' => 'login'));
+  	Router::connect('/register', 		array('controller' => 'register'));
+  	Router::connect('/repositories', 	array('controller' => 'repositories'));
+  	Router::connect('/tags', 			array('controller' => 'tags'));
+  	Router::connect('/users', 			array('controller' => 'users'));
+  	Router::connect('/points',			array('controller' => 'points'));
   	
 /**
  * repositories
  */
   	
-  	Router::connect('/:repo/:controller/:action/*', 
-	  	array(), 
+  	Router::connect('/:repository/:controller/:action', 
 	  	array(
-	  		'pass' => 'repo'
+	  	), 
+	  	array(
+  			'repository' => '[_0-9a-zA-Z]+', 
+  			'pass' => array('repository')
 	  	)
+  	);
+  	
+  	Router::connect('/:repository/:controller',
+  		array(
+  			'action' => 'index'
+  		),
+  		array(
+  			'repository' => '[_0-9a-zA-Z]+', 
+  			'pass' => array('repository')
+  		)
+  	);
+  	
+  	Router::connect('/:repository',
+  		array(
+  			'controller' => 'repositories',
+  			'action' => 'view'
+  		),  		
+  		array(
+  			'repository' => '[_0-9a-zA-Z]+', 
+  			'pass' => array('repository')
+  		)
   	);

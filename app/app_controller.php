@@ -34,8 +34,7 @@
  */
 App::import('Sanitize');
 
-class AppController extends Controller {
-
+class AppController extends Controller {	
 	/**
 	 * 
 	 * Anonymous user representation, use with AppController::getConnectedUser()

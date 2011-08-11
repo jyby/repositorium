@@ -9,8 +9,8 @@ echo $this->Form->create(null, array('action' => '/', 'inputDefaults' => array('
 echo $this->Form->input('email');
 echo $this->Form->input('first_name');
 echo $this->Form->input('last_name');
-echo $this->Form->input('password', array('label' => 'Password'));
-echo $this->Form->input('password2', array('label' => 'Repeat Password', 'type' => 'password'));
+echo $this->Form->input('_password', array('label' => 'Password', 'type' => 'password'));
+echo $this->Form->input('_password2', array('label' => 'Repeat Password', 'type' => 'password'));
 echo $this->Form->end('Sign In');
 
 ?>

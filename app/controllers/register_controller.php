@@ -19,8 +19,9 @@ class RegisterController extends AppController{
 
 	  } else {
 	  		  	
-		$p1 = $this->data['User']['password'];
-		$p2 = $this->data['User']['password2'];
+		$p1 = $this->data['User']['_password'];
+		$p2 = $this->data['User']['_password2'];
+		$this->data['User']['password'] = $p1;
 		
 		if(strlen($p1) < 6) {
 		  $this->Session->setFlash('Password must have at least 6 characters');
