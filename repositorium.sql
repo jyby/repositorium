@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 10-08-2011 a las 20:50:07
+-- Tiempo de generación: 10-08-2011 a las 21:00:37
 -- Versión del servidor: 5.5.14
 -- Versión de PHP: 5.3.6
 
@@ -123,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `experts` (
 CREATE TABLE IF NOT EXISTS `repositories` (
   `id` int(255) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
-  `owner` int(255) NOT NULL,
+  `user_id` int(255) NOT NULL,
   `description` text NOT NULL,
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
