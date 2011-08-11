@@ -45,13 +45,13 @@ class AppController extends Controller {
 		'User' => array('id' => 1)
 	);
 	
+	var $uses = array('User');
+	
 	function login($data = array()) {
 		$this->Session->destroy();
-		App::import('Model','User');
-		$User = new User;
 		
 		$data = Sanitize::clean($data);
-		$usuario = $User->getUser($data);
+		$usuario = $this->User->getUser($data);
 		
 		if( isset($usuario['User']['id']) ) {
 			if(!empty($usuario['Expert']))
