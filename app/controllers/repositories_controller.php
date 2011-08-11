@@ -19,14 +19,18 @@ class RepositoriesController extends AppController {
 			
 			if($this->Repository->validates()) {
 				$repository = $this->Repository->createNewRepository($this->data, $user);
-				
-				/*
-				 * redirects to user's new repository 
-				 */
-				$this->redirect('/');		
+				$this->redirect(array('controller' => 'repositories', 'action' => 'set_repositories', $repository['Repository']['id']));		
 			} else {
 				$this->Session->setFlash($this->Repository->invalidFields(), 'flash_errors');
 			}	
 		}		
+	}
+	
+	function set_repository($id) {
+		if(!is_null($id) && gettype($id) == 'integer')
+			$this->Session->write('Repository.id', $id);
+		
+		
+		$this->redirect('/');
 	}
 }

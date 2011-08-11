@@ -16,26 +16,38 @@ class Repository extends AppModel {
 		'min_points' => array(
 			'positive' => array(
 				'rule' => array('positive', 'min_points'),
-				'message' => 'Points must be greater than 0'
-			)
+				'message' => 'Points must be greater or equal than 0'
+			),
+			'notempty' => array(
+				'rule' => array('notempty'),
+				'message' => 'Points cannot be empty',
+			),
 		),
 		'download_cost' => array(
 			'positive' => array(
 				'rule' => array('positive', 'download_cost'),
-				'message' => 'Download cost must be greater than 0',
-			)
+				'message' => 'Download cost must be greater or equal than 0',
+			),
+			'notempty' => array(
+				'rule' => array('notempty'),
+				'message' => 'Download cost cannot be empty',
+			),
 		),
 		'upload_cost' => array(
 			'positive' => array(
 				'rule' => array('positive', 'upload_cost'),
-				'message' => 'Upload cost must be greater than 0'
-			)
+				'message' => 'Upload cost must be greater or equal than 0'
+			),
+			'notempty' => array(
+				'rule' => array('notempty'),
+				'message' => 'Upload cost cannot be empty',
+			),
 		)
 	);
 	
 	
 	function positive($value, $key) {
-		return $value[$key] >= 0;
+		return !is_null($value[$key]) && $value[$key] >= 0;
 	}
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
