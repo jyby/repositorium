@@ -198,7 +198,7 @@ class Criteria extends AppModel {
 	);
 	
 	function positive($value, $key) {
-		return $value[$key] > 0;
+		return $value[$key] >= 0;
 	}
 	
 	// actualiza los documentos agregando el nuevo criterio a InfoDesafio

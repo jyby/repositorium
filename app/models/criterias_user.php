@@ -39,7 +39,7 @@ class CriteriasUser extends AppModel {
 	/*****************************************************************************************************************/
 	
 	function positive($value) {
-		return $value['challenge_size'] > 0;
+		return $value['challenge_size'] >= 0;
 	}
 	
 	function massCreateAfterCriteria($id_criterio = null, $tamano_minimo_desafio = null) {

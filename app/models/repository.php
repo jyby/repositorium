@@ -13,7 +13,30 @@ class Repository extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
+		'min_points' => array(
+			'positive' => array(
+				'rule' => array('positive', 'min_points'),
+				'message' => 'Points must be greater than 0'
+			)
+		),
+		'download_cost' => array(
+			'positive' => array(
+				'rule' => array('positive', 'download_cost'),
+				'message' => 'Download cost must be greater than 0',
+			)
+		),
+		'upload_cost' => array(
+			'positive' => array(
+				'rule' => array('positive', 'upload_cost'),
+				'message' => 'Upload cost must be greater than 0'
+			)
+		)
 	);
+	
+	
+	function positive($value, $key) {
+		return $value[$key] >= 0;
+	}
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 	var $belongsTo = array(
@@ -86,6 +109,16 @@ class Repository extends AppModel {
 			'insertQuery' => ''
 		)
 	);
+	
+	/*******************************************************/
+	
+	function createNewRepository($data, $user) {
+		
+	}
+	
+	function afterSave($created) {
+		
+	}
 
 }
 ?>

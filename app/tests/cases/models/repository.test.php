@@ -13,6 +13,43 @@ class RepositoryTestCase extends CakeTestCase {
 		unset($this->Repository);
 		ClassRegistry::flush();
 	}
+	
+	function testCreateNewRepository() {
+		$data = array(
+			'Repository' => array(
+				'name' => 'Foo',
+				'description' => 'bar'
+			)
+		);
+				
+		$user = array(
+			'User' => array(
+				'id' => '1'
+			) 
+		);
+		
+		$result = $this->Repository->createNewRepository($data, $user);
+		$repository = $this->Repository->find('all', array(
+			'conditions' => array(
+				'Repository.user_id' => 1,
+				'Repository.name' => 'Foo',
+				'Repository.description' => 'bar'
+				)
+			)
+		);
+		$repo_user = $this->Repository->RepositoriesUser->find('all', array(
+			'conditions' => array(
+				'user_id' => 1,
+				'repository_id' => $repository[0]['Repository']['id']
+				),
+			'recursive' => -1				
+			)		
+		);
+		
+		$this->assertTrue($result);
+		$this->assertTrue(count($repository) == 1);
+		$this->assertTrue(count($repo_user) == 1);
+	}
 
 }
 ?>
