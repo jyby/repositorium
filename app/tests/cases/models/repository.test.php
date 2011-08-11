@@ -44,9 +44,6 @@ class RepositoryTestCase extends CakeTestCase {
 			)		
 		);
 		
-		pr($repository);
-		pr($repo_user);
-		
 		$this->assertNotNull($result);
 		$this->assertTrue(count($repository) == 1);
 		$this->assertTrue(count($repo_user) == 1);
