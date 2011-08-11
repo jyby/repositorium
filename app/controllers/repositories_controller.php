@@ -18,7 +18,7 @@ class RepositoriesController extends AppController {
 			$this->Repository->set($this->data);
 			
 			if($this->Repository->validates()) {
-				$this->Repository->createNewRepository($this->data, $user);
+				$repository = $this->Repository->createNewRepository($this->data, $user);
 				
 				/*
 				 * redirects to user's new repository 

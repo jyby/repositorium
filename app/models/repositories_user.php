@@ -80,5 +80,37 @@ class RepositoriesUser extends AppModel {
 		}
 		return false;
 	}
+	
+	function massCreateAfterRepository($repository_id) {
+		if(is_null($repository_id))
+			return false;
+		
+		$users = $this->User->find('all', array('recursive' => -1));
+		$repo = $this->Repository->read(null, $repository_id);
+		
+		if($repo == null) {
+			return false;
+		}
+		
+		
+		$ds = $this->getDataSource();
+		$ds->begin($this);
+		foreach($users as $user) {
+			$this->create();
+			$this->set(array(
+				'user_id' => $user['User']['id'],
+				'repository_id' => $repo['Repository']['id'],
+				'points' => $repo['Repository']['min_points']
+				)			
+			);
+			if(!$this->save()) {
+				$ds->rollback($this);
+				return false;
+			}
+		}
+		
+		$ds->commit($this);
+		return true;
+	}
 }
 ?>

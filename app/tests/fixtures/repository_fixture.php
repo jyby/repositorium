@@ -10,6 +10,9 @@ class RepositoryFixture extends CakeTestFixture {
 		'description' => array('type' => 'text', 'null' => false, 'default' => NULL, 'collate' => 'utf8_general_ci', 'charset' => 'utf8'),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
+		'min_points' => array('type' => 'integer', 'null' => false, 'default' => 10),
+		'download_cost' => array('type' => 'integer', 'null' => false, 'default' => 10),
+		'upload_cost' => array('type' => 'integer', 'null' => false, 'default' => 10),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
@@ -21,8 +24,22 @@ class RepositoryFixture extends CakeTestFixture {
 			'user_id' => 1,
 			'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
 			'created' => '2011-08-06 19:08:24',
-			'modified' => '2011-08-06 19:08:24'
+			'modified' => '2011-08-06 19:08:24',
+			'min_points' => 10,
+			'download_cost' => 10,
+			'upload_cost' => 10
 		),
+		array(
+			'id' => 2,
+			'name' => 'Asdf',
+			'user_id' => 1,
+			'description' => 'Lorem ipsum dolor sit amet, aliquet feugiat. Convallis morbi fringilla gravida, phasellus feugiat dapibus velit nunc, pulvinar eget sollicitudin venenatis cum nullam, vivamus ut a sed, mollitia lectus. Nulla vestibulum massa neque ut et, id hendrerit sit, feugiat in taciti enim proin nibh, tempor dignissim, rhoncus duis vestibulum nunc mattis convallis.',
+			'created' => '2011-08-06 19:08:24',
+			'modified' => '2011-08-06 19:08:24',
+			'min_points' => 10,
+			'download_cost' => 10,
+			'upload_cost' => 10
+		)
 	);
 }
 ?>

@@ -49,6 +49,26 @@ class RepositoriesUserTestCase extends CakeTestCase {
 		$this->assertFalse($result);
 		$this->assertTrue($ru['RepositoriesUser']['points'] == 10);
 	}
+	
+	function testMassCreateAfterRepository() {
+		$repo_id = 2;
+
+		$this->RepositoriesUser->massCreateAfterRepository($repo_id);
+		
+		$users = $this->RepositoriesUser->User->find('all', array(
+			'fields' => array('User.id'),
+ 			'recursive' => -1
+			)
+		);
+		
+		$ru = $this->RepositoriesUser->find('all', array(
+			'conditions' => array('repository_id' => $repo_id),
+			'fields' => array('User.id'),
+// 			'recursive' => -1,
+			)
+		);
+		$this->assertEqual($users, $ru);
+	}
 
 }
 ?>
