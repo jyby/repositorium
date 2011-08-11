@@ -44,3 +44,13 @@
   	
   	Router::connect('/repositories/new', array('controller' => 'repositories', 'action' => 'create'));
   	
+/**
+ * repositories
+ */
+  	
+  	Router::connect('/:repo/:controller/:action/*', 
+	  	array(), 
+	  	array(
+	  		'pass' => 'repo'
+	  	)
+  	);
