@@ -112,12 +112,15 @@ class Repository extends AppModel {
 	
 	/*******************************************************/
 	
-	function createNewRepository($data, $user) {
-		
+	function createNewRepository($data) {		
+		if($this->save($data))
+			return $this->find('first', array('conditiosn' => array('id' => $this->getLastInsertID()), 'recursive' => -1));
+		return null;
 	}
 	
 	function afterSave($created) {
-		
+		if($created)
+			$this->RepositoriesUser->massCreateAfterRepository($repository_id = $this->id);
 	}
 
 }

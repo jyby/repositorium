@@ -18,22 +18,20 @@ class RepositoryTestCase extends CakeTestCase {
 		$data = array(
 			'Repository' => array(
 				'name' => 'Foo',
-				'description' => 'bar'
+				'description' => 'bar',
+				'user_id' => 1,
+				'min_points' => 15,
+				'download_cost' => 15,
+				'upload_cost' => 15
 			)
 		);
-				
-		$user = array(
-			'User' => array(
-				'id' => '1'
-			) 
-		);
 		
-		$result = $this->Repository->createNewRepository($data, $user);
+		$result = $this->Repository->createNewRepository($data);
 		$repository = $this->Repository->find('all', array(
 			'conditions' => array(
 				'Repository.user_id' => 1,
 				'Repository.name' => 'Foo',
-				'Repository.description' => 'bar'
+				'Repository.description' => 'bar',				
 				)
 			)
 		);
@@ -46,7 +44,10 @@ class RepositoryTestCase extends CakeTestCase {
 			)		
 		);
 		
-		$this->assertTrue($result);
+		pr($repository);
+		pr($repo_user);
+		
+		$this->assertNotNull($result);
 		$this->assertTrue(count($repository) == 1);
 		$this->assertTrue(count($repo_user) == 1);
 	}
