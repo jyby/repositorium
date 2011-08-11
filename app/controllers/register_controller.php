@@ -2,7 +2,7 @@
 
 class RegisterController extends AppController{
   var $name = 'Register';
-  var $uses = array('User');
+  var $uses = array();
   
   function beforeFilter() {
 	if($this->getConnectedUser() != $this->anonymous)
@@ -18,7 +18,7 @@ class RegisterController extends AppController{
 		$this->Session->setFlash($errors, 'flash_errors');
 
 	  } else {
-	  	
+	  		  	
 		$p1 = $this->data['User']['password'];
 		$p2 = $this->data['User']['password2'];
 		
@@ -27,12 +27,10 @@ class RegisterController extends AppController{
 		  
 		} else if(strcmp($p1,$p2) != 0) {
 		  $this->Session->setFlash('Passwords dont match', 'flash_errors');
-
-		} else {	  
-		  if($user = $this->User->register($this->data)) {
+		  
+		} elseif($user = $this->User->register($this->data)) {
 			$this->login($this->data);			
-			$this->redirect('/');
-		  }		
+			$this->redirect('/');		  		
 		}  		
 	  }
 	}

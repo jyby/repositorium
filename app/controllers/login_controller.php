@@ -2,7 +2,7 @@
 
 class LoginController extends AppController {
 	var $name = 'Login';
-  	var $uses = array('User');
+  	var $uses = array();
 
   	function beforeRender() {
 		if($this->getConnectedUser() != $this->anonymous)
