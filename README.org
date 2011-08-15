@@ -2,7 +2,7 @@
 
 Problem repository database application. Based principally on CakePHP and MySQL
 
-Project for "CC5401 - Ingenieria de software" course of DCC UChile
+It was a project for "CC5401 - Ingenieria de software" course of DCC UChile, but now in active development.
 
 * Installation
 ** Requirements
@@ -34,17 +34,7 @@ If they don't exist (like =cache/*=), you'll have to create them:
 Copy or rename =database.php.default= to =database.php=, and =core.php.default= to =core.php= in =app/config=. 
 
 Edit =database.php= at line 76 
-        ~var $default = array(~
-                ~'driver' => 'mysql',~
-                ~'persistent' => false,~
-                ~'host' => '<HOST>',~
-                ~'login' => '<LOGIN>',~
-                ~'password' => '<PASSWORD>',~
-                ~'database' => '<DBNAME>',~
-                ~'prefix' => '',~
-       ~);~
-
-
+        ~var $default = array('driver' => 'mysql','persistent' => false,'host' => '<HOST>','login' => '<LOGIN>','password' => '<PASSWORD>','database' => '<DBNAME>','prefix' => '',);~
 Change =<HOST>=, =<LOGIN>=, =<PASSWORD>= and =<DBNAME>= (database name) to the correspoding values in your system
 
 ** Initial DB Dump
