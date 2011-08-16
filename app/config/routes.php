@@ -59,37 +59,3 @@
   	Router::connect('/tags', 			array('controller' => 'tags'));
   	Router::connect('/users', 			array('controller' => 'users'));
   	Router::connect('/points',			array('controller' => 'points'));
-  	
-/**
- * repositories
- */
-  	
-  	Router::connect('/:repository/:controller/:action', 
-	  	array(
-	  	), 
-	  	array(
-  			'repository' => '[_0-9a-zA-Z]+', 
-  			'pass' => array('repository')
-	  	)
-  	);
-  	
-  	Router::connect('/:repository/:controller',
-  		array(
-  			'action' => 'index'
-  		),
-  		array(
-  			'repository' => '[_0-9a-zA-Z]+', 
-  			'pass' => array('repository')
-  		)
-  	);
-  	
-  	Router::connect('/:repository',
-  		array(
-  			'controller' => 'repositories',
-  			'action' => 'view'
-  		),  		
-  		array(
-  			'repository' => '[_0-9a-zA-Z]+', 
-  			'pass' => array('repository')
-  		)
-  	);
