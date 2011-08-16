@@ -10,7 +10,7 @@ class DocumentsController extends AppController {
 			$this->Session->write('Document.goto', $this->action);
 			$this->Session->write('Points.check', true);
 			
-			$this->redirect(array('controller' => 'points', 'action' => 'checkPoints'));	
+			$this->redirect(array('controller' => 'points', 'action' => 'check'));	
 		}
 	}
 	

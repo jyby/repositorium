@@ -35,6 +35,16 @@ class RepositoriesController extends AppController {
 			$this->Session->write('Repository.id', $id);		
 	}
 	
+	/**
+	 * 
+	 * Enter description here ...
+	 * @TODO this method
+	 */
+	function set_repository($name) {
+		if(!is_null($name) && gettype($name) == 'string')
+			;
+	}
+	
 	function view($repository) {
 		if(is_null($repository))
 			$this->e404();

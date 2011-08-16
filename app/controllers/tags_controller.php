@@ -27,7 +27,7 @@ class TagsController extends AppController {
 	$documents = $this->Tag->findDocumentsByTags($tags);
 	$c = count($documents);
 	if($c > 0) {
-	  $this->Session->write('Desafio.docs', $documents);
+	  $this->Session->write('Documents.searched_docs', $documents);
 	  $msg = 
 		'There ' . 
 		($c>1 ? ' are ' : ' is ') . 
@@ -45,9 +45,9 @@ class TagsController extends AppController {
 		  ($c>1 ? 's' : '') .
 		  ', you will have to pass a challenge! ';
 	  
-	  $this->Session->setFlash($msg);
+// 	  $this->Session->setFlash($msg);	  
+	  $this->redirect(array('controller' => 'documents', 'action' => 'download'));
 	  
-	  $this->redirect(array('controller' => 'bajar_documento'));
 	} else {
 	  $this->Session->setFlash(
 		'We\'re sorry. There weren\'t any documents that satisfy that term(s)'
