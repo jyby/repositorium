@@ -14,7 +14,8 @@ class PointsController extends AppController {
 	 * redirects user to challenges
 	 */
 	function earn() {
-		
+		$this->Session->write('Challenge.action', 'earn');
+		$this->redirect(array('controller' => 'challenges', 'action' => 'index'));
 	}
 	
 	/**
@@ -37,7 +38,7 @@ class PointsController extends AppController {
 	function reward() {
 		
 	}
-	
+		
 	/**
 	 * 
 	 * dispatch to desired action
@@ -47,5 +48,5 @@ class PointsController extends AppController {
 	 */
 	function dispatch() {
 		
-	}	
+	}
 }
