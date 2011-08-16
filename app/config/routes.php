@@ -21,12 +21,25 @@
  * @since         CakePHP(tm) v 0.2.9
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
+
+/**
+* uncomment the following line for enabling subdomains repositories
+* then comment the next line (l. 40)
+* 
+*/
+
+// 	Router::connect('/', Configure::read('Route.default'));
+
 /**
  * Here, we are connecting '/' (base path) to controller called 'Pages',
  * its action called 'display', and we pass a param to select the view file
  * to use (in this case, /app/views/pages/home.ctp)...
  */
+
+/** comment the following line for enabling subdomains repositories */
 	Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
+	
+	
 /**
  * ...and connect the rest of 'Pages' controller's urls.
  */
@@ -59,3 +72,4 @@
   	Router::connect('/tags', 			array('controller' => 'tags'));
   	Router::connect('/users', 			array('controller' => 'users'));
   	Router::connect('/points',			array('controller' => 'points'));
+  	
