@@ -3,9 +3,9 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 10-08-2011 a las 21:00:37
--- Versión del servidor: 5.5.14
--- Versión de PHP: 5.3.6
+-- Tiempo de generación: 20-08-2011 a las 17:18:34
+-- Versión del servidor: 5.5.15
+-- Versión de PHP: 5.2.17
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
@@ -123,6 +123,7 @@ CREATE TABLE IF NOT EXISTS `experts` (
 CREATE TABLE IF NOT EXISTS `repositories` (
   `id` int(255) NOT NULL AUTO_INCREMENT,
   `name` varchar(255) NOT NULL,
+  `url` varchar(32) NOT NULL,
   `user_id` int(255) NOT NULL,
   `description` text NOT NULL,
   `created` datetime NOT NULL,
@@ -189,3 +190,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 INSERT INTO `users` (`id`, `email`, `first_name`, `last_name`, `password`, `salt`, `is_administrator`, `created`, `modified`, `active`) VALUES
 (1, 'annonymous', 'annonymous', 'annonymous', '', '', 0, '2011-06-23 15:54:33', '2011-06-23 15:54:33', 0),
 (2, 'admin@example.com', 'admin', 'user', 'fbe82ab72970b9940724512227185348eac9d7fd', '1738993739', 1, '2011-06-23 15:55:17', '2011-06-23 15:55:17', 0);
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
