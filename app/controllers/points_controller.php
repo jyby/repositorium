@@ -58,7 +58,7 @@ class PointsController extends AppController {
 				if($this->Session->check('Document.searchCount')) {
 					$cost = $repo['Repository']['download_cost'] * $this->Session->read('Document.searchCount');
 				} else {
-					$this->Session->setFlash('Please, first perform a search to download documents');
+					$this->Session->setFlash('Please, first perform a search before downloading documents');
 					$this->redirect('/');
 				}				
 			}
@@ -98,7 +98,24 @@ class PointsController extends AppController {
 	 * 
 	 */
 	function reward() {
-		
+		if($this->Session->check('Challenge.reward')) {
+			$repo = $this->getCurrentRepository();
+			$user = $this->getConnectedUser();
+			if(is_null($repo)) {
+				$this->Session->setFlash('Error identifying current repository', 'flash_errors');
+				$this->redirect('/');
+			}
+			if($user == $this->anonymous) {
+				$this->Session->setFlash('Anonymous user cannot win points, sorry :( (but if you sign in you could!)', 'flash_errors');
+				$this->redirect('/');
+			}
+			
+			$reward = $repo['Repository']['challenge_reward'];
+			$this->RepositoriesUser->addPoints($user['User']['id'], $repo['Repository']['id'], $points = $reward);
+			
+			$this->Session->delete('Challenge.reward');
+			$this->dispatch();
+		}
 	}
 		
 	/**
