@@ -13,6 +13,8 @@ $this->Html->addCrumb($title);
 
 <?php echo $this->Form->input('name'); ?>
 
+<?php echo $this->Form->input('url', array('label' => 'URL of this repository: ______.repositorium.cl')); ?>
+
 <?php echo $this->Form->input('description'); ?>
 
 <?php echo $this->Form->input('min_points', array('label' => 'Minimum points assigned to each new user of this repository')); ?>
