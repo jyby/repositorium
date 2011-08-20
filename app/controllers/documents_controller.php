@@ -7,7 +7,7 @@ class DocumentsController extends AppController {
 	
 	function beforeFilter() {
 		if(!$this->isAdmin() || !$this->Session->check('Challenge.passed')) {
-			$this->Session->write('Document.goto', $this->action);
+			$this->Session->write('Document.action', $this->action);
 			$this->Session->write('Points.check', true);
 			
 			$this->redirect(array('controller' => 'points', 'action' => 'check'));	

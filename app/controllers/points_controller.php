@@ -20,7 +20,7 @@ class PointsController extends AppController {
 	 */
 	function earn() {
 		$this->Session->write('Challenge.action', 'earn');
-		$this->redirect(array('controller' => 'challenges', 'action' => 'index'));
+		$this->_goto_challenge();
 	}
 	
 	/**
@@ -43,7 +43,7 @@ class PointsController extends AppController {
 			// if is the anon user, redirect him to challenge			
 			if($this->getConnectedUser() == $this->anonymous) {
 				$this->Session->write('Document.anonymous', true);
-				$this->redirect(array('controller' => 'challenges'));
+				$this->_goto_challenge();
 			}
 			
 			$action = $this->Session->read('Document.action');
@@ -60,7 +60,7 @@ class PointsController extends AppController {
 				} else {
 					$this->Session->setFlash('Please, first perform a search before downloading documents');
 					$this->redirect('/');
-				}				
+				}
 			}
 			
 			// get user points
@@ -76,15 +76,13 @@ class PointsController extends AppController {
 			
 			// if user points > cost, give him the chance to spend his points
 			if($user_points >= $cost) {
-				$this->RepositoriesUser->discountPoints($user['User']['id'], $repo['Repository']['id'], $cost);
-				
-				$this->Session->write('Challenge.passed');
-				$this->Session->setFlash("{$cost} points have been discount from your account, now you can {$action} document(s)");
-				$this->redirect(array('controller' => 'documents', 'action' => $action));
+				/**
+				 * @TODO
+				 */
 				
 			// if not, just redirect to challenge
 			} else {
-				$this->redirect(array('controller' => 'challenges'));
+				$this->_goto_challenge();
 			}
 		}
 
@@ -98,7 +96,9 @@ class PointsController extends AppController {
 	 * 
 	 */
 	function reward() {
-		if($this->Session->check('Challenge.reward')) {
+		if($this->Session->check('Challenge.reward') && $this->Session->check('Challenge.passed')
+			&& $this->Session->read('Challenge.passed')) {
+			
 			$repo = $this->getCurrentRepository();
 			$user = $this->getConnectedUser();
 			if(is_null($repo)) {
@@ -114,8 +114,20 @@ class PointsController extends AppController {
 			$this->RepositoriesUser->addPoints($user['User']['id'], $repo['Repository']['id'], $points = $reward);
 			
 			$this->Session->delete('Challenge.reward');
-			$this->dispatch();
+			$this->_dispatch();
 		}
+	}
+	
+	/**
+	 * 
+	 * discount points from user (who usually wanted to skip the challenge)
+	 */
+	function _discount($cost, $action, $user) {
+		$this->RepositoriesUser->discountPoints($user['User']['id'], $repo['Repository']['id'], $cost);
+		
+		$this->Session->write('Challenge.passed');
+		$this->Session->setFlash("{$cost} points have been discounted from your account, now you can {$action} document(s)");
+		$this->_dispatch();
 	}
 		
 	/**
@@ -125,7 +137,17 @@ class PointsController extends AppController {
 	 * download
 	 * index (earn points)
 	 */
-	function dispatch() {
-		
+	function _dispatch() {
+		if($this->Session->check('Points.earn'))
+			$this->redirect('/');
+		else
+			$this->redirect(array('controller' => 'documents', 'action' => $action));
+	}
+	
+	/**
+	 * redirects to challenges controller
+	 */
+	function _goto_challenge() {
+		$this->redirect(array('controller' => 'challenges'));		
 	}
 }
