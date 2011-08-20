@@ -6,7 +6,9 @@ class RepositoriesController extends AppController {
 	function beforeFilter() { }
 	
 	function index($repo_url) {
-		if(isset(Configure::read('Repository.current'))) {
+		$conf = Configure::read('Repository.current');
+		
+		if(!is_null($conf)) {
 			$data = $this->Repository->find('first', array('conditions' => array(
 				'Repository.url' => Configure::read('Repository.current')
 				)				

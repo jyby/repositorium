@@ -88,7 +88,8 @@ class AppController extends Controller {
 	 * returns current repository data as array 
 	 */
 	function getCurrentRepository() {
-		if(isset(Configure::read('Repository.current'))) {
+		$repo = Configure::read('Repository.current');
+		if(!is_null($repo)) {
 			$data = $this->Repository->find('first', array('conditions' => array('Repository.url' => Configure::read('Repository.current'))));
 			if(!is_null($data) && !empty($data)) {
 				return $data;
