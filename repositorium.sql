@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 20-08-2011 a las 17:18:34
+-- Tiempo de generación: 20-08-2011 a las 19:10:41
 -- Versión del servidor: 5.5.15
 -- Versión de PHP: 5.2.17
 
@@ -131,6 +131,8 @@ CREATE TABLE IF NOT EXISTS `repositories` (
   `min_points` int(11) NOT NULL DEFAULT '10',
   `download_cost` int(11) NOT NULL DEFAULT '10',
   `upload_cost` int(11) NOT NULL DEFAULT '10',
+  `documentpack_size` int(255) NOT NULL,
+  `challenge_reward` int(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
