@@ -31,13 +31,16 @@ class PointsController extends AppController {
 	 * 
 	 */
 	function check() {
+		// check for current repository
 		$repo = $this->getCurrentRepository();
 		if(is_null($repo)) {
 			$this->Session->setFlash('You must be in a repository', 'flash_errors');
 			$this->redirect('/');
 		}
 		
-		if($this->Session->check('Document.action')) {			
+		// check if there is an action registered
+		if($this->Session->check('Document.action')) {
+			// if is the anon user, redirect him to challenge			
 			if($this->getConnectedUser() == $this->anonymous) {
 				$this->Session->write('Document.anonymous', true);
 				$this->redirect(array('controller' => 'challenges'));
@@ -48,6 +51,7 @@ class PointsController extends AppController {
 			$upload = strcmp($action, 'upload') == 1;
 			$download = strcmp($action, 'download') == 1;
 			
+			// determine repository costs
 			if($upload) {
 				$cost = $repo['Repository']['upload_cost'];
 			} elseif($download) {
@@ -59,6 +63,7 @@ class PointsController extends AppController {
 				}				
 			}
 			
+			// get user points
 			$user = $this->getConnectedUser();
 			$user_points = $this->RepositoriesUser->find('first', array(
 				'conditions' => array(
@@ -69,12 +74,15 @@ class PointsController extends AppController {
 				'recursive' => -1
 				));
 			
+			// if user points > cost, give him the chance to spend his points
 			if($user_points >= $cost) {
 				$this->RepositoriesUser->discountPoints($user['User']['id'], $repo['Repository']['id'], $cost);
 				
 				$this->Session->write('Challenge.passed');
 				$this->Session->setFlash("{$cost} points have been discount from your account, now you can {$action} document(s)");
 				$this->redirect(array('controller' => 'documents', 'action' => $action));
+				
+			// if not, just redirect to challenge
 			} else {
 				$this->redirect(array('controller' => 'challenges'));
 			}
