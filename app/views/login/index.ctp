@@ -1,6 +1,6 @@
 <?php echo $this->Html->image('login.png',array('class' => 'imgicon')) ; ?>
 <h1 class="h1icon">  
-	Acceder
+	Log In
 </h1>
 <div class="clearicon"></div>
 <fieldset class="datafields">

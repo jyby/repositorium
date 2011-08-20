@@ -1,4 +1,4 @@
-<?php $this->viewVars['title_for_layout'] = "Repositorio de Problemas y Soluciones"; ?>
+<?php $this->viewVars['title_for_layout'] = "Repositorium"; ?>
 <table width = "100%" height = "90%" align = "center" bgcolor = "white">   
   <tr>
 	<td align = "center">

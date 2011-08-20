@@ -1,7 +1,7 @@
 ﻿<?php echo $this->Html->image('users.png',array('class' => 'imgicon')) ; ?>
 
 <h1 class="h1icon">  
-	Registrarse
+	Sign In
 </h1>
 <div class="clearicon"></div>
 <?php
