@@ -44,7 +44,7 @@ class AppController extends Controller {
 		'User' => array('id' => 1)
 	);
 	
-	var $uses = array('User');
+	var $uses = array('User', 'Repository');
 	
 	function login($data = array()) {
 		$this->Session->destroy();
@@ -85,11 +85,16 @@ class AppController extends Controller {
 	}
 	
 	/**
-	 * 
-	 * @TODO this method
+	 * returns current repository data as array 
 	 */
 	function getCurrentRepository() {
-		
+		if(isset(Configure::read('Repository.current'))) {
+			$data = $this->Repository->find('first', array('conditions' => array('Repository.url' => Configure::read('Repository.current'))));
+			if(!is_null($data) && !empty($data)) {
+				return $data;
+			}
+		}			
+		return null;
 	}
 	
 	function isAdmin() {
