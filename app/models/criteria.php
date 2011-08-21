@@ -218,8 +218,8 @@ class Criteria extends AppModel {
 	}
 	
 	
-	function getRandomCriteria() {
-		$criterios = $this->find('all', array('recursive' => -1));
+	function getRandomCriteria($repository_id) {
+		$criterios = $this->find('all', array('conditions' => compact('repository_id'), 'recursive' => -1));
 	
 		if(empty($criterios))
 			return null;
@@ -227,12 +227,12 @@ class Criteria extends AppModel {
 		return $criterios[array_rand($criterios)];
 	}
 	
-	function generateChallenge($user_id = null, $criterio = null, $proportion = 0.5) {
-		if(is_null($user_id))
+	function generateChallenge($user_id = null, $criterio = null, $proportion = 0.5, $repository_id = null) {
+		if(is_null($user_id) || is_null($repository_id))
 			return null;
 	
 		if(is_null($criterio) || !isset($criterio['Criteria']['id']))
-			$criterio = $this->getRandomCriteria();
+			$criterio = $this->getRandomCriteria($repository_id);
 	
 		if(is_null($criterio))
 			return null;

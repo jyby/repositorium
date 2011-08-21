@@ -4,6 +4,23 @@ class DocumentsController extends AppController {
 	var $name = 'Documents';
 	var $uses = array('Document', 'User');
 	
+	/**
+	 * User Model
+	 * @var User
+	 */
+	var $User;
+	
+	/**
+	 * Document Model
+	 * @var Document
+	 */
+	var $Document;
+	
+	/**
+	 * SessionComponent
+	 * @var SessionComponent
+	 */
+	var $Session;
 	
 	function beforeFilter() {
 		if(!$this->isAdmin() || !$this->Session->check('Challenge.passed')) {

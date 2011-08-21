@@ -10,15 +10,17 @@ class CriteriaTestCase extends CakeTestCase {
 	}
 	
 	function testGetRandomCriteria() {
-		$result = $this->Criteria->getRandomCriteria();
+		$repo_id = 1;
+		
+		$result = $this->Criteria->getRandomCriteria($repo_id);
 	
 		// 		there's no data so far
 		// 		$this->assertNull($result);
 	
 		// test again
-		$result = $this->Criteria->getRandomCriteria();
+		$result = $this->Criteria->getRandomCriteria($repo_id);
 	
-		$criterios = $this->Criteria->find('all', array('recursive' => -1));
+		$criterios = $this->Criteria->find('all', array('conditions' => array('repository_id' => $repo_id), 'recursive' => -1));
 		$this->assertTrue(in_array($result, $criterios));
 	}
 		

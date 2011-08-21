@@ -10,6 +10,7 @@ class PointsController extends AppController {
 	var $uses = array('RepositoriesUser');
 	
 	/**
+	 * RepositoriesUser Model
 	 * @var RepositoriesUser
 	 */
 	var $RepositoriesUser;
@@ -79,9 +80,7 @@ class PointsController extends AppController {
 				
 				// if user points > cost, give him the chance to spend his points
 				if($user_points >= $cost) {
-					pr($user_points);
-					pr($cost);
-					exit;
+					$this->redirect('spend');
 				// if not, just redirect to challenge
 				} else {
 					$this->_goto_challenge();
@@ -89,6 +88,14 @@ class PointsController extends AppController {
 			}			
 		}
 		$this->e404();
+	}
+	
+	/**
+	 * 
+	 * wrapper for _discount
+	 */
+	function spend() {
+		
 	}
 			
 	/**
@@ -138,9 +145,17 @@ class PointsController extends AppController {
 		$this->Session->setFlash("{$cost} points have been discounted from your account, now you can {$action} document(s)");
 		$this->_dispatch();
 	}
+	
+	function process() {
+		if(!$this->Session->check('Points.process')) 
+			$this->e404();
+		
+		
+		
+		$this->Session->delete('Points.process');
+	}
 		
 	/**
-	 * 
 	 * dispatch to desired action
 	 * upload
 	 * download

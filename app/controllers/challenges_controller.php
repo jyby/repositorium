@@ -11,6 +11,48 @@
 class ChallengesController extends AppController {
   var $uses = array('User', 'Document', 'CriteriasUser', 'CriteriasDocument', 'Criteria', 'RepositoriesUser');
 
+  /**
+   * User Model
+   * @var User
+   */
+  var $User;
+  
+  /**
+  * CriteriasUser Model
+  * @var CriteriasUser
+  */
+  var $CriteriasUser;
+  
+  /**
+  * CriteriasDocument Model
+  * @var Criteriasdocument
+  */
+  var $CriteriasDocument;
+  
+  /**
+  * Criteria Model
+  * @var Criteria
+  */
+  var $Criteria;
+  
+  /**
+  * RepositoriesUser Model
+  * @var RepositoriesUser
+  */
+  var $RepositoriesUser;
+  
+  /**
+  * Document Model
+  * @var Document
+  */
+  var $Document;
+  
+  /**
+  * SessionComponent
+  * @var SessionComponent
+  */
+  var $Session;
+  
   function beforeFilter() {
   	if(!$this->Session->check('Document.action') && !$this->Session->check('Points.earn')) {
   		$this->Session->setFlash('In order of play a challenge, please choose an action (search, upload or earn points)');
@@ -23,12 +65,21 @@ class ChallengesController extends AppController {
    */
   function index() {	
 	$user = $this->getConnectedUser();
-	$criterio = $this->Criteria->getRandomCriteria();
+	$repo = $this->getCurrentRepository();
+	
+	if(is_null($repo)) {
+		$this->Session->setFlash('You must be in a repository', 'flash_errors');
+		$this->redirect('/');		
+	}
+	
+	$repo_id = $repo['Repository']['id'];
+	
+	$criterio = $this->Criteria->getRandomCriteria($repo_id);
 	
 	if(is_null($criterio))
 		$this->_skip($goto_points = false);
 	
-	$documentos = $this->Criteria->generateChallenge($user['User']['id'], $criterio);
+	$documentos = $this->Criteria->generateChallenge($user['User']['id'], $criterio, $repo_id);
 	
 	if(count($documentos) == 0) 
 		$this->_skip($goto_points = false);
@@ -88,7 +139,7 @@ class ChallengesController extends AppController {
   		if($this->Session->check('Document.action')) {
   			$action = $this->Session->read('Document.action');
   			$this->redirect(array('controller' => 'documents', 'action' => $action));
-  		} else {
+  		} elseif($this->Session->check('Challenge.earn')) {
   			// earn points action
   			$this->Session->setFlash('Sorry, there aren\'t enough documents or criteria to perform a challenge');
   			$this->redirect('/');
