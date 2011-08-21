@@ -68,10 +68,7 @@ if (count($url) === 2 OR $url[0] === 'www' ) {
 // and set the sub-domain name to our registry so we can use it later
 else {
 
-	// set the subdomain to registry so we can use it later
-	Configure::write('Repository.current', $url[0]);
-
 	// default routing for client's site
-	Configure::write('Route.default', array('controller' => 'repositories', 'action' => 'index'));
+	Configure::write('Route.default', array('controller' => 'repositories', 'action' => 'set_repository_by_url', $url[0]));
 
 }
