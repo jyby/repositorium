@@ -170,8 +170,8 @@ class User extends AppModel {
 	
 	/**
 	 * checks user credential
-	 * @param array $data with email and username as subkeys of User
-	 * @returns the corresponding user object, null otherwise
+	 * @param array $data with email and password as subkeys of User, eg $data['User']['email']
+	 * @return the corresponding user object, null otherwise
 	 */
 	function getUser($data = array()) {
 		if(empty($data) or !isset($data['User']['email']) or !isset($data['User']['password']))
@@ -231,6 +231,30 @@ class User extends AppModel {
 			$i += 1;
 		}
 		return $results;
+	}
+	
+	/**
+	 * UNTESTED
+	 * 
+	 * 
+	 * @param integer or string $user_id
+	 * @param integer or string $repo_id
+	 * @return integer or null
+	 */
+	function get_user_points($user_id, $repo_id) {
+		if(is_null($user_id) || is_null($repo_id))
+			return null;
+		
+		$points = $this->RepositoriesUser->find('first', array(
+			'conditions' => array(
+				'user_id' => $user_id,
+				'repository_id' => $repo_id
+			),
+			'fields' => array('points'),
+			'recursirve' => -1,
+		));
+		
+		return $points['RepositoriesUser']['points'];
 	}
 
 }
