@@ -21,7 +21,7 @@ class CriteriaFixture extends CakeTestFixture {
 		'maxchallenge_size' => array('type' => 'integer', 'null' => false, 'default' => NULL),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
-		'active' => array('type' => 'boolean', 'null' => false, 'default' => NULL),
+		'active' => array('type' => 'boolean', 'null' => false, 'default' => true),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);

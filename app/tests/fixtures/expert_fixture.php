@@ -9,7 +9,7 @@ class ExpertFixture extends CakeTestFixture {
 		'repository_id' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 255),
 		'created' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
 		'modified' => array('type' => 'datetime', 'null' => false, 'default' => NULL),
-		'active' => array('type' => 'integer', 'null' => false, 'default' => NULL, 'length' => 4),
+		'active' => array('type' => 'integer', 'null' => false, 'default' => true, 'length' => 4),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);

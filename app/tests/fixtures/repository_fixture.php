@@ -13,6 +13,7 @@ class RepositoryFixture extends CakeTestFixture {
 		'min_points' => array('type' => 'integer', 'null' => false, 'default' => 10),
 		'download_cost' => array('type' => 'integer', 'null' => false, 'default' => 10),
 		'upload_cost' => array('type' => 'integer', 'null' => false, 'default' => 10),
+		'active' => array('type' => 'boolean', 'null' => false, 'default' => true),
 		'indexes' => array('PRIMARY' => array('column' => 'id', 'unique' => 1)),
 		'tableParameters' => array('charset' => 'utf8', 'collate' => 'utf8_general_ci', 'engine' => 'InnoDB')
 	);
