@@ -34,11 +34,29 @@
  */
 App::import('Sanitize');
 
-class AppController extends Controller {	
+class AppController extends Controller {
+	
+	// autocompletion
 	/**
-	 * 
+	 * SessionComponent
+	 * @var SessionComponent
+	 */
+	var $Session;
+	
+	/**
+	 * User Model
+	 * @var User
+	 */
+	var $User;
+	
+	/**
+	 * Repository Model
+	 * @var Repository
+	 */
+	var $Repository;
+	
+	/**
 	 * Anonymous user representation, use with AppController::getConnectedUser()
-	 * @var integer
 	 */
 	var $anonymous = array(
 		'User' => array('id' => 1)
@@ -46,30 +64,58 @@ class AppController extends Controller {
 	
 	var $uses = array('User', 'Repository');
 	
+	function beforeFilter() { }
+	
 	function login($data = array()) {
-		$this->Session->destroy();
+		if(empty($data)) {
+			return false;
+		}
 		
-		$data = Sanitize::clean($data);
-		$usuario = $this->User->getUser($data);
+		$user = $this->User->getUser($data);
 		
-		if( isset($usuario['User']['id']) ) {
-			if(!empty($usuario['Expert']))
+		if(!is_null($user)) {
+			// clean session
+			$this->Session->delete('User');
+			$this->Session->delete('Document');
+			$this->Session->delete('Points');
+			$this->Session->delete('Challenge');
+			
+			if(!empty($user['Expert']))
 				$this->Session->write('User.esExperto', true);
-			if(!empty($usuario['User']['is_administrator']))
+				
+			if(!empty($user['User']['is_administrator']))
 				$this->Session->write('User.esAdmin', true);
-			$this->Session->write('User.id', $usuario['User']['id']);
-			$this->Session->write('User.first_name', $usuario['User']['first_name']);
-			$this->Session->write('User.last_name', $usuario['User']['last_name']);
-			$this->Session->setFlash('Welcome, ' . $usuario['User']['first_name']);
+			
+			$this->Session->write('User.id', $user['User']['id']);
+			$this->Session->write('User.first_name', $user['User']['first_name']);
+			$this->Session->write('User.last_name', $user['User']['last_name']);
+
+			if($this->Session->check('Repository.current')) {
+				$repository = $this->getCurrentRepository();
+				$name = $repository['Repository']['name'];
+				$url = $repository['Repository']['url'];
+				$this->Session->write('User.points', $this->User->get_user_points($user['User']['id'], $repository['Repository']['id']));
+			}
+			
+			$this->Session->setFlash('Welcome, ' . $user['User']['first_name']);
+			
 			CakeLog::write('activity',
-				'User '. $usuario['User']['full_name'] . ' (' .$usuario['User']['id'] . ') has logged in');
+				'User '. $user['User']['email'] . ' (' .$user['User']['id'] . ') has logged in');
 			return true;
 		} else {
 			$this->Session->setFlash('Incorrect user and/or password', 'flash_errors');
 			return false;
 		}
-	}	
-  
+	}
+	
+	function setRepositorySession($repo) {
+		if(!empty($repo)) {
+			$this->Session->delete('Repository');
+			$this->Session->write('Repository.current', $repo['Repository']['url']);
+			$this->Session->write('Repository.name', $repo['Repository']['name']);
+		}
+	}
+ 
 	function e404() {
 		$this->cakeError('error404');
 	}
@@ -87,10 +133,10 @@ class AppController extends Controller {
 	/**
 	 * returns current repository data as array 
 	 */
-	function getCurrentRepository() {
-		$repo = Configure::read('Repository.current');
+	function getCurrentRepository() {		
+		$repo = $this->Session->read('Repository.current');		
 		if(!is_null($repo)) {
-			$data = $this->Repository->find('first', array('conditions' => array('Repository.url' => Configure::read('Repository.current'))));
+			$data = $this->Repository->find('first', array('conditions' => array('Repository.url' => $this->Session->read('Repository.current'))));
 			if(!is_null($data) && !empty($data)) {
 				return $data;
 			}
