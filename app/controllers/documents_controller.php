@@ -23,16 +23,18 @@ class DocumentsController extends AppController {
 	var $Session;
 	
 	function beforeFilter() {
-		if(!$this->isAdmin() || !$this->Session->check('Challenge.passed')) {
-			$this->Session->write('Document.action', $this->action);
-			$this->Session->write('Points.check', true);
-			
-			$this->redirect(array('controller' => 'points', 'action' => 'check'));	
+		if(!$this->Session->check('Document.continue')) {
+			$this->Session->write('Action.type', $this->action);			
+			$this->redirect(array('controller' => 'points', 'action' => 'process'));	
 		}
 	}
 	
   function index() {
 	$this->e404();
+  }
+  
+  function _clean_session() {
+  	$this->Session->delete('Document');
   }
   
   /**
@@ -56,6 +58,7 @@ class DocumentsController extends AppController {
 			$this->Session->setFlash('There was an error trying to save the document. Please try again later');
 		} else {
 			$this->Session->setFlash('Document saved successfuly');
+			$this->_clean_session();
 			$this->redirect('/');
 		} 	
   	}

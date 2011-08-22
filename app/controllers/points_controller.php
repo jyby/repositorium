@@ -9,6 +9,10 @@ class PointsController extends AppController {
 	var $name = 'Points';
 	var $uses = array('RepositoriesUser');
 	
+	var $earn = 1;
+	var $upload = 2;
+	var $download = 3;
+	
 	/**
 	 * RepositoriesUser Model
 	 * @var RepositoriesUser
@@ -16,167 +20,357 @@ class PointsController extends AppController {
 	var $RepositoriesUser;
 	
 	/**
-	 * 
-	 * redirects user to challenges
+	 * SessionComponent
+	 * @var SessionComponent
+	 */
+	var $Session;
+	
+	function index() {
+		$this->redirect('/');
+	}
+	
+	/**
+	 * One of the possible actions
+	 * @see DocumentsController::upload()
+	 * @see DocumentsController::download()
 	 */
 	function earn() {
-		$this->Session->write('Challenge.earn', 'earn');
-		$this->_goto_challenge();
+		$this->Session->write("Action.type", 'earn');
+		$this->redirect('process');
+	}
+	
+	function _get_action() {
+		$action = $this->Session->read('Action.type');
+		
+		$upload   = strcmp($action, 'upload')   == 0;
+		$download = strcmp($action, 'download') == 0;
+		$earn     = strcmp($action, 'earn')     == 0;
+		
+		if($earn) return $this->earn;
+		if($upload) return $this->upload;
+		if($download) return $this->download;
+		else return -1;
 	}
 	
 	/**
+	 * check if user points are enough to action required
+	 * or anon user who doesnt require any points
+	 * - upload
+	 * - download
+	 * - earn (does not require any points)
 	 * 
-	 * checks if user has enough points
-	 * if he does, dispatch
-	 * otherwise => challenge
+	 * redirects if unexpected behavior
 	 * 
+	 * @return true if user needs a challenge, false otherwise	 
 	 */
-	function check() {
-		// if this is not set, then neither is $action
-		if($this->Session->check('Points.check')) {	
-			// check for current repository
-			$repo = $this->getCurrentRepository();
-			if(is_null($repo)) {
-				$this->Session->setFlash('You must be in a repository', 'flash_errors');
-				$this->redirect('/');
+	function _check_if_challenge() {
+		$action = $this->Session->read('Action.type');
+		$repo = $this->getCurrentRepository();		
+		$user = $this->getConnectedUser();
+		
+		/*
+		 * anon doesnt need points check
+		 * always need a challenge
+		 */
+		if($user == $this->anonymous)
+			return true;
+		
+		$upload   = strcmp($action, 'upload')   == 0;
+		$download = strcmp($action, 'download') == 0;
+		$earn     = strcmp($action, 'earn')     == 0;
+		
+		if($earn) {
+			/*
+			 * earn points:
+			 * go to challenge
+			 */			
+			return true;
+		} else {
+			/*
+			 * download or upload:
+			 * check points
+			 */
+			if($download) {
+				if($this->Session->check('Search.count')) {
+					$count = $this->Session->read('Search.count');
+					// determine $cost
+					$cost = $repo['Repository']['download_cost'] * $count;
+				} else {
+					$this->_cancel_everything('Please, first perform a search to download documents');
+				}
+			} elseif($upload) {
+				// determine $cost
+				$cost = $repo['Repository']['upload_cost'];
+			} else {
+				// ERROR invalid action
+				$this->_cancel_everything('Action not recognized');
+			}
+			// check $cost against user points
+			
+			$user_points = $this->RepositoriesUser->find('first', array(
+				'conditions' => array(
+					'RepositoriesUser.repository_id' => $repo['Repository']['id'],
+					'RepositoriesUser.user_id' => $user['User']['id']
+				),
+				'fields' => array('points'),
+				'recursive' => -1
+			));
+			$user_points = $user_points['RepositoriesUser']['points'];
+			
+			//if user points > cost, doesnt need a challenge
+			if($user_points >= $cost) {
+				return false;
+			} else {
+				return true;
+			}
+		}
+	}
+	
+	/**
+	 * checks user points
+	 * Discounts or adds points to user depending of his action
+	 * then dispatch
+	 * requires Session var "Points.process" given by ChallengesController::validate_challenge()
+	 * @see ChallengesController::validate_challenge()
+	 */
+	function process() {
+		$this->Session->delete('Challenge.play');
+		/* 
+		 * "Action.type" must be set
+		 */
+		if(!$this->Session->check('Action.type')) {
+			$this->Session->setFlash("Please, choose an action to perform: download, upload documents or earn points");
+			$this->redirect('/');
+		}
+		
+		$action = $this->Session->read('Action.type');
+		$user = $this->getConnectedUser();
+		
+		$upload   = strcmp($action, 'upload')   == 0;
+		$download = strcmp($action, 'download') == 0;
+		$earn     = strcmp($action, 'earn')     == 0;
+		
+		/*
+		 * If "Points.process" is not set, then a challenge has not been done.
+		 * So, user needs its points checked OR just want to earn points
+		 */ 
+		if(!$this->Session->check('Points.process')) {
+			$user_needs_a_challenge = $this->_check_if_challenge();
+			
+			if($user_needs_a_challenge) {
+				$this->_go_to_challenge();
+									
+			} elseif(!$this->_wants_to_spend()) {				
+				$this->_ask_to_spend();
+			}						
+		}		
+		/*
+		* user comes from ChallengesController::validate_challenge()
+		*/
+		else {
+			$this->Session->delete('Points.process');
+			
+			/*
+			 * give points to user for passing the challenge
+			 */			
+			$this->_reward();
+			
+			/*
+			 * check points again *if the action is not 'earn'*
+			 * and if user isn't anonymous
+			 */
+			if(!$earn && $user != $this->anonymous) {
+				$user_needs_a_challenge_again = $this->_check_if_challenge();
+							
+				if($user_needs_a_challenge_again) {			
+					$this->Session->setFlash('Sorry, passing this challenge didn\'t give you enough points for the action you requested.' 
+						.'The points have been given to you anyway ;)');
+					$this->_go_to_challenge();	
+				}
 			}
 			
-			// check if there is an action registered
-			if($this->Session->check('Document.action')) {				
-				// if is the anon user, redirect him to challenge			
-				if($this->getConnectedUser() == $this->anonymous) {
-					$this->Session->write('Document.anonymous', true);
-					$this->_goto_challenge();
-				}
-				
-				$action = $this->Session->read('Document.action');
-				
-				$upload = strcmp($action, 'upload') == 0;
-				$download = strcmp($action, 'download') == 0;
-				
-				// determine repository costs
-				if($upload) {
-					$cost = $repo['Repository']['upload_cost'];
-				} elseif($download) {
-					if($this->Session->check('Document.searchCount')) {
-						$cost = $repo['Repository']['download_cost'] * $this->Session->read('Document.searchCount');
-					} else {
-						$this->Session->setFlash('Please, first perform a search before downloading documents');
-						$this->redirect('/');
-					}
-				}
-				
-				// get user points
-				$user = $this->getConnectedUser();
-				$user_points = $this->RepositoriesUser->find('first', array(
-					'conditions' => array(
-						'RepositoriesUser.repository_id' => $repo['Repository']['id'],
-						'RepositoriesUser.user_id' => $user['User']['id'] 
-						),
-					'fields' => array('points'),
-					'recursive' => -1
-					));
-				$user_points = $user_points['RepositoriesUser']['points'];
-				
-				// if user points > cost, give him the chance to spend his points
-				if($user_points >= $cost) {
-					$this->redirect('spend');
-				// if not, just redirect to challenge
-				} else {
-					$this->_goto_challenge();
-				}
-			}			
-		}
-		$this->e404();
+			/*
+			 * discount points from user depending his action
+			 */
+			$this->_pay();
+			
+			/*
+			 * now take the user to his final objective
+			 */
+			$this->Session->write('Points.dispatch', true);
+			$this->_dispatch();			
+		}		
+	}
+	
+	/**
+	 * redirects to challenge
+	 */
+	function _go_to_challenge() {
+		$this->Session->write('Challenge.play', true);
+		$this->redirect( array(
+			'controller' => 'challenges',
+			'action' => 'play')				
+		);
 	}
 	
 	/**
 	 * 
-	 * wrapper for _discount
+	 * gives spend credential
+	 */
+	function _ask_to_spend() {
+		$this->Session->write('Points.spend', false);
+		$this->redirect('spend');
+	}
+	
+	/**
+	 * tells if user wants to spend points
+	 */
+	function _wants_to_spend() {
+		return $this->Session->check('Points.spend') && $this->Session->read('Points.spend');
+	}
+	
+	/**
+	 * 
+	 * page which gives the option to spend points and skip a challenge
 	 */
 	function spend() {
-		
-	}
-			
-	/**
-	 * 
-	 * receives challenge result and add 
-	 * points if successful 
-	 * 
-	 */
-	function reward() {
-		if($this->Session->check('Document.anonymous') && $this->Session->read('Document.anonymous')
-			&& $this->Session->check('Challenge.reward') && $this->Session->check('Challenge.passed')
-			&& $this->Session->read('Challenge.passed')) {
-			
-			$this->_dispatch();
-		}
-		
-		if($this->Session->check('Challenge.reward') && $this->Session->check('Challenge.passed')
-			&& $this->Session->read('Challenge.passed')) {
-			
-			$repo = $this->getCurrentRepository();
-			$user = $this->getConnectedUser();
-			if(is_null($repo)) {
-				$this->Session->setFlash('Error identifying current repository', 'flash_errors');
-				$this->redirect('/');
+		if(!empty($this->data)) {
+			if($this->data['Point']['spend']) {
+				$this->Session->write('Points.spend', true);
+				$this->Session->write('Points.process', true);
+				$this->redirect('process');
 			}
-			if($user == $this->anonymous) {
-				$this->Session->setFlash('Anonymous user cannot win points, sorry :( (but if you sign in you could!)', 'flash_errors');
-				$this->redirect('/');
-			}
-			
-			$reward = $repo['Repository']['challenge_reward'];
-			$this->RepositoriesUser->addPoints($user['User']['id'], $repo['Repository']['id'], $points = $reward);
-			
-			$this->Session->delete('Challenge.reward');
-			$this->_dispatch($reward);
-		}
+		}		
 	}
 	
 	/**
 	 * 
-	 * discount points from user (who usually wanted to skip the challenge)
+	 * give user points
+	 * anon doesn't earn points
 	 */
-	function _discount($cost, $action, $user) {
-		$this->RepositoriesUser->discountPoints($user['User']['id'], $repo['Repository']['id'], $cost);
+	function _reward() {
+		$user = $this->getConnectedUser();
 		
-		$this->Session->write('Challenge.passed');
-		$this->Session->setFlash("{$cost} points have been discounted from your account, now you can {$action} document(s)");
-		$this->_dispatch();
-	}
-	
-	function process() {
-		if(!$this->Session->check('Points.process')) 
-			$this->e404();
+		if($user == $this->anonymous)
+			return;
 		
+		if($this->_wants_to_spend())
+			return;
 		
-		
-		$this->Session->delete('Points.process');
-	}
-		
-	/**
-	 * dispatch to desired action
-	 * upload
-	 * download
-	 * index (earn points)
-	 */
-	function _dispatch($points = null) {
-		if($this->Session->check('Challenge.earn')) {
-			$this->Session->setFlash("Congratulations, you have earned {$points} points");
-			$this->redirect('/');
+		$repo = $this->getCurrentRepository();
+		$reward = $repo['Repository']['challenge_reward'];
+			
+		if($this->RepositoriesUser->addPoints($user['User']['id'], $repo['Repository']['id'], $reward))	{	
+			$this->Session->write('Points.status', "Congratulations! you have won {$reward} points");
 		} else {
-			$action = $this->Session->read('Document.action');
-			if(!is_null($points)) 
-				$this->Session->setFlash("Congratulations, you have earned {$points} points, now you can {$action} document(s)");
-			$this->redirect(array('controller' => 'documents', 'action' => $action));
-		}			
+			$this->Session->write("Points.status", "An error occurred adding points. Please blame to the administrator or the developer");
+			$this->Session->write("Points.proceed", false);
+		}
 	}
 	
 	/**
-	 * redirects to challenges controller
+	 * discount user points
+	 * anon doesn't need this
+	 * neither if action == 'earn'
 	 */
-	function _goto_challenge() {
-		$this->redirect(array('controller' => 'challenges'));		
+	function _pay() {
+		if($this->Session->check('Points.proceed') && !$this->Session->read('Points.proceed')) {
+			$this->_cancel_everything($this->Session->read('Points.status'));
+		}
+		
+		$user = $this->getConnectedUser();		
+		
+		if($user == $this->anonymous) 
+			return;
+		
+		if($this->_get_action() == $this->earn)
+			return;
+		
+		$repo = $this->getCurrentRepository();
+		$action = $this->_get_action();
+		
+		if($action == $this->upload) {
+			$cost = $repo['Repository']['upload_cost'];
+		}
+		
+		else if($action == $this->download) {
+			if(!$this->Session->check('Search.count')) {
+				$this->_cancel_everything('Document search results not found');
+			}			
+			
+			$count = $this->Session->read('Search.count');
+			$cost = $repo['Repository']['download_cost'] * $count;
+		}
+		
+		else { 
+			$this->_cancel_everything('Action not recognized');
+		}
+				
+		if($this->RepositoriesUser->discountPoints($user['User']['id'], $repo['Repository']['id'], $cost)) {
+			$this->Session->write("Points.status", "Spent {$cost} points");
+		} else {
+			$this->Session->write("Points.status", "An error occurred subtracting points. Please blame to the administrator or the developer");
+			$this->Session->write("Points.proceed", false);
+		}
 	}
+	
+	/**
+	 * dispatch to user action:
+	 * - upload
+	 * - download
+	 * - index (for earn points)
+	 * requires Session var "Points.dispatch" given by PointsController::process()
+	 * @see PointsController::process()
+	 */
+	function _dispatch() {
+		if(!$this->Session->check('Points.dispatch')) {
+			$this->_cancel_everything('This is not meant to happen');
+		}
+		
+		if($this->Session->check('Points.proceed') && !$this->Session->read('Points.proceed')) {
+			$this->_cancel_everything($this->Session->read('Points.status'));
+		}
+		
+		$this->Session->setFlash($this->Session->read('Points.status'));
+		
+		$action = $this->_get_action();
+		
+		if($action == $this->earn) {
+			$this->redirect('/');
+		}
+		
+		if($action == $this->upload || $action == $this->download) {
+			$this->Session->write('Document.continue', true);
+			$this->_clean_session();
+			$this->redirect(array(
+				'controller' => 'documents',
+				'action' => $this->Session->read('Action.type')
+				)
+			);
+		}
+				
+		else { 
+			$this->_cancel_everything('Action not recognized');
+		}
+				
+	}
+	
+	/**
+	 * cleans session variables
+	 */
+	function _clean_session() {
+		$this->Session->delete('Points');
+	}
+	
+	/**
+	 * 
+	 * in case something goes wrong
+	 */
+	function _cancel_everything($reason) {
+		$this->Session->setFlash("Sorry, an unexpected error has occurred [Message: {$reason}]", 'flash_errors');
+		$this->_clean_session();
+		$this->redirect('/');
+	}
+	
+	
 }

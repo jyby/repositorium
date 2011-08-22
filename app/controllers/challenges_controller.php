@@ -1,6 +1,6 @@
 <?php
 /**
- * Teh most important class
+ * One of the most important classes
  *
  * 
  * the cake is a lie
@@ -53,99 +53,141 @@ class ChallengesController extends AppController {
   */
   var $Session;
   
-  function beforeFilter() {
-  	if(!$this->Session->check('Document.action') && !$this->Session->check('Points.earn')) {
+  /**
+   * 
+   * @see ChallengesController::play()
+   */
+  function index() {
+  	$this->redirect('play');	 	
+  }
+  
+  /**
+   * 
+   * prepares challenge and displays view to solve it
+   * requires Session var "Challenge.play" given by PointsController::process()
+   * @see PointsController::process()
+   */
+  function play() {
+  	if(!$this->Session->check('Challenge.play')) {
   		$this->Session->setFlash('In order of play a challenge, please choose an action (search, upload or earn points)');
   		$this->redirect('/');
+  	} 	
+  	
+  	$user = $this->getConnectedUser();
+  	$repo = $this->getCurrentRepository();
+  	
+  	if(is_null($repo)) {
+  		$this->Session->setFlash('You must be in a repository', 'flash_errors');
+  		$this->redirect('/');
+  	}
+  	
+  	$repo_id = $repo['Repository']['id'];
+  	
+  	$criterio = $this->Criteria->getRandomCriteria($repo_id);
+  	
+  	if(is_null($criterio))
+  		$this->_skip_challenge();
+  	
+  	$documentos = $this->Criteria->generateChallenge($user['User']['id'], $criterio, $repo_id);
+  	
+  	if(count($documentos) == 0)
+  		$this->_skip_challenge();
+  	
+  	$this->Session->write('Challenge.criterio', $documentos[0]['CriteriasDocument']['criteria_id']);
+  	$this->Session->write('Challenge.validate', true);
+  	
+  	$this->set(compact('documentos', 'criterio'));
+  }
+  
+  /**
+   * exceptional case when there aren't enough
+   * criterias or documents to play a challenge
+   * 
+   * had to rewrite dispatch logic here :(
+   * 
+   */
+  function _skip_challenge() {
+  	$this->Session->delete('Challenge.play');
+  	$this->Session->write('Document.continue');
+  	
+  	$action = $this->Session->read('Action.type');
+  	$earn = strcmp($action, 'earn') == 0;
+  	$download = strcmp($action, 'download') == 0;
+  	$upload = strcmp($action, 'upload') == 0;
+  	
+  	if($earn) {
+  		$this->Session->setFlash('Sorry, there aren\'t enough documents or criterias to play a challenge');
+  		$this->redirect('/');
+  	} elseif($download || $upload) {
+  		$this->redirect(array(
+  			'controller' => 'documents',
+  			'action' => $this->Session->read('Action.type')
+  		));
+  	} else {
+  		$this->redirect('/');	
+  	}  	
+  }
+  
+  /**
+   * 
+   * wrapper for _validate_challenge
+   */
+  function validate_challenge() {
+  	if(empty($this->data) || !$this->Session->check('Challenge.validate'))
+  		$this->e404();
+  	
+  	$this->Session->delete('Challenge.validate');
+  	$this->Session->delete('Challenge.play');
+  	
+  	$this->_validate_challenge($this->data);
+  	
+  }
+  
+  /**
+   * validates challenge and dispatch to PointsController::process()
+   * if unsuccessful, increases user's amount of questions and show failure
+   * requires Session var "Challenge.validate" given by play()
+   * @see PointsController::process()
+   * @see ChallengesController::_dispatch()
+   */
+  function _validate_challenge($data) {	
+  	$user = $this->getConnectedUser();
+  	$criterio = $this->Session->read('Challenge.criterio');
+  	 
+  	$desafio_correcto = $this->CriteriasDocument->validateChallenge($data['Desafio']);
+  	$this->CriteriasDocument->saveStatistics($data, $desafio_correcto);
+  	$this->CriteriasUser->saveNextC($user['User']['id'], $criterio, $desafio_correcto);
+  	 
+  	$this->_dispatch($desafio_correcto);
+  }
+  
+  function _dispatch($challenge_successful = false) {
+  	if($challenge_successful) {
+  		$this->_process_points();  		
+  	} else {
+  		$this->redirect('failure');
   	}
   }
   
   /**
-   * play the game
+   * for retry challenge
    */
-  function index() {	
-	$user = $this->getConnectedUser();
-	$repo = $this->getCurrentRepository();
-	
-	if(is_null($repo)) {
-		$this->Session->setFlash('You must be in a repository', 'flash_errors');
-		$this->redirect('/');		
-	}
-	
-	$repo_id = $repo['Repository']['id'];
-	
-	$criterio = $this->Criteria->getRandomCriteria($repo_id);
-	
-	if(is_null($criterio))
-		$this->_skip($goto_points = false);
-	
-	$documentos = $this->Criteria->generateChallenge($user['User']['id'], $criterio, $repo_id);
-	
-	if(count($documentos) == 0) 
-		$this->_skip($goto_points = false);
-	
-	$this->Session->write('Challenge.criterio', $documentos[0]['CriteriasDocument']['criteria_id']);
-	$this->set(compact('documentos', 'criterio'));	
-  }
-
-  /**
-   * check how good it was
-   */
-  function validate_challenge() {
-  	if(empty($this->data))
-  		$this->e404();
-  	
-  	$user = $this->getConnectedUser();
-  	$criterio = $this->Session->read('Challenge.criterio');
-  	
-  	$desafio_correcto = $this->CriteriasDocument->validateChallenge($this->data['Desafio']);
-	$this->CriteriasDocument->saveStatistics($this->data, $desafio_correcto);
-  	$this->CriteriasUser->saveNextC($user['User']['id'], $criterio, $desafio_correcto);
-  	
-  	$this->_dispatch($goto_points = true, $desafio_correcto);  	
+  function failure() {
+  	$this->Session->delete('Challenge');
   }
   
   /**
-   * skip challenge (no points discount)
+   * redirects to PointsController::process()
    */
-  function _skip($goto_points = true) {
-  	$this->Session->write('Challenge.passed', true);
-  	$this->_dispatch($goto_points);
+  function _process_points() {
+  	$this->Session->write('Points.process', true);
+  	
+  	$this->redirect( array(
+  	  	'controller' => 'points',
+  	  	'action' => 'process'
+  		)
+  	);
   }
   
-  /**
-   * 
-   * skip challenge (points discount)
-   */
-  function skip() {
-  	$this->redirect(array('controller' => 'points', 'action' => 'check'));
-  }
-  
-  /**
-   * 
-   * dispatch
-   */
-  function _dispatch($goto_points = true, $challenge_passed = false) {
-  	if($goto_points) {
-  		if($challenge_passed) {
-  			$this->Session->write('Challenge.passed', true);
-  			$this->Session->write('Challenge.reward', true);
-  			$this->redirect(array('controller' => 'points', 'action' => 'reward'));
-  		} else {
-  			// this doesn't mean to happen
-  			$this->redirect('/');
-  		}
-  	} else {
-  		if($this->Session->check('Document.action')) {
-  			$action = $this->Session->read('Document.action');
-  			$this->redirect(array('controller' => 'documents', 'action' => $action));
-  		} elseif($this->Session->check('Challenge.earn')) {
-  			// earn points action
-  			$this->Session->setFlash('Sorry, there aren\'t enough documents or criteria to perform a challenge');
-  			$this->redirect('/');
-  		}
-  	}  	
-  }
- 
 }
 ?>
