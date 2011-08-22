@@ -34,23 +34,27 @@ function op($label, $before = null, $after = null, $between = null, $style = nul
 	echo $this->Form->hidden('answer_1', array('value' => 'No'));
 	echo $this->Form->hidden('answer_2', array('value' => 'Yes'));
 	
-	echo $this->Form->input('documentpack_size', op('Quantity of documents to give after passing a challenge'));
+	//echo $this->Form->input('documentpack_size', op('Quantity of documents to give after passing a challenge'));
 	
-	echo "<br />";
+	//echo "<br />";
 	
-	echo $this->Form->input('documentpack_2', op('How many points the user must earn or spend to download documents'));
+	//echo $this->Form->input('documentpack_2', op('How many points the user must earn or spend to download documents'));
 	
-	echo "<br />";
+	//echo "<br />";
 	
-	echo $this->Form->input('documentupload_cost', op('How many points the user must earn or spend to add new documents'));
+	//echo $this->Form->input('documentupload_cost', op('How many points the user must earn or spend to add new documents'));
 	
-	echo "<br />";
+	//echo "<br />";
 	
 	echo $this->Form->input('documentvalidation_reward', op('How many points the user will receive after his uploaded document was validated under this criteria'));
 	
 	echo "<br />";
 	
 	echo $this->Form->input('minchallenge_size',op('Minimum quantity of questions in challenge'));
+	
+	echo "<br />";
+	
+	echo $this->Form->input('maxchallenge_size',op('Maximum quantity of questions in challenge'));
 	
 	echo "<br />";
 	
