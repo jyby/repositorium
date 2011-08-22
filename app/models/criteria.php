@@ -227,7 +227,7 @@ class Criteria extends AppModel {
 		return $criterios[array_rand($criterios)];
 	}
 	
-	function generateChallenge($user_id = null, $criterio = null, $proportion = 0.5, $repository_id = null) {
+	function generateChallenge($user_id = null, $criterio = null, $repository_id = null, $proportion = 0.5) {
 		if(is_null($user_id) || is_null($repository_id))
 			return null;
 	

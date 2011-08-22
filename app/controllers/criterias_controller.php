@@ -42,14 +42,25 @@ class CriteriasController extends AppController {
 	if(!empty($this->data)) {
 	  $this->Criteria->set($this->data);	  
 	  if($this->Criteria->validates()) {
-		$this->data['Criteria']['repository_id'] = 1;
-		$this->Criteria->save($this->data);
-		$this->Session->setFlash('Criteria added successfully');
-		CakeLog::write('activity', 'Criteria "'.$this->data['Criteria']['question'].'" was added');
+	  	$repo = $this->getCurrentRepository();
+	  	
+	  	if(is_null($repo)) {
+	  		$this->Session->setFlash('Please set a current repository first');
+	  		$this->redirect('index');
+	  	}
+	  	
+		$this->data['Criteria']['repository_id'] = $repo['Repository']['id'];
+		
+		if($this->Criteria->save($this->data)) {
+			$this->Session->setFlash('Criteria added successfully');
+			CakeLog::write('activity', 'Criteria "'.$this->data['Criteria']['question'].'" was added');
+		} else {
+			$this->Session->setFlash('An error occurred saving the criteria', 'flash_errors');
+			CakeLog::write('error', 'Criteria "'.$this->data['Criteria']['question'].'" was not added');			
+		}
 		$this->redirect($this->referer());
 	  } else {
 		$this->Session->setFlash($this->Criteria->invalidFields(),'flash_errors');
-		//$this->Session->setFlash('There were errors in the form');
 	  }
 	}
   }

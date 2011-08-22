@@ -323,6 +323,9 @@ class PointsController extends AppController {
 	 * @see PointsController::process()
 	 */
 	function _dispatch() {
+		$action = $this->_get_action();
+		$action_name = $this->Session->read('Action.type');
+		
 		if(!$this->Session->check('Points.dispatch')) {
 			$this->_cancel_everything('This is not meant to happen');
 		}
@@ -331,10 +334,11 @@ class PointsController extends AppController {
 			$this->_cancel_everything($this->Session->read('Points.status'));
 		}
 		
-		$this->Session->setFlash($this->Session->read('Points.status'));
-		
-		$action = $this->_get_action();
-		
+		if($this->getConnectedUser() == $this->anonymous)
+			$this->Session->setFlash("Thank you, now you can {$action_name} document(s)");
+		else
+			$this->Session->setFlash($this->Session->read('Points.status'));
+				
 		if($action == $this->earn) {
 			$this->redirect('/');
 		}
@@ -344,7 +348,7 @@ class PointsController extends AppController {
 			$this->_clean_session();
 			$this->redirect(array(
 				'controller' => 'documents',
-				'action' => $this->Session->read('Action.type')
+				'action' => $action_name
 				)
 			);
 		}

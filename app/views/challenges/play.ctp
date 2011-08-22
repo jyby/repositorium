@@ -80,7 +80,7 @@
 <br/>
 <br/>
 		<?php 
-			echo $this->Form->create(null, array('url' => '/desafios/validate_challenge',
+			echo $this->Form->create(null, array('url' => '/challenges/validate_challenge',
 							     'inputDefaults' => array (
 			            			     'fieldset' => false,
 				                	     'legend' => false)));

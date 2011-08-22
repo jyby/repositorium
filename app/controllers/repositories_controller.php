@@ -52,7 +52,7 @@ class RepositoriesController extends AppController {
 		} elseif(isset($data['repo_id'])) {
 			$repo = $this->Repository->find('first', array(
 				'conditions' => array(
-					'Repository.url' => $data['repo_url']
+					'Repository.url' => $data['repo_id']
 				),
 				'recursive' => -1,
 			));
