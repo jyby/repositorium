@@ -165,24 +165,24 @@ class CriteriasDocument extends AppModel {
 	*/
 	function validateChallenge($data = null) {
 		if(is_null($data) || !is_array($data))
-		return false;
-	
+			return false;
+		
 		$docs = array();
 		// first, identify which documents are which
 		foreach($data as $d) {
-			if(!isset($d['id_criterio']) || !isset($d['id_documento']) || !isset($d['respuesta']))
-			return false;
+			if(!isset($d['criteria_id']) || !isset($d['document_id']) || !isset($d['respuesta']))
+				return false;
 	
 			$info = $this->_validatedEntry($d);
 				
 			if(!is_null($info)) {
-				$answer = $info['CriteriasDocument']['is_positive'];
+				$answer = $info['CriteriasDocument']['official_answer'];
 				$given = $d['respuesta'];
 	
 				/* answer : 0, 1
 				 * given  :    1, 2	 */
 				if(	$answer+1 != $given )
-				return false;
+					return false;
 			}
 		}
 	
@@ -198,10 +198,11 @@ class CriteriasDocument extends AppModel {
 	 *
 	 */
 	function _validatedEntry($d = null) {
+		if(is_null($d)) return null;
 		$info = $this->entry($d);
 	
 		if($info['CriteriasDocument']['validated'] === '1')
-		return $info;
+			return $info;
 		return null;
 	}
 	
@@ -211,12 +212,14 @@ class CriteriasDocument extends AppModel {
 	 * @param array $d
 	 */
 	function entry($d = null) {
+		if(is_null($d)) return null;
+		
 		$info = $this->find('first', array(
 				'recursive' => -1,
-	 			'fields' => array('id' ,'validated', 'is_positive', 'total_answers_1', 'total_answers_2'),
+	 			'fields' => array('id' ,'validated', 'official_answer', 'total_answers_1', 'total_answers_2'),
 				'conditions' => array(
-					'CriteriasDocument.criteria_id' => $d['id_criterio'],
-					'CriteriasDocument.document_id' => $d['id_documento']
+					'CriteriasDocument.criteria_id' => $d['criteria_id'],
+					'CriteriasDocument.document_id' => $d['document_id']
 			)
 		));
 	

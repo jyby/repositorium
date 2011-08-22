@@ -113,6 +113,7 @@ class CriteriasDocumentTestCase extends CakeTestCase {
 				  	'criteria_id' => $c,
 				  	'total_answers_1' => 0,
 				  	'total_answers_2' => 0,
+				  	'official_answer' => ($d % 2 == 0 ? null : 1),
 			      	'validated' => ($d % 2 == 0 ? false : true),
 					'challengeable' => true,
 					)
@@ -128,8 +129,8 @@ class CriteriasDocumentTestCase extends CakeTestCase {
 		 * challenge correct
 		*/
 		$data = array(
-			array('respuesta' => 2, 'id_criterio' => 1, 'id_documento' => 1),
-			array('respuesta' => 1, 'id_criterio' => 1, 'id_documento' => 2)
+			array('respuesta' => 2, 'criteria_id' => 1, 'document_id' => 1),
+			array('respuesta' => 1, 'criteria_id' => 1, 'document_id' => 2)
 		);
 	
 		$this->assertTrue($this->CriteriasDocument->validateChallenge($data));
@@ -138,8 +139,8 @@ class CriteriasDocumentTestCase extends CakeTestCase {
 		 * challenge incorrect
 		*/
 		$data = array(
-			array('respuesta' => 1, 'id_criterio' => 1, 'id_documento' => 3),
-			array('respuesta' => 1, 'id_criterio' => 1, 'id_documento' => 4)
+			array('respuesta' => 1, 'criteria_id' => 1, 'document_id' => 3),
+			array('respuesta' => 1, 'criteria_id' => 1, 'document_id' => 4)
 		);
 	
 		$this->assertFalse($this->CriteriasDocument->validateChallenge($data));
@@ -148,8 +149,8 @@ class CriteriasDocumentTestCase extends CakeTestCase {
 		 * challenge with no official answer
 		*/
 		$data = array(
-			array('respuesta' => 2, 'id_criterio' => 2, 'id_documento' => 1),
-			array('respuesta' => 1, 'id_criterio' => 2, 'id_documento' => 2)
+			array('respuesta' => 2, 'criteria_id' => 2, 'document_id' => 1),
+			array('respuesta' => 1, 'criteria_id' => 2, 'document_id' => 2)
 		);
 	
 		$this->assertTrue($this->CriteriasDocument->validateChallenge($data));
@@ -161,8 +162,8 @@ class CriteriasDocumentTestCase extends CakeTestCase {
 		* id 1,2
 		*/
 		$data = array(
-			array('respuesta' => 2, 'id_criterio' => 1, 'id_documento' => 1), //valid
-			array('respuesta' => 1, 'id_criterio' => 1, 'id_documento' => 2) //nonvalid
+			array('respuesta' => 2, 'criteria_id' => 1, 'document_id' => 1), //valid
+			array('respuesta' => 1, 'criteria_id' => 1, 'document_id' => 2) //nonvalid
 		);
 	
 		$this->CriteriasDocument->saveStatistics($data, true);
@@ -188,8 +189,8 @@ class CriteriasDocumentTestCase extends CakeTestCase {
 		* id 3,4
 		*/
 		$data = array(
-			array('respuesta' => 1, 'id_criterio' => 1, 'id_documento' => 3), // validated
-			array('respuesta' => 1, 'id_criterio' => 1, 'id_documento' => 4) // non-valid
+			array('respuesta' => 1, 'criteria_id' => 1, 'document_id' => 3), // validated
+			array('respuesta' => 1, 'criteria_id' => 1, 'document_id' => 4) // non-valid
 		);
 	
 		$this->CriteriasDocument->saveStatistics($data, false);
@@ -212,8 +213,8 @@ class CriteriasDocumentTestCase extends CakeTestCase {
 	
 	function testEntry() {
 		$data = array(
-				'id_criterio' => 100,
-				'id_documento' => 100
+				'criteria_id' => 100,
+				'document_id' => 100
 		);
 	
 		$info = $this->CriteriasDocument->entry($data);

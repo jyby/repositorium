@@ -68,10 +68,12 @@ class ChallengesController extends AppController {
    * @see PointsController::process()
    */
   function play() {
-  	if(!$this->Session->check('Challenge.play')) {
-  		$this->Session->setFlash('In order of play a challenge, please choose an action (search, upload or earn points)');
+  	if(!$this->Session->check('Challenge.play')) {  		
+  		$this->Session->setFlash('In order of play a challenge, please choose an action (search, upload or earn points)');  		
   		$this->redirect('/');
   	} 	
+  	
+  	$this->Session->delete('Challenge');
   	
   	$user = $this->getConnectedUser();
   	$repo = $this->getCurrentRepository();
@@ -108,7 +110,7 @@ class ChallengesController extends AppController {
    */
   function _skip_challenge() {
   	$this->Session->delete('Challenge.play');
-  	$this->Session->write('Document.continue');
+  	$this->Session->write('Document.continue', true);
   	
   	$action = $this->Session->read('Action.type');
   	$earn = strcmp($action, 'earn') == 0;
@@ -153,9 +155,8 @@ class ChallengesController extends AppController {
   function _validate_challenge($data) {	
   	$user = $this->getConnectedUser();
   	$criterio = $this->Session->read('Challenge.criterio');
-  	 
   	$desafio_correcto = $this->CriteriasDocument->validateChallenge($data['Desafio']);
-  	$this->CriteriasDocument->saveStatistics($data, $desafio_correcto);
+  	$this->CriteriasDocument->saveStatistics($data['Desafio'], $desafio_correcto);
   	$this->CriteriasUser->saveNextC($user['User']['id'], $criterio, $desafio_correcto);
   	 
   	$this->_dispatch($desafio_correcto);
