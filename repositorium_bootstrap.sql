@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 21-08-2011 a las 16:24:20
+-- Tiempo de generación: 21-08-2011 a las 23:39:19
 -- Versión del servidor: 5.5.15
 -- Versión de PHP: 5.2.17
 
@@ -17,7 +17,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de datos: `repositorium`
+-- Base de datos: `repositorium_bootstrap`
 --
 
 -- --------------------------------------------------------
@@ -30,11 +30,11 @@ CREATE TABLE IF NOT EXISTS `criterias` (
   `id` int(255) NOT NULL AUTO_INCREMENT,
   `repository_id` int(255) NOT NULL,
   `question` text NOT NULL,
-  `answer_1` varchar(255) NOT NULL,
-  `answer_2` varchar(255) NOT NULL,
-  `documentpack_size` int(11) NOT NULL,
-  `documentpack_cost` int(11) NOT NULL,
-  `documentupload_cost` int(11) NOT NULL,
+  `answer_1` varchar(255) NOT NULL DEFAULT 'No',
+  `answer_2` varchar(255) NOT NULL DEFAULT 'Yes',
+  `documentpack_size` int(11) NOT NULL DEFAULT '0',
+  `documentpack_cost` int(11) NOT NULL DEFAULT '0',
+  `documentupload_cost` int(11) NOT NULL DEFAULT '0',
   `documentvalidation_reward` int(11) NOT NULL,
   `penalization_a` double NOT NULL,
   `penalization_b` double NOT NULL,
