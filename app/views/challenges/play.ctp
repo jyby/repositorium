@@ -57,7 +57,7 @@
 <p>To solve this challenge you must answer correctly the following questions:</p>
 
 <?php if($this->Session->check('User.id') and $this->Session->read('User.id') > 0): ?>
-<div class="ui-widget">
+<!-- <div class="ui-widget">
 	<div class="ui-state-highlight ui-corner-all" style="margin-top: 20px; padding: 10px .7em;"> 
 		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
 		<strong>Hey!</strong> You can avoid doing this challenge by spending <?php echo $puntos; ?> points! Just click the following link :  
@@ -66,7 +66,7 @@
 		?>
 		</p>
 	</div>
-</div>
+</div> -->
 <?php endif; ?>
 <?php if(!$this->Session->check('User.id') || !$this->Session->read('User.id') > 0): ?>
 <div class="ui-widget">

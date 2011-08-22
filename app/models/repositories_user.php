@@ -112,5 +112,37 @@ class RepositoriesUser extends AppModel {
 		$ds->commit($this);
 		return true;
 	}
+	
+	function massCreateAfterUser($user_id) {
+		if(is_null($user_id))
+			return false;
+		
+		$repositories = $this->Repository->find('all', array('recursive' => -1));
+		$user = $this->User->read(null, $user_id);
+		
+// 		if($user == null) {
+// 			return false;
+// 		}
+		
+		
+		$ds = $this->getDataSource();
+		$ds->begin($this);
+		foreach($repositories as $repo) {
+			$this->create();
+			$this->set(array(
+				'user_id' => $user_id,
+				'repository_id' => $repo['Repository']['id'],
+				'points' => $repo['Repository']['min_points']
+			)
+			);
+			if(!$this->save()) {
+				$ds->rollback($this);
+				return false;
+			}
+		}
+		
+		$ds->commit($this);
+		return true;
+	}
 }
 ?>

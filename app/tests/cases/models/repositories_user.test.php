@@ -69,6 +69,28 @@ class RepositoriesUserTestCase extends CakeTestCase {
 		);
 		$this->assertEqual($users, $ru);
 	}
+	
+	function testMassCreateAfterUser() {
+		$user_id = 42;
+	
+		$this->RepositoriesUser->massCreateAfterUser($user_id);
+	
+		$users = $this->RepositoriesUser->Repository->find('all', array(
+			'fields' => array('Repository.id'),
+ 			'recursive' => -1,
+ 			'order' => 'Repository.id'
+			)
+		);
+	
+		$ru = $this->RepositoriesUser->find('all', array(
+			'conditions' => array('RepositoriesUser.user_id' => $user_id),
+			'fields' => array('Repository.id'),
+			'order' => 'Repository.id'
+			)
+		);
+		
+		$this->assertEqual($users, $ru);
+	}
 
 }
 ?>

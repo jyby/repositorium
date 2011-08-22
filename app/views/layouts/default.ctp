@@ -75,6 +75,11 @@
             <div class="header">
                 <div class="logo">
                     <?php echo $this->Html->link($this->Html->image('logo2.png'), '/', array('escape'=>false)); ?>
+                    <?php
+                    	if($this->Session->read('Repository.name')) {
+                    ?> 
+                   		<span class="repo-span"><?php echo ucwords($this->Session->read('Repository.name')) . ' repository';?></span>                    		
+                    <?php } ?>
                 </div>
                 <div class="box userbox">
                     <ul class="nav topmenu">
@@ -89,21 +94,23 @@
                         <li><?php echo $this->Html->link('Edit profile', array('controller' => 'users')); ?></li>
                         <li><?php echo $this->Html->link('Logout', '/logout'); ?></li>
                         <?php } ?>
+                        &nbsp;&nbsp;
                     </ul>
                 </div>
                 <div class="box optionsbox">
                     <div class="nav form">
                     	<?php 
-                    		echo $this->Form->create(null, array('url' => '/tags/search'));
+                    		//echo $this->Form->create(null, array('url' => '/tags/search'));
                     	?>
-                    		<div class="input text search"><input name="data[Tag][search]" type="text"></div>
+                    		<!--<div class="input text search"><input name="data[Tag][search]" type="text"></div>-->
                     	<?php
-                    		echo $this->Form->end();
+                    		//echo $this->Form->end();
                     	?> <!--
                         <form id="TagSearchForm" method="post" action="tags/search" accept-charset="utf-8">
                             <div style="display:none;"><input type="hidden" name="_method" value="POST"></div>                            
                         </form>
                         -->
+                        &nbsp;&nbsp;&nbsp;
                     </div>
                     <ul class="nav subtopmenu">
                         <?php if($this->Session->check('User.esAdmin') or $this->Session->check('User.esExperto')): ?>
@@ -111,7 +118,7 @@
                     	<?php endif; ?>                        
                         <li><?php echo $this->Html->link('Add document', array('controller' => 'documents', 'action' => 'upload'));?></li>
                         <?php if($this->Session->check('User.id') and $this->Session->read('User.id') > 1): ?>
-                        <li><?php echo $this->Html->link('Earn points', array('controller' => 'desafios', 'action' => 'action', 'earn')); ?></li>
+                        <li><?php echo $this->Html->link('Earn points', array('controller' => 'points', 'action' => 'earn')); ?></li>
                         <?php endif; ?>
                     </ul>                    
                 </div>

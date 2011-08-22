@@ -196,6 +196,7 @@ class User extends AppModel {
 				$this->_expert_create($this->id);
 			}			
 			$this->CriteriasUser->massCreateAfterUser($this->id);
+			$this->RepositoriesUser->massCreateAfterUser($this->id);
 			CakeLog::write('activity', 'User '.$this->id. ' created');
 		} else {
 			/* on update */

@@ -149,6 +149,7 @@ body {
 .logo {
   float: left;
   margin-left: 10px;
+  vertical-align: middle;
 }
 
 .nav {
@@ -386,6 +387,10 @@ strong {
 	font-family: 'Tahoma';
 }
 	
+.repo-span {
+	font-weight: bold;
+	font-size: 1.3em;
+}
 
 /* Textboxlist */
 .textboxlist-autocomplete-results {
