@@ -132,9 +132,21 @@ class AppController extends Controller {
 	
 	/**
 	 * returns current repository data as array 
+	 * note: if host is localhost, it just reads from the session var
+	 * which means to have an expiration time
 	 */
 	function getCurrentRepository() {		
-		$repo = $this->Session->read('Repository.current');		
+		if($this->Session->check('Repository.current')) {
+			$repo = $this->Session->read('Repository.current');
+		} else {
+			$url = explode('.', $_SERVER['HTTP_HOST'], 3);
+			if (count($url) === 2 OR $url[0] === 'www' ) {
+				return null;			
+			} else {
+				$repo = $url[0];
+			}
+		}
+		
 		if(!is_null($repo)) {
 			$data = $this->Repository->find('first', array('conditions' => array('Repository.url' => $this->Session->read('Repository.current'))));
 			if(!is_null($data) && !empty($data)) {
