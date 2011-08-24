@@ -1,8 +1,8 @@
 * Repositorium
 
-Problem repository database application. Based principally on CakePHP and MySQL
+Web Engine for Collective Repositories. Based principally on CakePHP and MySQL
 
-Project for "CC5401 - Ingenieria de software" course of DCC UChile
+Originally a Project for "CC5401 - Ingenieria de software" course of DCC UChile.
 
 * Installation
 ** Requirements
@@ -76,7 +76,7 @@ This changes’ll avoid keeping the same session at different app clones.
 
 
 * Staff
-1. jyby (our project client) 
+1. Jérémy "LeJyBy" Barbay (our project client) 
 2. Hernan Fierro (project administrator) 
 3. Pablo Estefo - pestefo (analyst) 
 4. Felipe Banados - fbanados (designer) 
