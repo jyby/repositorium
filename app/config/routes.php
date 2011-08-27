@@ -59,7 +59,6 @@
   	
 /**
  * controllers
- * @TODO add blacklist
  */  	
   	Router::connect('/manage', 			array('controller' => 'admin_documentos'));
   	Router::connect('/manage-users', 	array('controller' => 'admin_usuarios'));
@@ -73,3 +72,7 @@
   	Router::connect('/users', 			array('controller' => 'users'));
   	Router::connect('/points',			array('controller' => 'points'));
   	
+/**
+ * repositories
+ */
+  	Router::connect('/*', 				array('controller' => 'repositories', 'action' => 'index'));
