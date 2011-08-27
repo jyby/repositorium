@@ -60,7 +60,7 @@ $url = explode('.', $_SERVER['HTTP_HOST'], 3); //creates the various parts
 if (count($url) === 2 OR $url[0] === 'www' ) {
 
 	// default routing for main site
-	Configure::write('Route.default', array('controller' => 'pages', 'action' => 'display'));
+	Configure::write('Route.default', array('controller' => 'pages', 'action' => 'display', 'home'));
 
 }
 
