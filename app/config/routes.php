@@ -75,4 +75,4 @@
 /**
  * repositories
  */
-  	Router::connect('/*', 				array('controller' => 'repositories', 'action' => 'index'));
+  	//Router::connect('/*', 				array('controller' => 'repositories', 'action' => 'index'));
