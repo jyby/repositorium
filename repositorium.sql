@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS `criterias` (
   `documentpack_cost` int(11) NOT NULL,
   `documentupload_cost` int(11) NOT NULL,
   `documentvalidation_reward` int(11) NOT NULL,
+  `challenge_reward` int(11) NOT NULL DEFAULT '0',
   `penalization_a` double NOT NULL,
   `penalization_b` double NOT NULL,
   `depenalization_a` double NOT NULL,
@@ -128,11 +129,11 @@ CREATE TABLE IF NOT EXISTS `repositories` (
   `description` text NOT NULL,
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
-  `min_points` int(11) NOT NULL DEFAULT '10',
+  `min_points` int(11) NOT NULL DEFAULT '0',
   `download_cost` int(11) NOT NULL DEFAULT '10',
   `upload_cost` int(11) NOT NULL DEFAULT '10',
   `documentpack_size` int(255) NOT NULL,
-  `challenge_reward` int(255) NOT NULL,
+  `challenge_reward` int(255) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 

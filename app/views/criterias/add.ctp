@@ -46,6 +46,10 @@ function op($label, $before = null, $after = null, $between = null, $style = nul
 	
 	//echo "<br />";
 	
+	echo $this->Form->input('challenge_reward', op('How many points the user will receive after passing a challenge given by this criteria'));
+	
+	echo "<br />";
+	
 	echo $this->Form->input('documentvalidation_reward', op('How many points the user will receive after his uploaded document was validated under this criteria'));
 	
 	echo "<br />";

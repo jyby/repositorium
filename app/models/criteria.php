@@ -89,6 +89,20 @@ class Criteria extends AppModel {
 				'message' => 'Document validation points must be a positive number',
 			)
 		),
+		'challenge_reward' => array(
+			'numeric' => array(
+				'rule' => array('numeric'),
+				'message' => 'Challenge points must be a number',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+			'positive' => array(
+				'rule' => array('positive', 'challenge_reward'),
+				'message' => 'Challenge points must be a positive number',
+			)
+		),
 		'penalization_a' => array(
 			'decimal' => array(
 				'rule' => array('numeric'),

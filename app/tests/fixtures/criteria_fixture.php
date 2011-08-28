@@ -13,6 +13,7 @@ class CriteriaFixture extends CakeTestFixture {
 		'documentpack_cost' => array('type' => 'integer', 'null' => false, 'default' => NULL),
 		'documentupload_cost' => array('type' => 'integer', 'null' => false, 'default' => NULL),
 		'documentvalidation_reward' => array('type' => 'integer', 'null' => false, 'default' => NULL),
+		'challenge_reward' => array('type' => 'integer', 'null' => false, 'default' => 10),
 		'penalization_a' => array('type' => 'float', 'null' => false, 'default' => NULL),
 		'penalization_b' => array('type' => 'float', 'null' => false, 'default' => NULL),
 		'depenalization_a' => array('type' => 'float', 'null' => false, 'default' => NULL),
