@@ -39,8 +39,9 @@ class RepositoriesController extends AppController {
 	 * @return array array( boolean: status, array: data | null)
 	 */
 	function _set_repo($data = array()) {
-		if(empty($data))
+		if(empty($data)) {
 			return array(false, null);
+		}
 		
 		if(isset($data['repo_url'])) {
 			$repo = $this->Repository->find('first', array(
@@ -52,7 +53,7 @@ class RepositoriesController extends AppController {
 		} elseif(isset($data['repo_id'])) {
 			$repo = $this->Repository->find('first', array(
 				'conditions' => array(
-					'Repository.url' => $data['repo_id']
+					'Repository.id' => $data['repo_id']
 				),
 				'recursive' => -1,
 			));
@@ -68,8 +69,9 @@ class RepositoriesController extends AppController {
 	}
 	
 	function set_repository_by_url($repo_url = null) {
-		if(is_null($repo_url))
+		if(is_null($repo_url)) {		
 			$this->e404();
+		}
 		
 		$result = $this->_set_repo($data = compact('repo_url'));		
 		if($result[0]) {
@@ -80,10 +82,10 @@ class RepositoriesController extends AppController {
 	}
 	
 	function set_repository_by_id($repo_id = null) {
-		if(is_null($repo_id))
+		if(is_null($repo_id)) {
 			$this->e404();
-		
-		$result = $this->_set_repo($data = compact('repo_id'));		
+		}
+		$result = $this->_set_repo(compact('repo_id'));		
 		if($result[0]) {
 			$this->redirect(array('action' => 'index', $result[1]['Repository']['url']));
 		} else {
