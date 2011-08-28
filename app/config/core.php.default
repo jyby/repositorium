@@ -56,6 +56,12 @@
 	Configure::write('App.encoding', 'UTF-8');
 
 /**
+ * Application subdomains feature
+ */
+ 	Configure::write('App.subdomains', false);
+
+
+/**
  * To configure CakePHP *not* to use mod_rewrite and to
  * use CakePHP pretty URLs, remove these .htaccess
  * files:

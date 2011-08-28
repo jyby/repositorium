@@ -48,3 +48,33 @@
  * Inflector::rules('plural', array('rules' => array(), 'irregular' => array(), 'uninflected' => array()));
  *
  */
+ 
+
+
+// subdomains repositories feature
+
+if(Configure::read('App.subdomains')) {
+
+	// urls of the form repo_name.example.com, passing 'repo_name' to Configure instance
+	 // get the URL, and split it using . so we can get the sub-domain
+	$url = explode('.', $_SERVER['HTTP_HOST'], 3); //creates the various parts
+	
+	// if the array is 2, means they access using http://example.com and
+	// if we can check www in the third part, we use our pages controller
+	// to load our mainpage
+	if (count($url) === 2 OR $url[0] === 'www' ) {
+	
+		// default routing for main site
+		Configure::write('Route.default', array('controller' => 'pages', 'action' => 'display', 'home'));
+	
+	}
+	
+	// okay, user use sub-domain and we have it, set the default routing
+	// and set the sub-domain name to our registry so we can use it later
+	else {
+	
+		// default routing for client's site
+		Configure::write('Route.default', array('controller' => 'repositories', 'action' => 'set_repository_by_url', $url[0]));
+	
+	}
+}

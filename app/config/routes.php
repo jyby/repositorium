@@ -22,13 +22,9 @@
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
 
-/**
-* uncomment the following line for enabling subdomains repositories
-* then comment the next line (l. 40)
-* 
-*/
 
-// 	Router::connect('/', Configure::read('Route.default'));
+if(Configure::read('App.subdomains'))
+	Router::connect('/', Configure::read('Route.default'));
 
 /**
  * Here, we are connecting '/' (base path) to controller called 'Pages',
@@ -36,8 +32,8 @@
  * to use (in this case, /app/views/pages/home.ctp)...
  */
 
-/** comment the following line for enabling subdomains repositories */
-	Router::connect('/', array('controller' => 'pages', 'action' => 'home'));//, 'home'));
+if(!Configure::read('App.subdomains'))
+	Router::connect('/', array('controller' => 'pages', 'action' => 'home'));
 	
 	
 /**
