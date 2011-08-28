@@ -37,7 +37,7 @@
  */
 
 /** comment the following line for enabling subdomains repositories */
-	Router::connect('/', array('controller' => 'pages', 'action' => 'display', 'home'));
+	Router::connect('/', array('controller' => 'pages', 'action' => 'home'));//, 'home'));
 	
 	
 /**
