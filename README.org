@@ -1,6 +1,6 @@
 * Repositorium
 
-Problem repository database application. Based principally on CakePHP and MySQL
+Problem repository database application. Web Application based principally on CakePHP and MySQL.
 
 It was a project for "CC5401 - Ingenieria de software" course of DCC UChile, but now in active development.
 
