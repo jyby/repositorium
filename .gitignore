@@ -4,6 +4,9 @@
 .settings/*
 
 # configuration files
+.htaccess
+app/.htaccess
+app/webroot/.htaccess
 app/config/database.php
 app/config/core.php
 app/config/bootstrap.php
