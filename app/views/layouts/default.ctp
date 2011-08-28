@@ -115,7 +115,9 @@
                     <ul class="nav subtopmenu">
                         <?php if($this->Session->check('User.esAdmin') or $this->Session->check('User.esExperto')): ?>
 	                    <li><?php echo $this->Html->link('Manage', array('controller' => 'admin_documentos'));?></li>
-                    	<?php endif; ?>                        
+                    	<?php endif; ?>
+                    	<li><?php echo $this->Html->link('Create new Repository', array('controller' => 'repositories', 'action' => 'create'));?></li>
+                    	
                         <li><?php echo $this->Html->link('Add document', array('controller' => 'documents', 'action' => 'upload'));?></li>
                         <?php if($this->Session->check('User.id') and $this->Session->read('User.id') > 1): ?>
                         <li><?php echo $this->Html->link('Earn points', array('controller' => 'points', 'action' => 'earn')); ?></li>
