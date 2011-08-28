@@ -13,16 +13,67 @@ class Repository extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'min_points' => array(
-			'positive' => array(
-				'rule' => array('positive', 'min_points'),
-				'message' => 'Points must be greater or equal than 0'
+		'url' => array(
+			'notempty' => array(
+				'rule' => array('notempty'),
+				'message' => 'Repository url cannot be empty',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+			'alphanumeric' => array(
+				'rule' => array('alphaNumeric'),
+				'message' => 'Repository url can contain only letters or numbers',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 			'notempty' => array(
 				'rule' => array('notempty'),
-				'message' => 'Points cannot be empty',
+				'message' => 'Repository url cannot be empty',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
+			'unique' => array(
+				'rule' => array('isUnique'),
+				'message' => 'Repository url is already taken',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+			'length' => array(
+				'rule' => array('minLength', 4),
+				'message' => 'Repository url must be at least 4 characters',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+			'spaces' => array(
+				'rule' => 'nospaces',
+				'message' => 'Repository url cannot contain spaces',
+				//'allowEmpty' => false,
+				//'required' => false,
+				//'last' => false, // Stop validation after this rule
+				//'on' => 'create', // Limit validation to 'create' or 'update' operations
+			),
+			
 		),
+// 		'min_points' => array(
+// 			'positive' => array(
+// 				'rule' => array('positive', 'min_points'),
+// 				'message' => 'Points must be greater or equal than 0'
+// 			),
+// 			'notempty' => array(
+// 				'rule' => array('notempty'),
+// 				'message' => 'Points cannot be empty',
+// 			),
+// 		),
 		'download_cost' => array(
 			'positive' => array(
 				'rule' => array('positive', 'download_cost'),
@@ -42,9 +93,26 @@ class Repository extends AppModel {
 				'rule' => array('notempty'),
 				'message' => 'Upload cost cannot be empty',
 			),
-		)
+		),
+		'documentpack_size' => array(
+			'positive' => array(
+				'rule' => array('positive', 'documentpack_size'),
+				'message' => 'Document pack size must be greater or equal than 0'
+			),
+			'notempty' => array(
+				'rule' => array('notempty'),
+				'message' => 'Document pack size cannot be empty',
+			),
+		),		
 	);
 	
+	/**
+	 * also a check for alphanumeric
+	 */
+	function nospaces($check) {
+		$value = array_shift($check);            
+		return preg_match('|^[0-9a-zA-Z]*$|', $value);
+	}
 	
 	function positive($value, $key) {
 		return !is_null($value[$key]) && $value[$key] >= 0;
