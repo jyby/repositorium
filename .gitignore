@@ -6,6 +6,7 @@
 # configuration files
 app/config/database.php
 app/config/core.php
+app/config/bootstrap.php
 
 # cache and temporary files
 app/tmp/cache/*

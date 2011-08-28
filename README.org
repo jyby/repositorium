@@ -21,8 +21,9 @@ Open a console and get the source
 ** Configuration
 
 Then you’ll have a copy of the source at local. 
-Now you have to give permissions to some folders to get cake working properly. 
-If they don't exist (like =cache/*=), you'll have to create them:
+
+Create the following folders and give these permissions (some of them
+already exist):
 
 - =chmod o+w app/tmp=
 - =chmod o+w app/tmp/cache=
@@ -31,7 +32,8 @@ If they don't exist (like =cache/*=), you'll have to create them:
 - =chmod -R o+w app/tmp/logs=
 
 
-Copy or rename =database.php.default= to =database.php=, and =core.php.default= to =core.php= in =app/config=. 
+Copy =database.php.default= to =database.php=, and =core.php.default= 
+to =core.php=, and =bootstrap.php.default= to =bootstrap.php= in =app/config=. 
 
 Edit =database.php= at line 76 
         ~var $default = array('driver' => 'mysql','persistent' => false,'host' => '<HOST>','login' => '<LOGIN>','password' => '<PASSWORD>','database' => '<DBNAME>','prefix' => '',);~
@@ -39,9 +41,9 @@ Change =<HOST>=, =<LOGIN>=, =<PASSWORD>= and =<DBNAME>= (database name) to the c
 
 ** Initial DB Dump
 
-1) To load the dump file (=bootstrap.sql=) with initial data (users: admin and anonymous). It contains no documents and no criteria. 
+1) To load the dump file (=repositorium.sql=) with initial data (users: admin and anonymous). It contains no documents and no criteria. 
 
-   =mysql -u <LOGIN> -p <PASSWORD> <DBNAME> < bootstrap.sql=
+   =mysql -u <LOGIN> -p <PASSWORD> <DBNAME> < repositorium.sql=
 
 2) Now you have 2 users: anonymous and admin. The *admin* user has the following atributes
     - Login: admin@example.com
@@ -49,10 +51,7 @@ Change =<HOST>=, =<LOGIN>=, =<PASSWORD>= and =<DBNAME>= (database name) to the c
 
 3) Then add a criteria, and then some documents or users.
 
-4) If you want to see a demo of the application, load =bootstrap_demo.sql=, it contains some documents, criteria and statistics
-
-** Security 
-/Read only if you want to have mutiple copies of Repositorium running on the same machine/
+** Security
 
 At =core.php= file (=~/app/config/=), at lines 204 and 209, randomly modify some alphanumeric characters of the corresponding Salt and Cypher Seed. 
 Example:

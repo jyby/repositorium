@@ -59,7 +59,7 @@ class PagesController extends AppController {
  * @var string 
  * @access public
  */
-	var $layout = 'home_init';
+	var $layout = 'non_repository_context';
 
 /**
  * Displays a view
@@ -67,46 +67,59 @@ class PagesController extends AppController {
  * @param mixed What page to display
  * @access public
  */
-// 	function display() {
-// 		$path = func_get_args();
+	function display() {
+		$path = func_get_args();
 
-// 		$count = count($path);
-// 		if (!$count) {
-// 			$this->redirect('/');
-// 		}
-// 		$page = $subpage = $title_for_layout = null;
+		$count = count($path);
+		if (!$count) {
+			$this->redirect('/');
+		}
+		$page = $subpage = $title_for_layout = null;
 
-// 		if (!empty($path[0])) {
-// 			$page = $path[0];
-// 		}
-// 		if (!empty($path[1])) {
-// 			$subpage = $path[1];
-// 		}
-// 		if (!empty($path[$count - 1])) {
-// 			$title_for_layout = Inflector::humanize($path[$count - 1]);
-// 		}
-// 		$this->set(compact('page', 'subpage', 'title_for_layout'));
-// 		$this->render(implode('/', $path));
-// 	}
+		if (!empty($path[0])) {
+			$page = $path[0];
+		}
+		if (!empty($path[1])) {
+			$subpage = $path[1];
+		}
+		if (!empty($path[$count - 1])) {
+			$title_for_layout = Inflector::humanize($path[$count - 1]);
+		}
+		$this->set(compact('page', 'subpage', 'title_for_layout'));
+		$this->render(implode('/', $path));
+	}
 
 	/**
 	 * 
 	 * Home page
 	 * @access public
 	 */
-	function home() {
+	function home() {		
 		if($this->getConnectedUser() == $this->anonymous) {
-			$this->render('home_anon');
+			$this->_anon();
 		} else {
-			$user = $this->getConnectedUser();
-			$data = $this->Repository->find('all', array('conditions' => array('Repository.user_id' => $user['User']['id'])));
-			
-			if(empty($data)) {
-				$this->render('home_anon');
-			} else {
-				$this->set(compact('data'));
-				$this->render('home_user');				
-			}			
+			$this->_user();
 		}		
+	}
+	
+	function _user() {
+		$user = $this->getConnectedUser();
+		//$conds = array('Repository.user_id <>' => $user['User']['id']);
+		$conds = array();
+		$my = $this->Repository->find('all', array('conditions' => array('Repository.user_id' => $user['User']['id']), 'recursive' => -1));
+		$feat = $this->Repository->find('all', array('conditions' => $conds, 'limit' => 20, 'recursive' => -1));
+		
+		if(empty($my)) {
+			$this->_anon();
+		} else {
+			$this->set(compact('my', 'feat'));
+			$this->render('home_user');
+		}
+	}
+	
+	function _anon() {
+		$data = $this->Repository->find('all', array('limit' => 20, 'recursive' => -1));
+		$this->set(compact('data'));
+		$this->render('home_anon');
 	}
 }

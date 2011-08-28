@@ -105,7 +105,7 @@ class RepositoriesController extends AppController {
 			if($this->Repository->validates()) {
 				$repository = $this->Repository->createNewRepository($this->data, $user);
 				
-				$this->set_repository_by_id($repository['Repository']['id']);				
+				$this->set_repository_by_url($repository['Repository']['url']);				
 			} else {
 				$this->Session->setFlash($this->Repository->invalidFields(), 'flash_errors');
 			}	

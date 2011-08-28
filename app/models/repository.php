@@ -179,7 +179,7 @@ class Repository extends AppModel {
 	
 	function createNewRepository($data) {		
 		if($this->save($data))
-			return $this->find('first', array('conditiosn' => array('id' => $this->getLastInsertID()), 'recursive' => -1));
+			return $this->find('first', array('conditions' => array('id' => $this->getLastInsertID()), 'recursive' => -1));
 		return null;
 	}
 	
