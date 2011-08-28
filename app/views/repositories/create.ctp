@@ -17,7 +17,7 @@ $this->Html->addCrumb($title);
 
 <?php echo $this->Form->input('description'); ?>
 
-<?php echo $this->Form->input('min_points', array('label' => 'Minimum points assigned to each new user of this repository')); ?>
+<?php //echo $this->Form->input('min_points', array('label' => 'Minimum points assigned to each new user of this repository')); ?>
 
 <?php echo $this->Form->input('download_cost', array('label' => 'Cost (in points) of each document to be downloaded')); ?>
 
@@ -25,6 +25,6 @@ $this->Html->addCrumb($title);
 
 <?php echo $this->Form->input('documentpack_size', array('label' => 'Size of each pack of documents for document download')); ?>
 
-<?php echo $this->Form->input('challenge_reward', array('label' => 'Amount of points to be rewarded after passing successfuly a challenge')); ?>
+<?php //echo $this->Form->input('challenge_reward', array('label' => 'Amount of points to be rewarded after passing successfuly a challenge')); ?>
 
 <?php echo $this->Form->end('Done'); ?>
