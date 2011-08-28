@@ -172,8 +172,9 @@ class PointsController extends AppController {
 			
 			/*
 			 * give points to user for passing the challenge
-			 */			
-			$this->_reward();
+			 */
+			$criteria = $this->Session->read('Challenge.criterio');			
+			$this->_reward($criteria);
 			
 			/*
 			 * check points again *if the action is not 'earn'*
@@ -248,7 +249,7 @@ class PointsController extends AppController {
 	 * give user points
 	 * anon doesn't earn points
 	 */
-	function _reward() {
+	function _reward($criteria_id) {
 		$user = $this->getConnectedUser();
 		
 		if($user == $this->anonymous)
@@ -258,7 +259,11 @@ class PointsController extends AppController {
 			return;
 		
 		$repo = $this->getCurrentRepository();
-		$reward = $repo['Repository']['challenge_reward'];
+		$criteria = $this->Criteria->read(null, $criteria_id);
+		if(!$criteria) {
+			$this->_cancel_everything('Criteria not found');
+		}
+		$reward = $criteria['Criteria']['challenge_reward'];
 			
 		if($this->RepositoriesUser->addPoints($user['User']['id'], $repo['Repository']['id'], $reward))	{	
 			$this->Session->write('Points.status', "Congratulations! you have won {$reward} points");
