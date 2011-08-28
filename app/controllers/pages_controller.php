@@ -59,7 +59,7 @@ class PagesController extends AppController {
  * @var string 
  * @access public
  */
-	var $layout = 'home';
+	var $layout = 'home_init';
 
 /**
  * Displays a view
