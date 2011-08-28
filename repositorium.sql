@@ -111,7 +111,7 @@ CREATE TABLE IF NOT EXISTS `experts` (
   `repository_id` int(255) NOT NULL,
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
-  `active` tinyint(4) NOT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
