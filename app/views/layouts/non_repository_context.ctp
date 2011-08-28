@@ -75,7 +75,7 @@
             <div class="header">
                 <div class="logo">
                     <?php echo $this->Html->link($this->Html->image('logo2.png'), '/', array('escape'=>false)); ?>                    
-                </div>
+                </div> 
                 <div class="box userbox">
                     <ul class="nav topmenu">
                         <?php if(!$this->Session->check('User.id')) { ?>
