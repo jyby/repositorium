@@ -75,7 +75,6 @@ class Document extends AppModel {
 	function saveWithTags($data = array(), $delimiter = ',') {
 		if(!empty($data)) {
 			$this->create();
-			$data['Document']['repository_id'] = 1;
 	
 			$there_are_tags = false;
 			if(isset($data['Document']['tags'])) {
