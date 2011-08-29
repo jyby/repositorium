@@ -35,12 +35,13 @@ echo $this->Form->radio('radiomenu',
 							array(
 								'value' => $current , 
 								'onClick' => 'document.location="'.Router::url('/',true).'/admin_documentos/all";'));
-if($isAdmin) {			
-	echo $this->Form->radio('radiomenu',
+								
+echo $this->Form->radio('radiomenu',
 	        					array('criterios' => 'Criteria'),
 								array(
 									'value' => $current , 
-									'onClick' => 'document.location="'.Router::url('/',true).'/criterias/index";'));
+									'onClick' => 'document.location="'.Router::url('/',true).'/criterias/index";'));						
+if($isAdmin) {			
 								
 	echo $this->Form->radio('radiomenu',
 	        					array('usuarios' => 'Users'),
