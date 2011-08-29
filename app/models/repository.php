@@ -177,7 +177,23 @@ class Repository extends AppModel {
 
 	/*******************************************************/
 	
-	function createNewRepository($data) {		
+	function createNewRepository($data) {
+		$ds = $this->getDataSource();
+		$ds->begin($this);
+			if(!$this->save($data))
+				$this->rollback($this);
+			
+			$expert = array(
+				'Expert' => array(
+					'user_id' => $data['Repository']['user_id'],
+					'repository_id' => $this->getLastInsertID()
+				)				
+			);
+			if(!$this->Expert->save($expert))
+				$this->rollback($this);
+			
+		$this->commit($this);
+		
 		if($this->save($data))
 			return $this->find('first', array('conditions' => array('id' => $this->getLastInsertID()), 'recursive' => -1));
 		return null;
