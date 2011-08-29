@@ -6,11 +6,11 @@
 <div class="clearicon"></div>
 <?php
 echo $this->Form->create(null, array('action' => '/', 'inputDefaults' => array('error' => false)));
-echo $this->Form->input('email');
-echo $this->Form->input('first_name');
-echo $this->Form->input('last_name');
-echo $this->Form->input('_password', array('label' => 'Password', 'type' => 'password'));
-echo $this->Form->input('_password2', array('label' => 'Repeat Password', 'type' => 'password'));
+echo $this->Form->input('User.email');
+echo $this->Form->input('User.first_name');
+echo $this->Form->input('User.last_name');
+echo $this->Form->input('User._password', array('label' => 'Password', 'type' => 'password'));
+echo $this->Form->input('User._password2', array('label' => 'Repeat Password', 'type' => 'password'));
 echo $this->Form->end('Sign In');
 
 ?>
