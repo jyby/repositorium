@@ -11,7 +11,7 @@
 
 class AdminDocumentosController extends AppController {
   
-  var $uses = array('Criteria', 'Document', 'CriteriasDocument', 'Tag', 'User');
+  var $uses = array('Criteria', 'Document', 'CriteriasDocument', 'Tag', 'User', 'Expert');
   var $helpers = array('Text', 'Number');
   var $paginate = array(
 	'CriteriasDocument' => array(
@@ -23,32 +23,31 @@ class AdminDocumentosController extends AppController {
   );
 
   function beforeFilter() {
-	if(!$this->Session->check('User.esExperto') && !$this->Session->check('User.esAdmin')) {
-		if($this->Session->check('User.id')) {
-	  		$this->Session->setFlash('You do not have permission to access this page');
-	  		$this->redirect('/');
-		} else {
-			$this->Session->setFlash('You do not have permission to access this page. Please log in if you are an administrator');
-			$this->redirect(array('controller' => 'login'));
-		}
+  	$user = $this->getConnectedUser();
+  	$repo = $this->getCurrentRepository();
+
+	if(is_null($repo)) {
+		$this->Session->setFlash("Must be in a repository");
+		$this->redirect('/');
 	}
+  	
+  	if($this->isAnonymous() || (!$this->isAdmin() && !$this->isExpert())) {
+  		$this->Session->setFlash('You do not have permission to access this page');
+  		$this->redirect('/');
+  	}  		 
+
 	if($this->Session->check('CriteriasDocument.limit'))
 		$this->paginate['CriteriasDocument']['limit'] = $this->Session->read('CriteriasDocument.limit');
 	if($this->Session->check('CriteriasDocument.order'))
 		$this->paginate['CriteriasDocument']['order'] = $this->_strToArray($this->Session->read('CriteriasDocument.order'));	
 	if(!isset($this->paginate['CriteriasDocument']['conditions'])) {
-		$repo = $this->getCurrentRepository();
-		if(is_null($repo)) {
-			$this->Session->setFlash("Must be in a repository");
-			$this->redirect('/');
-		}
 		$conditions = array(
 			'Criteria.repository_id' => $repo['Repository']['id']
 		); 
-		
 		$this->paginate['CriteriasDocument']['conditions'] = $conditions;
 	}
   }
+
 
   function index() {
 	$this->redirect(array('action'=>'validados'));
@@ -61,9 +60,15 @@ class AdminDocumentosController extends AppController {
   		$this->redirect('/');
   	}
   	$criterio_list = $this->Criteria->find('list', array('conditions' => array('Criteria.repository_id' => $repo['Repository']['id'])));
-  	$criterio_n = 1;  	
+  	if(!empty($criterio_list)) {
+  		$keys = array_keys($criterio_list);
+  		$criterio_n = $keys[0];
+  	} else {
+  		$criterio_n = 0;
+  	}
+  	  	
   	if(!empty($this->data)) {
-  		if(!empty($this->data['Criteria']['pregunta'])) {
+  		if(!empty($this->data['Criteria']['question'])) {
   			$criterio_n = $this->data['Criteria']['question'];
   			$this->Session->write('CriteriasDocument.criterio', $criterio_n);  		
   		}
