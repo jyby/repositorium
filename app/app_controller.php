@@ -64,7 +64,7 @@ class AppController extends Controller {
 	
 	var $uses = array('User', 'Repository');
 	
-	var $helpers = array('Repo', 'Session', 'Html');
+	var $helpers = array('Repo', 'Session', 'Html', 'Form');
 	
 	function login($data = array()) {
 		if(empty($data)) {
