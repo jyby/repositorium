@@ -32,9 +32,9 @@ CREATE TABLE IF NOT EXISTS `criterias` (
   `question` text NOT NULL,
   `answer_1` varchar(255) NOT NULL,
   `answer_2` varchar(255) NOT NULL,
-  `documentpack_size` int(11) NOT NULL,
-  `documentpack_cost` int(11) NOT NULL,
-  `documentupload_cost` int(11) NOT NULL,
+  `documentpack_size` int(11) NOT NULL DEFAULT '0',
+  `documentpack_cost` int(11) NOT NULL DEFAULT '0',
+  `documentupload_cost` int(11) NOT NULL DEFAULT '0',
   `documentvalidation_reward` int(11) NOT NULL,
   `challenge_reward` int(11) NOT NULL DEFAULT '0',
   `penalization_a` double NOT NULL,
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `criterias` (
   `maxchallenge_size` int(11) NOT NULL,
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
-  `active` tinyint(1) NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -95,7 +95,7 @@ CREATE TABLE IF NOT EXISTS `documents` (
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   `repository_id` int(255) NOT NULL,
-  `active` tinyint(1) NOT NULL,
+  `active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -134,6 +134,7 @@ CREATE TABLE IF NOT EXISTS `repositories` (
   `upload_cost` int(11) NOT NULL DEFAULT '10',
   `documentpack_size` int(255) NOT NULL,
   `challenge_reward` int(255) NOT NULL DEFAULT '0',
+  `active` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -182,7 +183,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `is_administrator` tinyint(1) NOT NULL DEFAULT '0',
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
-  `active` tinyint(1) NOT NULL,
+  `active` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
@@ -191,8 +192,8 @@ CREATE TABLE IF NOT EXISTS `users` (
 --
 
 INSERT INTO `users` (`id`, `email`, `first_name`, `last_name`, `password`, `salt`, `is_administrator`, `created`, `modified`, `active`) VALUES
-(1, 'annonymous', 'annonymous', 'annonymous', '', '', 0, '2011-06-23 15:54:33', '2011-06-23 15:54:33', 0),
-(2, 'admin@example.com', 'admin', 'user', 'fbe82ab72970b9940724512227185348eac9d7fd', '1738993739', 1, '2011-06-23 15:55:17', '2011-06-23 15:55:17', 0);
+(1, 'annonymous', 'annonymous', 'annonymous', '', '', 0, '2011-06-23 15:54:33', '2011-06-23 15:54:33', 1),
+(2, 'admin@example.com', 'admin', 'user', 'fbe82ab72970b9940724512227185348eac9d7fd', '1738993739', 1, '2011-06-23 15:55:17', '2011-06-23 15:55:17', 1);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
