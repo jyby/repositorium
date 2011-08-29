@@ -26,16 +26,28 @@ class AdminDocumentosController extends AppController {
 	if(!$this->Session->check('User.esExperto') && !$this->Session->check('User.esAdmin')) {
 		if($this->Session->check('User.id')) {
 	  		$this->Session->setFlash('You do not have permission to access this page');
-	  		$this->redirect(array('controller' => 'pages'));
+	  		$this->redirect('/');
 		} else {
 			$this->Session->setFlash('You do not have permission to access this page. Please log in if you are an administrator');
-			$this->redirect(array('controller' => 'iniciar_sesion'));
+			$this->redirect(array('controller' => 'login'));
 		}
 	}
 	if($this->Session->check('CriteriasDocument.limit'))
 		$this->paginate['CriteriasDocument']['limit'] = $this->Session->read('CriteriasDocument.limit');
 	if($this->Session->check('CriteriasDocument.order'))
-		$this->paginate['CriteriasDocument']['order'] = $this->_strToArray($this->Session->read('CriteriasDocument.order'));
+		$this->paginate['CriteriasDocument']['order'] = $this->_strToArray($this->Session->read('CriteriasDocument.order'));	
+	if(!isset($this->paginate['CriteriasDocument']['conditions'])) {
+		$repo = $this->getCurrentRepository();
+		if(is_null($repo)) {
+			$this->Session->setFlash("Must be in a repository");
+			$this->redirect('/');
+		}
+		$conditions = array(
+			'Criteria.repository_id' => $repo['Repository']['id']
+		); 
+		
+		$this->paginate['CriteriasDocument']['conditions'] = $conditions;
+	}
   }
 
   function index() {
@@ -43,11 +55,16 @@ class AdminDocumentosController extends AppController {
   }
   
   function _beforeList($confirmado, $all = false) {
-  	$criterio_list = $this->Criteria->find('list');
+  	$repo = $this->getCurrentRepository();
+  	if(is_null($repo)) {
+  		$this->Session->setFlash("Must be in a repository");
+  		$this->redirect('/');
+  	}
+  	$criterio_list = $this->Criteria->find('list', array('conditions' => array('Criteria.repository_id' => $repo['Repository']['id'])));
   	$criterio_n = 1;  	
   	if(!empty($this->data)) {
   		if(!empty($this->data['Criteria']['pregunta'])) {
-  			$criterio_n = $this->data['Criteria']['pregunta'];
+  			$criterio_n = $this->data['Criteria']['question'];
   			$this->Session->write('CriteriasDocument.criterio', $criterio_n);  		
   		}
   		
