@@ -55,6 +55,9 @@
 
 if(Configure::read('App.subdomains')) {
 
+	$domain = Configure::read('App.domain');
+	ini_set('session.cookie_domain', ".{$domain}");  
+
 	// urls of the form repo_name.example.com, passing 'repo_name' to Configure instance
 	 // get the URL, and split it using . so we can get the sub-domain
 	$url = explode('.', $_SERVER['HTTP_HOST'], 3); //creates the various parts
