@@ -19,7 +19,7 @@ class LoginController extends AppController {
 		} else {
 	  		$this->redirect('index');
 		}
-		$this->redirect($this->referer());
+		$this->redirect('/');
   	}
 
   	function logout() {
