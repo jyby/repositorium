@@ -65,7 +65,7 @@ if(Configure::read('App.subdomains')) {
 	if (count($url) === 2 OR $url[0] === 'www' ) {
 	
 		// default routing for main site
-		Configure::write('Route.default', array('controller' => 'pages', 'action' => 'display', 'home'));
+		Configure::write('Route.default', array('controller' => 'pages', 'action' => 'home'));
 	
 	}
 	
