@@ -20,21 +20,6 @@ class RepositoriesController extends AppController {
 	var $Repository;
 	
 	var $name = 'Repositories';
-		
-	/**
-	 * Filter if subdomains feature is enabled
-	 * @see AppController::beforeFilter()
-	 */
-	function beforeFilter() {
-		if(strcmp($this->action, 'index') == 0 && $this->Session->check('Repository.subdomains')) {
-			$this->redirect(array('action' => 'dispatch', $this->params['pass'][0]));
-		}	
-	}
-	
-	function dispatch($url) {
-		$domain = Configure::read('App.domain');
-		$this->redirect("http://{$url}.{$domain}/");
-	}
 	
 	function index($repo_url = null) {	
 		if(is_null($repo_url)) {

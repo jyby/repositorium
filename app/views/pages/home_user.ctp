@@ -7,7 +7,7 @@ Hay, user!
 		<strong>Your Repositories</strong>
 		<ul>
 			<?php foreach($my as $r) { ?>
-			<li><?php echo $this->Html->link($r['Repository']['name'], array('controller' => 'repositories', 'action' => 'index', $r['Repository']['url'])); ?></li>
+			<li><?php echo $this->Repo->link($r['Repository']['name'], $r['Repository']['url']); ?></li>
 			<?php } ?>
 		</ul> 
 	</div> 
@@ -15,7 +15,7 @@ Hay, user!
 		<strong>Featured</strong>
 	 	<ul>
 	 		<?php foreach($feat as $r) { ?>
-			<li><?php echo $this->Html->link($r['Repository']['name'], array('controller' => 'repositories', 'action' => 'index', $r['Repository']['url'])); ?></li>
+			<li><?php echo $this->Repo->link($r['Repository']['name'], $r['Repository']['url']); ?></li>
 			<?php } ?>
 	 	</ul>
 	</div> 

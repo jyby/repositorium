@@ -21,41 +21,23 @@
  * @since         CakePHP(tm) v 0.2.9
  * @license       MIT License (http://www.opensource.org/licenses/mit-license.php)
  */
-
-
-if(Configure::read('App.subdomains'))
+if(Configure::read('App.subdomains')) {
 	Router::connect('/', Configure::read('Route.default'));
-
-/**
- * Here, we are connecting '/' (base path) to controller called 'Pages',
- * its action called 'display', and we pass a param to select the view file
- * to use (in this case, /app/views/pages/home.ctp)...
- */
-
-if(!Configure::read('App.subdomains'))
+} else {
 	Router::connect('/', array('controller' => 'pages', 'action' => 'home'));
-	
-	
+}
+
 /**
  * ...and connect the rest of 'Pages' controller's urls.
  */
 	Router::connect('/pages/*', array('controller' => 'pages', 'action' => 'display'));
-	
+
 /**
   * custom routes
   */
-  	Router::connect('/upload', array('controller' => 'documents', 'action' => 'upload'));
-  	Router::connect('/view', array('controller' => 'bajar_documento'));
-  	
-  	Router::connect('/profile', array('controller' => 'users'));
+  	Router::connect('/upload', array('controller' => 'documents', 'action' => 'upload'));  	
   	Router::connect('/logout', array('controller' => 'login', 'action' => 'logout'));
-  	
-  	Router::connect('/repositories/new', array('controller' => 'repositories', 'action' => 'create'));
-  	
-  	
-/**
- * controllers
- */  	
+
   	Router::connect('/manage', 			array('controller' => 'admin_documentos'));
   	Router::connect('/manage-users', 	array('controller' => 'admin_usuarios'));
   	Router::connect('/challenges', 		array('controller' => 'challenges'));
@@ -65,10 +47,11 @@ if(!Configure::read('App.subdomains'))
   	Router::connect('/register', 		array('controller' => 'register'));
   	Router::connect('/repositories', 	array('controller' => 'repositories'));
   	Router::connect('/tags', 			array('controller' => 'tags'));
-  	Router::connect('/users', 			array('controller' => 'users'));
+  	Router::connect('/profile', 		array('controller' => 'users'));
   	Router::connect('/points',			array('controller' => 'points'));
-  	
+
 /**
  * repositories
  */
+  	Router::connect('/repositories/new', array('controller' => 'repositories', 'action' => 'create'));
   	Router::connect('/repositories/*', 	array('controller' => 'repositories', 'action' => 'index'));

@@ -6,7 +6,7 @@ Hay, anon!
 <ul>
 <?php foreach($data as $r) { ?>
 
-	<li><?php echo $this->Html->link($r['Repository']['name'], array('controller' => 'repositories', 'action' => 'index', $r['Repository']['url'])); ?></li>
+	<li><?php echo $this->Repo->link($r['Repository']['name'], $r['Repository']['url']); ?></li>
 
 
 <?php } ?>
