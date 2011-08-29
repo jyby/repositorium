@@ -21,7 +21,7 @@ class RepositoriesController extends AppController {
 	 */
 	function beforeFilter() {
 		if(strcmp($this->action, 'index') == 0 && $this->Session->check('Repository.subdomains')) {
-			$this->redirect('http://'.$this->params['pass'][0].'.repositorium.cl/');
+			//$this->redirect('http://'.$this->params['pass'][0].'.repositorium.cl/');
 		}	
 	}
 	
