@@ -69,9 +69,15 @@ class CriteriasDocument extends AppModel {
 	    	'total_app' => 'total_answers_2*100/(total_answers_1 + total_answers_2)'
 	);
 	
-	function massCreateAfterCriteria($id_criterio) {
-		if(!is_null($id_criterio)) {
-			$docs = $this->Document->find('all', array('fields' => array('Document.id'), 'recursive' => -1));
+	function massCreateAfterCriteria($id_criterio = null, $repository_id = null) {
+		if(!is_null($id_criterio) && !is_null($repository_id)) {
+			$docs = $this->Document->find('all', array(
+				'conditions' => array(
+					'Document.repository_id' => $repository_id
+				),
+				'fields' => array('Document.id'), 
+				'recursive' => -1)
+			);
 
 			foreach($docs as $doc) {
 				$this->create();
@@ -94,9 +100,15 @@ class CriteriasDocument extends AppModel {
 		return true;
 	}
 	
-	function massCreateAfterDocument($id_documento = null) {
-		if(!is_null($id_documento)) {
-			$criterios = $this->Criteria->find('all', array('fields' => 'Criteria.id', 'recursive' => -1));
+	function massCreateAfterDocument($id_documento = null, $repository_id = null) {
+		if(!is_null($id_documento) && !is_null($repository_id)) {
+			$criterios = $this->Criteria->find('all', array(
+				'conditions' => array(
+					'Criteria.repository_id' => $repository_id
+				),
+				'fields' => 'Criteria.id', 
+				'recursive' => -1)
+			);
 			
 			$ds = $this->getDataSource();
 			$ds->begin($this);

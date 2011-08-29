@@ -219,11 +219,13 @@ class Criteria extends AppModel {
 	// y los usuarios, con TamanoDesafio
 	function afterSave($created) {
 		if($created) {
+			$cr = $this->read(null, $this->id);
+			
 			$ds = $this->getDataSource();
 				
 			$ds->begin($this);
 			if(
-				$this->CriteriasDocument->massCreateAfterCriteria($this->id) &&
+				$this->CriteriasDocument->massCreateAfterCriteria($this->id, $cr['Criteria']['repository_id']) &&
 				$this->CriteriasUser->massCreateAfterCriteria($this->id, $this->field('minchallenge_size', array('id' => $this->id))))
 				$ds->commit($this);
 			else

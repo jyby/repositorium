@@ -122,9 +122,11 @@ class Document extends AppModel {
 	
 	
 	// done: multiples criterios
+	// done: multiple repositories
 	function afterSave($created) {
 		if($created) {
-			$this->CriteriasDocument->massCreateAfterDocument($this->id);
+			$doc = $this->read(null, $this->id);
+			$this->CriteriasDocument->massCreateAfterDocument($this->id, $doc['Document']['repository_id']);
 		}
 	}
 	
