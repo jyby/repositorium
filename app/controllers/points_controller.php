@@ -7,7 +7,7 @@
  */
 class PointsController extends AppController {
 	var $name = 'Points';
-	var $uses = array('RepositoriesUser');
+	var $uses = array('RepositoriesUser', 'Criteria');
 	
 	var $earn = 1;
 	var $upload = 2;
@@ -18,6 +18,12 @@ class PointsController extends AppController {
 	 * @var RepositoriesUser
 	 */
 	var $RepositoriesUser;
+	
+	/**
+	 * Criteria Model
+	 * @var Criteria
+	 */
+	var $Criteria;
 	
 	/**
 	 * SessionComponent
