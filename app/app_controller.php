@@ -56,13 +56,19 @@ class AppController extends Controller {
 	var $Repository;
 	
 	/**
+	 * Expert Model
+	 * @var Expert
+	 */
+	var $Expert;
+	
+	/**
 	 * Anonymous user representation, use with AppController::getConnectedUser()
 	 */
 	var $anonymous = array(
 		'User' => array('id' => 1)
 	);
 	
-	var $uses = array('User', 'Repository');
+	var $uses = array('Expert', 'User', 'Repository');
 	
 	var $helpers = array('Repo', 'Session', 'Html', 'Form');
 	
@@ -79,12 +85,10 @@ class AppController extends Controller {
 			$this->Session->delete('Document');
 			$this->Session->delete('Points');
 			$this->Session->delete('Challenge');
-			
-			if(!empty($user['Expert']))
-				$this->Session->write('User.esExperto', true);
-				
-			if(!empty($user['User']['is_administrator']))
+
+			if($this->isAdmin()) {
 				$this->Session->write('User.esAdmin', true);
+			}
 			
 			$this->Session->write('User.id', $user['User']['id']);
 			$this->Session->write('User.first_name', $user['User']['first_name']);
@@ -114,6 +118,12 @@ class AppController extends Controller {
 			$this->Session->write('Repository.current', $repo['Repository']['url']);
 			$this->Session->write('Repository.name', $repo['Repository']['name']);
 		}
+		
+		if($this->isExpert()) {
+			$this->Session->write('User.esExperto', true);
+		} else {
+			$this->Session->write('User.esExperto', false);
+		}
 	}
  
 	function e404() {
@@ -125,6 +135,11 @@ class AppController extends Controller {
 			$user_id = $this->Session->read('User.id');
 		else
 			return $this->anonymous;
+		
+		// get only User and Expert objects
+// 		$this->User->unbindModel(array(
+// 			'hasMany' => array('Document', 'Repository', 'CriteriasUser', 'RepositoriesUser')
+// 		));
 		
 		return $this->User->find('first', array('conditions' => array('User.id' => $user_id), 'recursive' => -1));
 		
@@ -161,5 +176,41 @@ class AppController extends Controller {
 		if(isset($u['User']['is_administrator']))
 			return $u['User']['is_administrator'];
 		return false;
+	}
+	
+	function requireRepository() {
+		$repo = $this->getCurrentRepository();
+		if(is_null($repo)) {
+			$this->Session->setFlash("You must be in a repository", 'flash_errors');
+			$this->redirect('/');
+		}
+		
+		return $repo;
+	}
+	
+	function isExpert() {
+		$repo = $this->requireRepository();
+		$user = $this->getConnectedUser();
+		
+		$expert = $this->Expert->find('first', array(
+  			'conditions' => array(
+  				'repository_id' => $repo['Repository']['id'],
+  				'user_id' => $user['User']['id']
+			),
+		  	'recursive' => -1
+		));
+		if(empty($expert)) {
+			return false;
+		}
+		
+		return true;
+	}
+	
+	function isAnonymous() {
+		return $this->getConnectedUser() == $this->anonymous;
+	}
+	
+	function isLoggedIn() {
+		return $this->getConnectedUser() != $this->anonymous;
 	}
 }
