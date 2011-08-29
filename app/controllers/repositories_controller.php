@@ -1,4 +1,10 @@
 <?php
+/**
+ * 
+ * This code NEEEEDS to be refactored (someday)
+ * @author mquezada
+ *
+ */
 
 class RepositoriesController extends AppController {
 	/**
@@ -21,8 +27,13 @@ class RepositoriesController extends AppController {
 	 */
 	function beforeFilter() {
 		if(strcmp($this->action, 'index') == 0 && $this->Session->check('Repository.subdomains')) {
-			//$this->redirect('http://'.$this->params['pass'][0].'.repositorium.cl/');
+			$this->redirect(array('action' => 'dispatch', $this->params['pass'][0]));
 		}	
+	}
+	
+	function dispatch($url) {
+		$domain = Configure::read('App.domain');
+		$this->redirect("http://{$url}.{$domain}/");
 	}
 	
 	function index($repo_url = null) {	

@@ -60,6 +60,10 @@
  */
  	Configure::write('App.subdomains', false);
 
+/**
+ * Domain name (only if subdomains feature is enabled)
+ */
+ 	Configure::write('App.domain', 'repositorium.cl');
 
 /**
  * To configure CakePHP *not* to use mod_rewrite and to
