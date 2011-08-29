@@ -45,6 +45,14 @@ class DocumentsController extends AppController {
   function upload() {
   	if(!empty($this->data)) {  	
 	  	$user = $this->getConnectedUser();
+	  	$repo = $this->getCurrentRepository();
+	  	
+	  	if(is_null($repo)) {
+	  		$this->Session->setFlash("You must be in a repository");
+	  		$this->redirect('/');
+	  	}
+	  	
+	  	$this->data['Document']['repository_id'] = $repo['Repository']['id']; 
 	  	$this->data['Document']['user_id'] = $user['User']['id'];
 	  	$this->Document->set($this->data);  
 	  	
