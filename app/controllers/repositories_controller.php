@@ -107,7 +107,12 @@ class RepositoriesController extends AppController {
 			
 			if($this->Repository->validates()) {
 				$repository = $this->Repository->createNewRepository($this->data, $user);
+				if(is_null($repository)) {
+					$this->Session->setFlash('An error occurred creating the repository. Please, blame the developer');
+					$this->redirect('/');
+				}
 				
+				$this->_make_user_expert();
 				$this->set_repository_by_url($repository['Repository']['url']);				
 			} else {
 				$this->Session->setFlash($this->Repository->invalidFields(), 'flash_errors');
@@ -115,4 +120,8 @@ class RepositoriesController extends AppController {
 		}		
 	}
 
+	
+	function _make_user_expert() {
+		$this->Session->write('User.esExperto', true);
+	}
 }
