@@ -13,4 +13,13 @@ class RepoHelper extends AppHelper {
 		}
 				
 	}
+	
+	function normal_link($title, $url = null, $options = array(), $confirmMessage = false) {
+		if(Configure::read('App.subdomains') && $url === '/') {
+			$domain = Configure::read('App.domain');
+			return $this->Html->link($title, "www.{$domain}", $options, $confirmMessage);
+		}
+		
+		return $this->Html->link($title, $url, $options, $confirmMessage);
+	}
 }
