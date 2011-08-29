@@ -5,21 +5,13 @@ class LoginController extends AppController {
   	var $uses = array();
 
   	function beforeRender() {
-		if($this->getConnectedUser() != $this->anonymous)
+		if($this->isLoggedIn())
 	  		$this->redirect('/');
   	}
 
-  	function index() {	}
-
-  	function authenticate() {
-		if (!empty($this->data)) { // siempre pasa
-	  		if(!$this->login($this->data)) {
-				$this->redirect('index');
-	  		}
-		} else {
-	  		$this->redirect('index');
-		}
-		$this->redirect('/');
+  	function index() {	
+  		if (!empty($this->data) && $this->login($this->data))
+			$this->redirect($this->referer());
   	}
 
   	function logout() {
