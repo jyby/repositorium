@@ -140,13 +140,15 @@ class CriteriasDocument extends AppModel {
 		$criteria_id 	= $data['criteria_id'];
 		$confirmado 	= $data['confirmado'];
 		$quantity 		= $data['quantity'];
-	
+		$repository_id	= $data['repository_id'];
+
 		$ids = $this->find('all', array(
 				'conditions' => array(
 					'CriteriasDocument.criteria_id' => $criteria_id,
 					'CriteriasDocument.validated' => $confirmado,
 					'CriteriasDocument.challengeable' => $preguntable,
-					'Document.user_id <>' => $usuario_id
+					'Document.user_id <>' => $usuario_id,
+					'Document.repository_id' => $repository_id
 				),
 			)
 		);

@@ -258,6 +258,7 @@ class Criteria extends AppModel {
 		$qty_of_nonvalidated = floor((1 - $proportion) * $c);
 	
 		$v_params = array(
+				'repository_id' => $repository_id,
 				'criteria_id' => $criterio_id,
 				'user_id' => $user_id,
 				'confirmado' => true,
@@ -265,6 +266,7 @@ class Criteria extends AppModel {
 		);
 	
 		$n_params = array(
+				'repository_id' => $repository_id,
 				'criteria_id' => $criterio_id,
 				'user_id' => $user_id,
 				'confirmado' => false,
