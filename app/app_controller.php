@@ -64,7 +64,13 @@ class AppController extends Controller {
 	
 	var $uses = array('User', 'Repository');
 	
-	function beforeFilter() { }
+	function beforeFilter() {
+		if(!$this->Session->check('Repository.subdomains')) {
+			if(Configure::read('App.subdomains')) {
+				$this->Session->write('Repository.subdomains', true);
+			}
+		}
+	}
 	
 	function login($data = array()) {
 		if(empty($data)) {
