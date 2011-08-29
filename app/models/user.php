@@ -174,10 +174,11 @@ class User extends AppModel {
 	 * @return the corresponding user object, null otherwise
 	 */
 	function getUser($data = array()) {
-		if(empty($data) or !isset($data['User']['email']) or !isset($data['User']['password']))
+		if(empty($data) or !isset($data['User']['email']) or !isset($data['User']['password'])) {
 			return null;
+		}
 		$d = $this->findByEmail($data['User']['email']);
-	
+		
 		$pass_to_check = $d['User']['password'];
 		$pass_from_login = sha1($data['User']['password'] . $d['User']['salt']);
 		if(strcmp($pass_to_check,$pass_from_login) == 0) {
@@ -187,7 +188,7 @@ class User extends AppModel {
 	}
 	
 	/**
-	 *  
+	 *  @TODO EXPERTS AND REPOSITORIES!!!
 	 */
 	function afterSave($created) {
 		if($created) {	
