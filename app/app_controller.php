@@ -148,7 +148,7 @@ class AppController extends Controller {
 		}
 		
 		if(!is_null($repo)) {
-			$data = $this->Repository->find('first', array('conditions' => array('Repository.url' => $this->Session->read('Repository.current'))));
+			$data = $this->Repository->find('first', array('conditions' => array('Repository.url' => $repo)));
 			if(!is_null($data) && !empty($data)) {
 				return $data;
 			}
