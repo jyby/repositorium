@@ -67,6 +67,8 @@ class Document extends AppModel {
 	// ============================ METHODS ==============================================
 	
 	/**
+	 * 
+	 * @TODO handle tags with spaces
 	 * saves a document and its tags
 	 * @param array $data
 	 * @param string $delimiter (of tags)
