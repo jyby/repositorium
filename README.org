@@ -65,7 +65,7 @@ Change =<HOST>=, =<LOGIN>=, =<PASSWORD>= and =<DBNAME>= (database name) to the c
 
 ** Security
 
-At =core.php= file (=~/app/config/=), at lines 204 and 209, randomly modify some alphanumeric characters of the corresponding Salt and Cypher Seed. 
+At =core.php= file (=app/config/=), at lines 204 and 209, randomly modify some alphanumeric characters of the corresponding Salt and Cypher Seed. 
 Example:
 
 =Configure::write('Security.salt', '<SOME LONG RANDOM STRING>');=
