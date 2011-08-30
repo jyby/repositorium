@@ -35,8 +35,20 @@ already exist):
 Copy =database.php.default= to =database.php=, and =core.php.default= 
 to =core.php=, and =bootstrap.php.default= to =bootstrap.php= in =app/config=. 
 
-Edit =database.php= at line 76 
-        ~var $default = array('driver' => 'mysql','persistent' => false,'host' => '<HOST>','login' => '<LOGIN>','password' => '<PASSWORD>','database' => '<DBNAME>','prefix' => '',);~
+Edit =database.php=:
+
+#+BEGIN_SRC php 
+    var $default = array(
+        'driver' => 'mysql',
+        'persistent' => false,
+        'host' => '<HOST>',
+        'login' => '<LOGIN>',
+        'password' => '<PASSWORD>',
+        'database' => '<DBNAME>',
+        'prefix' => '',
+    );
+#+END_SRC
+
 Change =<HOST>=, =<LOGIN>=, =<PASSWORD>= and =<DBNAME>= (database name) to the correspoding values in your system
 
 ** Initial DB Dump
