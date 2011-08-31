@@ -9,13 +9,15 @@ if(isset($current)) {
 	$classes['cr'] = 'current';
   } else if(strcmp($current, 'usuarios') == 0) {
 	$classes['usr'] = 'current';
-  }else if(strcmp($current, 'variables') == 0) {
+  }else if(strcmp($current, 'repositories') == 0) {
 	$classes['var'] = 'current';
   }
 }
 ?>
 <div class="admin-menu">
 <?php
+
+if($isExpert) {
 
 echo $this->Form->radio('radiomenu',
         					array('no_validados' => 'Pending validation'),
@@ -41,13 +43,18 @@ echo $this->Form->radio('radiomenu',
 								array(
 									'value' => $current , 
 									'onClick' => 'document.location="'.Router::url('/',true).'/criterias/index";'));						
-if($isAdmin) {			
+} if($isAdmin) {			
 								
 	echo $this->Form->radio('radiomenu',
 	        					array('usuarios' => 'Users'),
 								array(
 									'value' => $current , 
 									'onClick' => 'document.location="'.Router::url('/',true).'/admin_usuarios/listar";'));
+	echo $this->Form->radio('radiomenu',
+								array('repositories' => 'Repositories'),
+								array(
+									'value' => $current , 
+									'onClick' => 'document.location="'.Router::url('/',true).'/admin_repositories/listar";'));
 }
 ?>
 </div>

@@ -74,6 +74,7 @@ echo $this->Form->end();
 	   $this->element('menu_administrar', array(
 		 'isLogged' => $this->Session->check('User.id'), 
 		 'isAdmin' => $this->Session->check('User.esAdmin'),
+		 'isExpert' => $this->Session->check('User.esExperto'),
          'current' => $current
 	   ));       
 ?> 
