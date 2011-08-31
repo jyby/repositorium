@@ -121,8 +121,9 @@ class AdminDocumentosController extends AppController {
 	$limit = $this->Session->read('CriteriasDocument.limit') ? $this->Session->read('CriteriasDocument.limit') : $this->paginate['CriteriasDocument']['limit'];
 	$ordering = $this->Session->read('CriteriasDocument.order') ? $this->Session->read('CriteriasDocument.order') : $this->_arrayToStr($this->paginate['CriteriasDocument']['order']);
 	$filter = $this->Session->read('CriteriasDocument.filter') ? $this->Session->read('CriteriasDocument.filter') : 'all';
+	$repo = $this->getCurrentRepository();
 	
-	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter'));
+	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter', 'repo'));
 	$this->render('listar');
   }
 
@@ -135,8 +136,9 @@ class AdminDocumentosController extends AppController {
 	$limit = $this->Session->read('CriteriasDocument.limit') ? $this->Session->read('CriteriasDocument.limit') : $this->paginate['CriteriasDocument']['limit'];
 	$ordering = $this->Session->read('CriteriasDocument.order') ? $this->Session->read('CriteriasDocument.order') : $this->_arrayToStr($this->paginate['CriteriasDocument']['order']);
 	$filter = $this->Session->read('CriteriasDocument.filter') ? $this->Session->read('CriteriasDocument.filter') : 'all';
-		
-	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter'));
+	$repo = $this->getCurrentRepository();
+	
+	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter', 'repo'));
 	$this->render('listar');
   }	
   
@@ -149,14 +151,15 @@ class AdminDocumentosController extends AppController {
 	$limit = $this->Session->read('CriteriasDocument.limit') ? $this->Session->read('CriteriasDocument.limit') : $this->paginate['CriteriasDocument']['limit'];
 	$ordering = $this->Session->read('CriteriasDocument.order') ? $this->Session->read('CriteriasDocument.order') : $this->_arrayToStr($this->paginate['CriteriasDocument']['order']);
 	$filter = $this->Session->read('CriteriasDocument.filter') ? $this->Session->read('CriteriasDocument.filter') : 'all';
+	$repo = $this->getCurrentRepository();
 	
-	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter'));
+	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter', 'repo'));
 	$this->render('listar');
   }
 
   
   function add() {
-	$this->redirect('/subir_documento');
+	$this->redirect(array('controller' => 'documents', 'action' => 'upload'));
   }
   
   function edit($id = null, $criterio = 1) {
@@ -190,8 +193,11 @@ class AdminDocumentosController extends AppController {
 	  $criterios_list = $this->Criteria->find('list');
 	  $criterios_n = $criterio;
 	  
+	  // repo
+	  $repo = $this->getCurrentRepository();
+	  
 	  $this->set('data',$this->data);
-	  $this->set(compact('criterios_list', 'criterios_n'));	  
+	  $this->set(compact('criterios_list', 'criterios_n', 'repo'));	  
 	} else {
 	  // save stats info
 	  if($this->CriteriasDocument->save($this->data))

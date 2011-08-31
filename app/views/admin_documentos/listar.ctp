@@ -92,7 +92,8 @@
 	$this->viewVars['title_for_layout'] = "Administer $title";
 	
 	/* breadcrumbs */
-	$this->Html->addCrumb('Manage', '/manage/');
+	$this->Html->addCrumb($repo['Repository']['name'], '/repositories/'.$repo['Repository']['url']);
+	$this->Html->addCrumb('Manage', '/manage/');	
 	$this->Html->addCrumb($title);
 	/* end breadcrumbs */ 
 	 

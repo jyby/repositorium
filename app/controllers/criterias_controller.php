@@ -24,8 +24,8 @@ class CriteriasController extends AppController {
 	if($this->Session->check('Criteria.limit'))
 		$this->paginate['Criteria']['limit'] = $this->Session->read('Criteria.limit'); 
 	if(!isset($this->paginate['Criteria']['conditions'])) {
-		$repo = $this->getCurrentRepository();
-		
+		$repo = $this->requireRepository();
+				
 		$this->paginate['Criteria']['conditions'] = array(
 			'Criteria.repository_id' => $repo['Repository']['id']
 		);
@@ -40,12 +40,15 @@ class CriteriasController extends AppController {
   		} 
   	} 
   	$limit = $this->Session->read('Criteria.limit') ? $this->Session->read('Criteria.limit') : $this->paginate['Criteria']['limit'];
+  	$repo = $this->getCurrentRepository();
   	$this->data = $this->paginate();  
-  	$this->set(compact('limit'));	
+  	$this->set(compact('limit', 'repo'));	
   }
 
   function add() {
-  	$this->set('current', 'Add new');
+  	$repo = $this->getCurrentRepository();
+  	$current = 'Add new';
+  	$this->set(compact('repo', 'current'));
 	if(!empty($this->data)) {
 	  $this->Criteria->set($this->data);	  
 	  if($this->Criteria->validates()) {

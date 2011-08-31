@@ -13,6 +13,7 @@ function porcentaje($q,$tot) {
 	$current = 	($en_valid ? 'validados' : 'no_validados');
 	$title = "Edit document";	
 	$this->viewVars['title_for_layout'] = $title;
+	$this->Html->addCrumb($repo['Repository']['name'], '/repositories/'.$repo['Repository']['url']);
 	$this->Html->addCrumb('Manage', '/manage/');
 	$this->Html->addCrumb(($en_valid ? 'Validated Documents' : 'Pending validation'), $current);
 	$this->Html->addCrumb($title);
