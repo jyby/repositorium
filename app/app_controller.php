@@ -65,7 +65,7 @@ class AppController extends Controller {
 	 * Anonymous user representation, use with AppController::getConnectedUser()
 	 */
 	var $anonymous = array(
-		'User' => array('id' => 1)
+		'User' => array('id' => 1, 'is_administrator' => 0)
 	);
 	
 	var $uses = array('Expert', 'User', 'Repository');
@@ -85,15 +85,15 @@ class AppController extends Controller {
 			$this->Session->delete('Document');
 			$this->Session->delete('Points');
 			$this->Session->delete('Challenge');
-
-			if($this->isAdmin()) {
-				$this->Session->write('User.esAdmin', true);
-			}
 			
 			$this->Session->write('User.id', $user['User']['id']);
 			$this->Session->write('User.first_name', $user['User']['first_name']);
 			$this->Session->write('User.last_name', $user['User']['last_name']);
 
+			if($this->isAdmin()) {
+				$this->Session->write('User.esAdmin', true);
+			}
+			
 			if($this->Session->check('Repository.current')) {
 				$repository = $this->getCurrentRepository();
 				$name = $repository['Repository']['name'];
@@ -136,12 +136,12 @@ class AppController extends Controller {
 		else
 			return $this->anonymous;
 		
-		// get only User and Expert objects
-// 		$this->User->unbindModel(array(
-// 			'hasMany' => array('Document', 'Repository', 'CriteriasUser', 'RepositoriesUser')
-// 		));
-		
-		return $this->User->find('first', array('conditions' => array('User.id' => $user_id), 'recursive' => -1));
+		return $this->User->find('first', array(
+			'conditions' => array(
+				'User.id' => $user_id
+			),
+			'fields' => array('id', 'is_administrator'), 
+			'recursive' => -1));
 		
 	}
 	
@@ -171,7 +171,7 @@ class AppController extends Controller {
 		return null;
 	}
 	
-	function isAdmin() {
+	function isAdmin() {		
 		$u = $this->getConnectedUser();
 		if(isset($u['User']['is_administrator']))
 			return $u['User']['is_administrator'];
@@ -199,6 +199,7 @@ class AppController extends Controller {
 			),
 		  	'recursive' => -1
 		));
+		
 		if(empty($expert)) {
 			return false;
 		}
