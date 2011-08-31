@@ -109,7 +109,7 @@
                     </div>
                     <ul class="nav subtopmenu">
                         <?php if($this->Session->check('User.esAdmin')): ?>
-	                    <li><?php echo $this->Html->link('Manage', array('controller' => 'admin_documentos'));?></li>
+	                    <li><?php echo $this->Html->link('Manage', array('controller' => 'admin_usuarios'));?></li>
                     	<?php endif; ?>
                     	<li><?php echo $this->Html->link('Create new Repository', array('controller' => 'repositories', 'action' => 'create'));?></li>    
                     </ul>                    
