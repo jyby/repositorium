@@ -54,7 +54,7 @@ echo $this->Form->radio('radiomenu',
 								array('repositories' => 'Repositories'),
 								array(
 									'value' => $current , 
-									'onClick' => 'document.location="'.Router::url('/',true).'/admin_repositories/listar";'));
+									'onClick' => 'document.location="'.Router::url('/',true).'/admin_repositories/index";'));
 }
 ?>
 </div>
