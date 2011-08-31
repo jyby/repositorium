@@ -12,15 +12,13 @@ class CriteriasController extends AppController {
   );
 
   function beforeFilter() {
-	if(!$this->Session->check('User.esAdmin') and !$this->Session->check('User.esExperto')) {
-	  if($this->Session->check('User.id')) {
-	  		$this->Session->setFlash('You do not have permission to access this page');
-	  		$this->redirect('/');
-		} else {
-			$this->Session->setFlash('You do not have permission to access this page. Please log in if you are an administrator');
-			$this->redirect(array('controller' => 'login'));
-		}
+	if(!$this->isExpert()) {	  
+	  	$this->Session->setFlash('You do not have permission to access this page');
+	  	$this->redirect('/');		
 	}
+	
+	$this->requireRepository();
+	
 	if($this->Session->check('Criteria.limit'))
 		$this->paginate['Criteria']['limit'] = $this->Session->read('Criteria.limit'); 
 	if(!isset($this->paginate['Criteria']['conditions'])) {
