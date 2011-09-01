@@ -10,20 +10,21 @@
  */
 
 class AdminUsuariosController extends AppController {
-  var $uses = array('User','Expert');
+  var $uses = array('User','Expert', 'Repository');
   var $paginate = array(
 	  'User' => array(
 		'limit' => '15',
+		'conditions' => array('User.id <>' => 1),
 		'order' => array(
-		  'User.created' => 'asc'
+		  'User.created' => 'desc'
 		),
 		'recursive' => -1,
   ));
 
   function beforeFilter() {
-	if(!$this->Session->check('User.esAdmin')) {
+	if(!$this->isAdmin()) {
 	  $this->Session->setFlash('You don\'t have permission to access this page');
-	  $this->redirect(array('controller' => 'pages'));
+	  $this->redirect('/');
 	}
   }
 
@@ -32,10 +33,9 @@ class AdminUsuariosController extends AppController {
   }
 
   function listar() {
-	$debug = $data = $this->paginate('User');
-	$experts = $this->Expert->find('all', array('recursive' => -1));
+	$data = $this->paginate('User');
 	$current = 'usuarios';
-	$this->set(compact('data', 'current', 'debug', 'experts'));
+	$this->set(compact('data', 'current'));
   }
 
   function add() {

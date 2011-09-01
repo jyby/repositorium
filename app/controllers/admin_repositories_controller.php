@@ -55,6 +55,7 @@ class AdminRepositoriesController extends AppController {
 				$this->e404();
 			
 			$this->data = $repo;
+			$this->set('current', 'repositories');
 		} else {
 			$this->Repository->set($this->data);
 			if(!$this->Repository->validates()) {

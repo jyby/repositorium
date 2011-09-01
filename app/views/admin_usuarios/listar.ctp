@@ -53,13 +53,10 @@ $this->Html->addCrumb($title);
 <table class="ui-widget ui-widget-content tabla" style="width: 100%">
   <thead>
 	<tr class="ui-widget-header"> 
-		  <th><?php echo $this->Paginator->sort('ID', 'User.id');?></th>
+	  <th><?php echo $this->Paginator->sort('ID', 'User.id');?></th>
 	  <th><?php echo $this->Paginator->sort('E-mail', 'User.email'); ?></th>
 	  <th><?php echo $this->Paginator->sort('First name', 'User.first_name'); ?></th>
-	  <th><?php echo $this->Paginator->sort('Last name', 'User.last_name'); ?></th>
-	  <th><?php //echo $this->Paginator->sort('Points', 'User.puntos'); ?></th>
-	  <th><?php echo $this->Paginator->sort('Is Admin?', 'User.is_administrator'); ?></th>
-	  <th><?php echo $this->Paginator->sort('Is Expert?', 'User.es_experto'); ?></th>
+	  <th><?php echo $this->Paginator->sort('Last name', 'User.last_name'); ?></th>	  	  
 	  <th width="100">Options</th>
 	</tr>
   </thead>
@@ -67,32 +64,10 @@ $this->Html->addCrumb($title);
 	<?php foreach($data as $u): ?>
 	<tr>
 	  <td><?php echo $u['User']['id']; ?></td>
-	  <td><?php echo $this->Html->link($u['User']['email'], 
-									   array('action' => 'edit', $u['User']['id'])); ?></td>
+	  <td><?php echo $this->Html->link($u['User']['email'], array('action' => 'edit', $u['User']['id'])) . ($u['User']['is_administrator'] ? '*' : ''); ?></td>
 	  <td><?php echo $u['User']['first_name']; ?></td>
 	  <td><?php echo $u['User']['last_name']; ?></td>
-	  <td><?php // echo $u['User']['puntos']; ?></td>
-	  <td>
-		<?php
-		   if($u['User']['is_administrator'])
-		   echo 'Yes';
-		   else echo 'No'; 
-		   ?>
-	  </td>
-	  <td>
-		<?php
-		   /* busqueda secuencial...*/
-		   $pass = true;
-		   foreach($experts as $e) {
-		   	if($e['Expert']['user_id'] == $u['User']['id']) {
-		   		echo 'Yes';
-		   		$pass = false;
-		   		break;
-		   	}
-		   }
-		   if($pass) echo 'No';
-		   ?>
-	  </td>
+	  	  
 	  <td>
 	  	<div class="admin-doc-edit">
 		  <?php echo $this->Html->link('Edit', array('action' => 'edit' , $u['User']['id'])); ?>
@@ -105,6 +80,8 @@ $this->Html->addCrumb($title);
   </tbody>
 </table>
 </div>
+
+<span>* <em>Site Administrator</em></span>
 
  <?php echo $this->element('paginator'); ?>
 
