@@ -43,7 +43,10 @@ echo $this->Form->radio('radiomenu',
 								array(
 									'value' => $current , 
 									'onClick' => 'document.location="'.Router::url('/',true).'/criterias/index";'));						
-} if($isAdmin) {			
+} 
+
+
+if($isAdmin) {			
 								
 	echo $this->Form->radio('radiomenu',
 	        					array('usuarios' => 'Users'),
