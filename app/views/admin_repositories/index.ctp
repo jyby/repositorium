@@ -7,7 +7,7 @@ $this->Html->addCrumb($title);
 /* end breadcrumbs */ 
 ?>
 
-<?php echo $this->Html->image('admin.png',array('class' => 'imgicon')) ; ?><h1 class="h1icon" style="margin-top: 15px;"><?php echo $title; ?></h1>
+<?php echo $this->Html->image('admin.png',array('class' => 'imgicon')) ; ?><h1 class="h1icon" style="margin-top: 15px;"><?php echo (isset($message) ? $message : $title); ?></h1>
 <div class="clearicon"></div>
 <?php echo 
 	   $this->element('menu_administrar', array(
@@ -24,6 +24,7 @@ $this->Html->addCrumb($title);
 <table id="tabla_documentos" class="ui-widget ui-widget-content tabla" style="width: 100%">
   <thead>
 	<tr class="ui-widget-header">
+	  <th width="10"><?php echo $this->Paginator->sort('Id', 'Repository.id'); ?> </th>
 	  <th width="20%"><?php echo $this->Paginator->sort('Name', 'Repository.name'); ?></th>
 	  <th width="20%" title=""><?php echo $this->Paginator->sort('URL', 'Repository.url'); ?></th>
 	  <th width="40%"><?php echo $this->Paginator->sort('Description', 'Repository.description');?></th>
@@ -35,7 +36,8 @@ $this->Html->addCrumb($title);
   		foreach($this->data as $cr):
   	?>
   		<tr>
-  			<td><?php echo $this->Html->link($cr['Repository']['name'], array('action' => 'edit', $cr['Repository']['id']));?></td>
+  			<td><?php echo $cr['Repository']['id']; ?></td>
+  			<td><?php echo $this->Html->link($cr['Repository']['name'], array('controller' => 'admin_repositories', 'action' => 'edit', $cr['Repository']['id']));?></td>
   			<td><?php echo $this->Repo->link($this->Repo->url($cr['Repository']['url']), $cr['Repository']['url']);?></td>
   			<td>  			
 	  			<div class="admin-doc-texto">
@@ -56,9 +58,11 @@ $this->Html->addCrumb($title);
   			<td>
   				<!-- options -->
 				<div class="admin-doc-edit">
-					<?php echo $this->Html->link('Edit', array('action' => 'edit', $cr['Repository']['id'])); ?>
+					<?php echo $this->Html->link('See users', array('controller' => 'admin_repositories', 'action' => 'users', $cr['Repository']['id'])); ?>
+					&nbsp; | &nbsp;
+					<?php echo $this->Html->link('Edit', array('controller' => 'admin_repositories','action' => 'edit', $cr['Repository']['id'])); ?>
 					&nbsp; | &nbsp;   
-					<?php echo $this->Html->link('Remove', array('action' => 'remove', $cr['Repository']['id']), array(), "Are you sure to delete this repository!?"); ?>
+					<?php echo $this->Html->link('Remove', array('controller' => 'admin_repositories','action' => 'remove', $cr['Repository']['id']), array(), "Are you sure to delete this repository!?"); ?>
 				</div>  				
   			</td>
   		</tr>

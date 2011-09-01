@@ -1,5 +1,5 @@
 <?php
-$title = 'Users';
+$title = "Users collaborators of '{$repo['Repository']['name']}' Repository";
 $this->viewVars['title_for_layout'] = "Manage $title";
 
 /* breadcrumbs */
@@ -30,7 +30,8 @@ $this->Html->addCrumb($title);
 
 <br/>
 <div style="text-align : left; float : left; width : 70%">
-	<?php echo $this->element('paginator_info'); ?>	
+	<?php echo $this->element('paginator_info'); ?>
+	
 </div>
 
 <!-- expert tools -->
@@ -60,10 +61,14 @@ $this->Html->addCrumb($title);
 	</tr>
   </thead>
   <tbody>
-	<?php foreach($this->data as $u): ?>
+	<?php foreach($this->data as $u): 
+			$owner = false;
+			if($u['User']['id'] == $repo['Repository']['user_id'])
+				$owner = true;
+	?>
 	<tr>
 	  <td><?php echo $u['User']['id']; ?></td>
-	  <td><?php echo $this->Html->link($u['User']['email'], array('controller' => 'admin_usuarios', 'action' => 'edit', $u['User']['id'])) . ($u['User']['is_administrator'] ? '*' : ''); ?></td>
+	  <td><?php echo $this->Html->link($u['User']['email'], array('controller' => 'admin_usuarios', 'action' => 'edit', $u['User']['id'])) . ($owner ? '*' : ''); ?></td>
 	  <td><?php echo $u['User']['first_name']; ?></td>
 	  <td><?php echo $u['User']['last_name']; ?></td>
 	  <td>
@@ -81,7 +86,7 @@ $this->Html->addCrumb($title);
 </table>
 </div>
 
-<span>* <em>Site Administrator</em></span>
+<span>* <em>Repository owner (only 1)</em></span>
 
  <?php echo $this->element('paginator'); ?>
 

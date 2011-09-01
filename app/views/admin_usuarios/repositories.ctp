@@ -18,11 +18,16 @@ $this->Html->addCrumb($title);
 	   ));       
 ?> 
 
-<?php echo $this->element('paginator_info'); ?>
+<div style="text-align : left; float : left; width : 70%">
+	<?php echo $this->element('paginator_info'); ?>	
+</div>
+
+
 <!-- core table -->
 <table id="tabla_documentos" class="ui-widget ui-widget-content tabla" style="width: 100%">
   <thead>
 	<tr class="ui-widget-header">
+	  <th width="10"><?php echo $this->Paginator->sort('Id', 'Repository.id'); ?> </th>
 	  <th width="20%"><?php echo $this->Paginator->sort('Name', 'Repository.name'); ?></th>
 	  <th width="20%" title=""><?php echo $this->Paginator->sort('URL', 'Repository.url'); ?></th>
 	  <th width="40%"><?php echo $this->Paginator->sort('Description', 'Repository.description');?></th>
@@ -37,7 +42,8 @@ $this->Html->addCrumb($title);
   				$is_owner = true;
   	?>
   		<tr>
-  			<td><?php echo $this->Html->link($cr['Repository']['name'], array('action' => 'edit', $cr['Repository']['id'])) . ($is_owner ? '*' : '');?></td>
+  			<td><?php echo $cr['Repository']['id']; ?></td>
+  			<td><?php echo $this->Html->link($cr['Repository']['name'], array('controller' => 'admin_repositories', 'action' => 'edit', $cr['Repository']['id'])) . ($is_owner ? '*' : '');?></td>
   			<td><?php echo $this->Repo->link($this->Repo->url($cr['Repository']['url']), $cr['Repository']['url']);?></td>
   			<td>  			
 	  			<div class="admin-doc-texto">
@@ -58,9 +64,11 @@ $this->Html->addCrumb($title);
   			<td>
   				<!-- options -->
 				<div class="admin-doc-edit">
-					<?php echo $this->Html->link('Edit', array('action' => 'edit', $cr['Repository']['id'])); ?>
+					<?php echo $this->Html->link('See users', array('controller' => 'admin_repositories', 'action' => 'users', $cr['Repository']['id'])); ?>
+					&nbsp; | &nbsp;
+					<?php echo $this->Html->link('Edit', array('controller' => 'admin_repositories', 'action' => 'edit', $cr['Repository']['id'])); ?>
 					&nbsp; | &nbsp;   
-					<?php echo $this->Html->link('Remove', array('action' => 'remove', $cr['Repository']['id']), array(), "Are you sure to delete this repository!?"); ?>
+					<?php echo $this->Html->link('Remove', array('controller' => 'admin_repositories', 'action' => 'remove', $cr['Repository']['id']), array(), "Are you sure to delete this repository!?"); ?>
 				</div>  				
   			</td>
   		</tr>

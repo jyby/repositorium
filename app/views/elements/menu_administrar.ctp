@@ -23,26 +23,26 @@ echo $this->Form->radio('radiomenu',
         					array('no_validados' => 'Pending validation'),
 							array(
 								'value' => $current , 
-								'onClick' => 'document.location="'.Router::url('/', true).'/admin_documentos/no_validados";'));
+								'onClick' => 'document.location="'.$this->Html->url(array('controller' => 'admin_documentos', 'action' => 'no_validados')) .'";'));
 								
 								
 echo $this->Form->radio('radiomenu',
         					array('validados' => 'Validated documents'),
 							array(
 								'value' => $current , 
-								'onClick' => 'document.location="'.Router::url('/',true).'/admin_documentos/validados";'));
+								'onClick' => 'document.location="'.$this->Html->url(array('controller' => 'admin_documentos', 'action' => 'validados')) .'";'));
 
 echo $this->Form->radio('radiomenu',
         					array('all' => 'All documents'),
 							array(
 								'value' => $current , 
-								'onClick' => 'document.location="'.Router::url('/',true).'/admin_documentos/all";'));
+								'onClick' => 'document.location="'.$this->Html->url(array('controller' => 'admin_documentos', 'action' => 'all')) .'";'));
 								
 echo $this->Form->radio('radiomenu',
 	        					array('criterios' => 'Criteria'),
 								array(
 									'value' => $current , 
-									'onClick' => 'document.location="'.Router::url('/',true).'/criterias/index";'));						
+									'onClick' => 'document.location="'.$this->Html->url(array('controller' => 'criterias', 'action' => 'index')) .'";'));						
 } 
 
 
@@ -52,12 +52,12 @@ if($isAdmin) {
 	        					array('usuarios' => 'Users'),
 								array(
 									'value' => $current , 
-									'onClick' => 'document.location="'.Router::url('/',true).'/admin_usuarios/listar";'));
+									'onClick' => 'document.location="'.$this->Html->url(array('controller' => 'admin_usuarios', 'action' => 'listar')) .'";'));
 	echo $this->Form->radio('radiomenu',
 								array('repositories' => 'Repositories'),
 								array(
 									'value' => $current , 
-									'onClick' => 'document.location="'.Router::url('/',true).'/admin_repositories/index";'));
+									'onClick' => 'document.location="'.$this->Html->url(array('controller' => 'admin_repositories', 'action' => 'index')) .'";'));
 }
 ?>
 </div>

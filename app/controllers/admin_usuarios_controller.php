@@ -42,9 +42,9 @@ class AdminUsuariosController extends AppController {
   }
 
   function listar() {
-	$data = $this->paginate('User');
+	$this->data = $this->paginate('User');
 	$current = 'usuarios';
-	$this->set(compact('data', 'current'));
+	$this->set(compact('current'));
   }
 
   function add() {

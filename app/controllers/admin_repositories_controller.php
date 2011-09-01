@@ -12,7 +12,12 @@ class AdminRepositoriesController extends AppController {
 	var $paginate = array(
 		'Repository' => array(
 		  'limit' => 5,
+		  'recursive' => -1,
 		  'order' => array('Repository.created' => 'desc')
+		),
+		'Expert' => array(
+			'limit' => 5,
+			'order' => array('Expert.created' => 'desc')
 		)
 	);
 	
@@ -41,7 +46,6 @@ class AdminRepositoriesController extends AppController {
 	function index() {
 		$current = 'repositories';
 		$this->data = $this->paginate();
-		
 		$this->set(compact('current'));
 	}
 	
@@ -81,6 +85,21 @@ class AdminRepositoriesController extends AppController {
 			$this->Session->setFlash('An error ocurred deleting the repository', 'flash_errors');
 		}
 		
-		$this->redirect('index');
+		$this->redirect($this->referer());
+	}
+	
+	function users($id = null) {
+		if(is_null($id))
+			$this->e404();
+		
+		$this->paginate['Expert']['conditions'] = array(
+			'Expert.repository_id' => $id
+		);
+		
+		$this->data = $this->paginate('Expert');
+		$current = 'repositories';
+		$repo = $this->Repository->find('first', array('conditions' => compact('id'), 'recursive' => -1));
+		
+		$this->set(compact('current', 'repo'));		
 	}
 }
