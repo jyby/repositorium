@@ -29,6 +29,8 @@ class AdminRepositoriesController extends AppController {
 	 */
 	var $Repository;
 	
+	var $helpers = array('Text', 'Repo');
+	
 	function beforeFilter() {
 		if(!$this->isAdmin()) {
 			$this->Session->setFlash('You don\'t have permission to access this page');
@@ -38,6 +40,7 @@ class AdminRepositoriesController extends AppController {
 	
 	function index() {
 		$current = 'repositories';
+		$this->data = $this->paginate();
 		
 		$this->set(compact('current'));
 	}

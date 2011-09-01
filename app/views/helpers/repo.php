@@ -14,6 +14,16 @@ class RepoHelper extends AppHelper {
 				
 	}
 	
+	function url($repo_url) {
+		if(Configure::read('App.subdomains')) {
+			$domain = Configure::read('App.domain');
+				
+			return "http://{$repo_url}.{$domain}/";
+		} else {
+			return $this->Html->url(array('controller' => 'repositories', 'action' => 'index', $repo_url), true);
+		}
+	}
+	
 	function normal_link($title, $url = null, $options = array(), $confirmMessage = false) {
 		if(Configure::read('App.subdomains') && $url === '/') {
 			$domain = Configure::read('App.domain');
