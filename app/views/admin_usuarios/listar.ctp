@@ -56,8 +56,8 @@ $this->Html->addCrumb($title);
 	  <th><?php echo $this->Paginator->sort('ID', 'User.id');?></th>
 	  <th><?php echo $this->Paginator->sort('E-mail', 'User.email'); ?></th>
 	  <th><?php echo $this->Paginator->sort('First name', 'User.first_name'); ?></th>
-	  <th><?php echo $this->Paginator->sort('Last name', 'User.last_name'); ?></th>	  	  
-	  <th width="100">Options</th>
+	  <th><?php echo $this->Paginator->sort('Last name', 'User.last_name'); ?></th>
+	  <th width="200">Options</th>
 	</tr>
   </thead>
   <tbody>
@@ -67,9 +67,10 @@ $this->Html->addCrumb($title);
 	  <td><?php echo $this->Html->link($u['User']['email'], array('action' => 'edit', $u['User']['id'])) . ($u['User']['is_administrator'] ? '*' : ''); ?></td>
 	  <td><?php echo $u['User']['first_name']; ?></td>
 	  <td><?php echo $u['User']['last_name']; ?></td>
-	  	  
 	  <td>
 	  	<div class="admin-doc-edit">
+	  	  <?php echo $this->Html->link('See repositories', array('action' => 'repositories', $u['User']['id'])); ?>
+	  	  &nbsp; | &nbsp;
 		  <?php echo $this->Html->link('Edit', array('action' => 'edit' , $u['User']['id'])); ?>
 		  &nbsp; | &nbsp;
 		  <?php echo $this->Html->link('Remove', array('action' => 'remove' , $u['User']['id']), null, 'Are you sure?'); ?>

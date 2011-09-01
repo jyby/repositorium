@@ -15,12 +15,21 @@ class AdminUsuariosController extends AppController {
 	  'User' => array(
 		'limit' => '15',
 		'conditions' => array('User.id <>' => 1),
-		'order' => array(
-		  'User.created' => 'desc'
-		),
+		'order' => array('User.created' => 'desc'),
 		'recursive' => -1,
-  ));
+  	),
+  	'Repository' => array(
+  		'limit' => '5',
+  		'order' => array('Repository.created' => 'desc'),
+  	),
+  	'Expert' => array(
+  		'limit' => '5',
+  		'order' => array('Repository.created' => 'desc'),
+  	),
+  );
 
+  var $helpers = array('Text', 'Repo');
+  
   function beforeFilter() {
 	if(!$this->isAdmin()) {
 	  $this->Session->setFlash('You don\'t have permission to access this page');
@@ -85,7 +94,7 @@ class AdminUsuariosController extends AppController {
 		// saves edited data
 		if($this->User->save($this->data)) {
 		  $this->Session->setFlash('The user was modified');
-		  CakeLog::write('activity', 'User '.$id.' was modified');
+		  CakeLog::write('activity', 'User [id='.$id.'] edited');
 		  $this->redirect('index');
 		}
 	  } else {
@@ -96,6 +105,20 @@ class AdminUsuariosController extends AppController {
 	if(is_null($id))
 	  $this->redirect('add');
 	 
-  }  
+  }
+
+  function repositories($id = null) {
+  	if(is_null($id))
+  		$this->e404();
+  	
+  	$this->paginate['Expert']['conditions'] = array(
+  		'Expert.user_id' => $id,
+  	);
+  	$this->data = $this->paginate('Expert');
+  	$current = 'usuarios';  	
+  	$user = $this->User->find('first', array('conditions' => compact('id'), 'recursive' => -1));
+  	
+  	$this->set(compact('current', 'user'));  	
+  }
 }
 ?>
