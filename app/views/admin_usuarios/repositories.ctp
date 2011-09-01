@@ -68,7 +68,7 @@ $this->Html->addCrumb($title);
 					&nbsp; | &nbsp;
 					<?php echo $this->Html->link('Edit', array('controller' => 'admin_repositories', 'action' => 'edit', $cr['Repository']['id'])); ?>
 					&nbsp; | &nbsp;   
-					<?php echo $this->Html->link('Remove', array('controller' => 'admin_repositories', 'action' => 'remove', $cr['Repository']['id']), array(), "Are you sure to delete this repository!?"); ?>
+					<?php echo $this->Html->link('Remove', array('controller' => 'admin_repositories', 'action' => 'remove', $cr['Repository']['id']), array(), "Are you sure to delete this repository!? WARNING: This also will delete ALL documents, criterias and points if this repository"); ?>
 				</div>  				
   			</td>
   		</tr>

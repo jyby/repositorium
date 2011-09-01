@@ -86,7 +86,7 @@ class User extends AppModel {
 		'Expert' => array(
 			'className' => 'Expert',
 			'foreignKey' => 'user_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
@@ -112,6 +112,7 @@ class User extends AppModel {
 		'CriteriasUser' => array(
 			'className' => 'CriteriasUser',
 			'foreignKey' => 'user_id',
+			'dependent' => true,	
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
@@ -123,7 +124,8 @@ class User extends AppModel {
 		),
 		'RepositoriesUser' => array(
 			'className' => 'RepositoriesUser',
-			'foreignKey' => 'user_id'
+			'foreignKey' => 'user_id',
+			'dependent' => true,
 		)
 	);
 	

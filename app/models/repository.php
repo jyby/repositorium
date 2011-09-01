@@ -133,7 +133,7 @@ class Repository extends AppModel {
 		'Criteria' => array(
 			'className' => 'Criteria',
 			'foreignKey' => 'repository_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
@@ -146,7 +146,7 @@ class Repository extends AppModel {
 		'Document' => array(
 			'className' => 'Document',
 			'foreignKey' => 'repository_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
@@ -159,7 +159,7 @@ class Repository extends AppModel {
 		'Expert' => array(
 			'className' => 'Expert',
 			'foreignKey' => 'repository_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
@@ -171,7 +171,8 @@ class Repository extends AppModel {
 		),
 		'RepositoriesUser' => array(
 			'className' => 'RepositoriesUser',
-			'foreignKey' => 'repository_id'
+			'foreignKey' => 'repository_id',
+			'dependent' => true
 		)
 	);
 

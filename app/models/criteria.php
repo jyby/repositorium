@@ -188,6 +188,7 @@ class Criteria extends AppModel {
 		'CriteriasDocument' => array(
 			'className' => 'CriteriasDocument',
 			'foreignKey' => 'criteria_id',
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
@@ -200,6 +201,7 @@ class Criteria extends AppModel {
 		'CriteriasUser' => array(
 			'className' => 'CriteriasUser',
 			'foreignKey' => 'criteria_id',
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',

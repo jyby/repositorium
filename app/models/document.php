@@ -47,7 +47,7 @@ class Document extends AppModel {
 		'Tag' => array(
 			'className' => 'Tag',
 			'foreignKey' => 'document_id',
-			'dependent' => false,
+			'dependent' => true,
 			'conditions' => '',
 			'fields' => '',
 			'order' => '',
@@ -59,7 +59,8 @@ class Document extends AppModel {
 		),
 		'CriteriasDocument' => array(
 			'className' => 'CriteriasDocument',
-			'foreignKey' => 'criteria_id'
+			'foreignKey' => 'criteria_id',
+			'dependent' => true,
 		)
 	);
 
