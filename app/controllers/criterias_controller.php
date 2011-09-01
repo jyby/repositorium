@@ -66,7 +66,7 @@ class CriteriasController extends AppController {
 			$this->Session->setFlash('An error occurred saving the criteria', 'flash_errors');
 			CakeLog::write('error', 'Criteria "'.$this->data['Criteria']['question'].'" was not added');			
 		}
-		$this->redirect($this->referer());
+		$this->redirect('index');
 	  } else {
 		$this->Session->setFlash($this->Criteria->invalidFields(),'flash_errors');
 	  }
