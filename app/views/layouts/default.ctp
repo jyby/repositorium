@@ -121,6 +121,8 @@
 	                    <li><?php echo $this->Html->link('Manage Site', array('controller' => 'admin_repositories'));?></li>
                     	<?php endif; ?>
                     	
+                    	<li><?php echo $this->Html->link('Search documents', array('controller' => 'tags', 'action' => 'index')); ?></li>
+                    	
                         <li><?php echo $this->Html->link('Add document', array('controller' => 'documents', 'action' => 'upload'));?></li>
                         <?php if($this->Session->check('User.id') and $this->Session->read('User.id') > 1): ?>
                         <li><?php echo $this->Html->link('Earn points', array('controller' => 'points', 'action' => 'earn')); ?></li>
