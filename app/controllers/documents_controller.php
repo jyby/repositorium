@@ -86,11 +86,9 @@ class DocumentsController extends AppController {
   		$docs = array();  		
   		foreach($document_ids as $id) {
   			$docs[] = $this->Document->find('all', array(
-  		 		'conditions' => array(
-  		  			'Document.id' => $id
-  				),
-  		  		'recursive' => -1,
-  			));
+  		 		'conditions' => array('Document.id' => $id),
+  		  		'recursive' => -1,)
+  			);
   		}
   		
   		// if there are more documents, shuffle them
