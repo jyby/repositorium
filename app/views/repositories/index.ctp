@@ -25,7 +25,7 @@
 			echo $this->Form->button($msg, array('id' => 'repo-watch'));
 		endif;
 		echo '&nbsp;&nbsp;&nbsp;';			
-		echo $this->Form->button('Search a Document', array('id' => 'repo-search'));
+		// echo $this->Form->button('Search a Document', array('id' => 'repo-search'));
 		?>
 	</div>
 </div>
