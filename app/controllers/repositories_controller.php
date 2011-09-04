@@ -36,9 +36,23 @@ class RepositoriesController extends AppController {
 		}
 		
 		$result = $this->_set_repo($data = compact('repo_url'));
-		if($result[0]) {
+		if($result[0]) {			
 			$repository = $result[1];
-			$this->set(compact('repository'));
+			$watching = null;
+			
+			// watching repo
+			if($this->isLoggedIn()) {
+				$user = $this->getConnectedUser();
+				$r = $this->RepositoriesUser->find('first', array(
+					'conditions' => array(
+						'repository_id' => $repository['Repository']['id'],
+						'user_id' => $user['User']['id']),
+					'recursive' => -1 
+				));				
+				$watching = $r['RepositoriesUser']['watching'];				
+			}
+			
+			$this->set(compact('repository', 'watching'));
 		} else {
 			$this->e404();
 		}		
@@ -147,40 +161,19 @@ class RepositoriesController extends AppController {
 			$this->redirect('/');
 		}
 		
+		$watching = $repo['RepositoriesUser']['watching'];
+		
 		$this->RepositoriesUser->read(null, $repo['RepositoriesUser']['id']);
-		$this->RepositoriesUser->set('watching', true);
+		$this->RepositoriesUser->set('watching', !$watching);
 		$this->RepositoriesUser->save();
 		
-		$this->Session->setFlash("Watching repository");
+		if($watching) $msg = "Repository removed from watchlist";
+		else $msg = "Repository added to watchlist";
+		
+		$this->Session->setFlash($msg);
 		$this->redirect(array('action' => 'set_repository_by_id', $id));
 	}
 
-	function unwatch($id = null) {
-		if(is_null($id)) {
-			$this->Session->setFlash('Repository not found');
-			$this->redirect('/');
-		}
-		if(!$this->isLoggedIn()) {
-			$this->redirect(array('controller' => 'login', 'action' => 'index'));
-		}
-		
-		$user = $this->getConnectedUser(); 
-		$repo = $this->RepositoriesUser->find('first', array('conditions' => array('user_id' => $user['User']['id'], 'repository_id' => $id), 'recursive => -1'));
-		
-		if(empty($repo)) {
-			$this->Session->setFlash('Repository not found');
-			$this->redirect('/');
-		}
-		
-		$this->RepositoriesUser->read(null, $repo['RepositoriesUser']['id']);
-		$this->RepositoriesUser->set('watching', false);
-		$this->RepositoriesUser->save();
-		
-		$this->Session->setFlash("You stopped to watch this repository");
-		$this->redirect(array('action' => 'set_repository_by_id', $id));
-		
-	}
-	
 	function _make_user_expert() {
 		$this->Session->write('User.esExperto', true);
 	}
