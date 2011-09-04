@@ -37,12 +37,12 @@ class TagsController extends AppController {
   function process() {
 	if (empty($this->data) or trim($this->data['Tag']['search']) == '') {
 		$this->Session->setFlash('Please, enter a search term');
-		$this->redirect('index');
+		$this->redirect(array('controller' => 'tags', 'action' => 'index'));
 	}
 	
 	if(empty($this->data['Criteria']['id'])) {
 		$this->Session->setFlash('Please, choose at least one quality criteria');
-		$this->redirect('index');
+		$this->redirect(array('controller' => 'tags', 'action' => 'index'));
 	}
 	$repo = $this->requireRepository();
 	
@@ -72,7 +72,7 @@ class TagsController extends AppController {
 	  $this->Session->setFlash(
 		'We\'re sorry. There weren\'t any documents that satisfy that term(s)'
 	  );
-	  $this->redirect('index');
+	  $this->redirect(array('controller' => 'tags', 'action' => 'index'));
 	}
 	
   }
