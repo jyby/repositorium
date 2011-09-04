@@ -13,7 +13,7 @@ $this->viewVars['title_for_layout'] = $title;
 
 <?php if(!empty($criterias)): ?>
 <div class="input select">
-	<label for="CriteriaId">Choose quality criteria which will be used to determine the quality of the documents searched:</label>
+	<label for="CriteriaId">Choose quality criteria which will be used to determine the quality of the documents searched (Optional):</label>
 	<input type="hidden" name="data[Criteria][id]" value="" id="CriteriaId">
 	<?php foreach($criterias as $c): $c = $c['Criteria']; ?>
 	<div class="checkbox"><input type="checkbox" name="data[Criteria][id][]" value="<?php echo $c['id']; ?>" id="CriteriaId<?php echo $c['id']; ?>"><label class="search-criteria-option" for="CriteriaId<?php echo $c['id']; ?>"><?php echo $c['question']; ?></label></div>
