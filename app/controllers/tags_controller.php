@@ -55,7 +55,8 @@ class TagsController extends AppController {
 	
 	$c = count($documents);	
 	if($c > 0) {
-	  $this->Session->write('Documents.searched_docs', $documents);
+	  $this->Session->write('Search.document_ids', $documents);
+	  $this->Session->write('Search.count', count($documents));
 	  $msg = 
 		'There ' . 
 		($c>1 ? ' are ' : ' is ') . 
