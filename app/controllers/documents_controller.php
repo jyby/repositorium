@@ -85,7 +85,7 @@ class DocumentsController extends AppController {
   		  		
   		$docs = array();  		
   		foreach($document_ids as $id) {
-  			$docs[] = $this->Document->find('all', array(
+  			$docs[] = $this->Document->find('first', array(
   		 		'conditions' => array('Document.id' => $id),
   		  		'recursive' => -1,)
   			);
@@ -99,7 +99,7 @@ class DocumentsController extends AppController {
   			$docs = array_intersect_key($docs, array_flip($docs_ids_array));
   		}
   		
-  		$this->set(compact('docs'));
+  		$this->set(compact('docs', 'doc_pack'));
   		$this->_clean_session();  			
   	}
   }

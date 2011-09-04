@@ -1,26 +1,24 @@
-<?php if(empty($premio)) { ?>
-<span class="info">There  isn't any document that matches with your search terms!</span>
-<?php } else { ?>
-
-
-
+<?php 
+$title = 'Download Documents';
+$this->viewVars['title_for_layout'] = $title; 
+?>
 
 <?php echo $this->Html->image('docs.png',array('class' => 'imgicon')) ; ?>
 
-<h1 class="h1icon">  
-	Download Documents	
-</h1>
+<h1 class="h1icon"><?php echo $title; ?></h1>
 <div class="clearicon"></div>
 
-<span class="info">Congratulations! Here you have  <?php echo count($premio); ?>  problems with their solutions: </span>
+<div style="padding: 1em 0"><span class="info">Congratulations! Here you have <?php echo count($docs); ?> documents to download: </span></div>
+<div><span style="font-weight: bold; padding-right: 0.5em">Notice:</span><span>You just have this opportunity! if you reload this page, you will have to search and pass a challenge again (if you had to do it before to reach here)</span></div>
+<br />
+<hr />
 
-
-<?php foreach($premio as $d): ?>
+<?php foreach($docs as $d): ?>
 
 <br/>
 <br/>
 <span style="font-weight:bold"  class="admin-doc-titulo">
-	<?php echo $d['Documento']['titulo'];?>
+	<?php echo $d['Document']['title'];?>
 </span>
 <br/>
 <br/>
@@ -29,11 +27,12 @@
 	<?php echo str_replace(
 			'\n', 
 			'<br />', 
-			Sanitize::html($d['Documento']['texto']));?>				
+			Sanitize::html($d['Document']['content']));?>				
 </pre>
 </div>
 <div class="created-by">
-	Created on <?php echo $d['Documento']['created']; ?> by <?php echo $d['Documento']['nombre_autor']; ?>. 
+	Created on <?php echo $d['Document']['created']; ?> by <?php echo $d['Document']['nombre_autor']; ?>. 
 </div>
-<?php endforeach;}?>
+<hr />
+<?php endforeach;?>
 <br />
