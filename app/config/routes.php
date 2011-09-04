@@ -54,4 +54,4 @@ if(Configure::read('App.subdomains')) {
  * repositories
  */
   	Router::connect('/repositories/new', array('controller' => 'repositories', 'action' => 'create'));
-  	Router::connect('/repositories/*', 	array('controller' => 'repositories', 'action' => 'index'));
+//   	Router::connect('/repositories/*', 	array('controller' => 'repositories', 'action' => 'index'));

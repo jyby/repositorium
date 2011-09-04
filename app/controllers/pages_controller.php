@@ -116,8 +116,9 @@ class PagesController extends AppController {
 
 		$watched = array(
 			'RepositoriesUser.user_id' => $user['User']['id'],
-			'NOT' => $collaborator,
-			'NOT' => $yours
+			'RepositoriesUser.watching' => true,
+// 			'NOT' => $collaborator, 
+// 			'NOT' => $yours
 		);
 		
 		$latest = array(
