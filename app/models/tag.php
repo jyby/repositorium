@@ -37,16 +37,19 @@ class Tag extends AppModel {
 	
 	// devuelve la lista de documentos
 	// dados por los tags
-	function findDocumentsByTags($tags) {
+	function findDocumentsByTags($repo_id = null, $tags = array()) {
+		if(is_null($repo_id)) {
+			return null;
+		}
 		$docs = array();
 		foreach ($tags as $tag) {
 			$tmp = $this->find('all', array(
 			  		'conditions' => array(
 						'Tag.tag' => $tag,
-			),
-			  		'recursive' => -1, 
+						'Document.repository_id' => $repo_id
+					),
 			  		'fields' => array('Tag.document_id')
-			)
+				)
 			);
 				
 			$hola = array();
@@ -62,9 +65,9 @@ class Tag extends AppModel {
 			}
 		} else {
 			$res = $this->find('all', array(
+				'conditions' => array('Document.repository_id' => $repo_id),
 		  		'fields' => 'DISTINCT Tag.document_id',
-		  		'recursive' => -1
-			)
+				)
 			);
 		}
 	
