@@ -64,7 +64,7 @@ class TagsController extends AppController {
 		'that satisf' . 
 		($c>1 ? 'y ' : 'ies ') . 
 		'that term. ';
-	  	    
+	  $this->Session->setFlash($msg);
 	  $this->redirect(array('controller' => 'documents', 'action' => 'download'));	  
 	} else {
 		
@@ -77,13 +77,17 @@ class TagsController extends AppController {
   }
   
   function autocomplete() {
+  	$repo = $this->requireRepository();
+  	$repo_id = $repo['Repository']['id'];
+  	  	
   	$search = null;
   	if(isset($this->params['url']['search']) && !is_null($this->params['url']['search']))
   		$search = $this->params['url']['search'];
   	else exit;
   	$this->data = $this->Tag->find('all', array(
 		'conditions' => array(
-				'Tag.tag LIKE' => "%{$search}%",
+			'Tag.tag LIKE' => "%{$search}%",
+			'Document.repository_id' => $repo_id
   		),
   		'fields' => array(
   			'DISTINCT Tag.tag'
