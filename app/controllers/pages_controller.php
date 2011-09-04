@@ -53,7 +53,7 @@ class PagesController extends AppController {
  * @var array
  * @access public
  */
-	var $uses = array('Repository');
+	var $uses = array('Repository', 'Expert', 'RepositoriesUser');
 	
 /**
  * @var string 
@@ -104,17 +104,51 @@ class PagesController extends AppController {
 	
 	function _user() {
 		$user = $this->getConnectedUser();
-		//$conds = array('Repository.user_id <>' => $user['User']['id']);
-		$conds = array();
-		$my = $this->Repository->find('all', array('conditions' => array('Repository.user_id' => $user['User']['id']), 'recursive' => -1));
-		$feat = $this->Repository->find('all', array('conditions' => $conds, 'limit' => 20, 'recursive' => -1));
 		
-		if(empty($my)) {
-			$this->_anon();
-		} else {
-			$this->set(compact('my', 'feat'));
-			$this->render('home_user');
-		}
+		$yours = array(
+			'Repository.user_id' => $user['User']['id']
+		);
+		
+		$collaborator = array(
+			'Expert.user_id' => $user['User']['id'],
+			'NOT' => $yours
+		);
+
+		$watched = array(
+			'RepositoriesUser.user_id' => $user['User']['id'],
+			'NOT' => $collaborator,
+			'NOT' => $yours
+		);
+		
+		$latest = array(
+// 			'NOT' => $watched,
+// 			'NOT' => $collaborator,
+// 			'NOT' => $yours
+		);
+
+		$your_repos = $this->Repository->find('all', array(
+			'conditions' => $yours,
+			'recursive' => -1
+		));
+		
+		$this->Expert->unbindModel(array('belongsTo' => array('User')));
+		$collaborator_repos = $this->Expert->find('all', array(
+			'conditions' => $collaborator,
+		));
+
+		$this->RepositoriesUser->unbindModel(array('belongsTo' => array('User')));
+		$watched_repos = $this->RepositoriesUser->find('all', array(
+			'conditions' => $watched,
+		));
+		
+		$this->Repository->unbindModel(array('belongsTo' => array('User')), array('hasMany' => array('Criteria', 'Document')));
+		$latest_repos = $this->Repository->find('all', array(
+			'conditions' => $latest,
+			'order' => 'Repository.created desc'
+		));
+		
+		$this->set(compact('your_repos', 'collaborator_repos', 'watched_repos', 'latest_repos'));
+		$this->render('home_user');
 	}
 	
 	function _anon() {
