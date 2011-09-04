@@ -150,16 +150,18 @@ class AppController extends Controller {
 	 * note: if host is localhost, it just reads from the session var
 	 * which means to have an expiration time
 	 */
-	function getCurrentRepository() {		
-		if($this->Session->check('Repository.current')) {
-			$repo = $this->Session->read('Repository.current');
-		} else {
+	function getCurrentRepository() {
+		$repo = null;
+		
+		if(Configure::read('App.subdomains')) {
 			$url = explode('.', $_SERVER['HTTP_HOST'], 3);
 			if (count($url) === 2 OR $url[0] === 'www' ) {
-				return null;			
+				$repo = null;
 			} else {
 				$repo = $url[0];
 			}
+		} elseif($this->Session->check('Repository.current')) {
+			$repo = $this->Session->read('Repository.current');
 		}
 		
 		if(!is_null($repo)) {
@@ -168,6 +170,7 @@ class AppController extends Controller {
 				return $data;
 			}
 		}			
+		
 		return null;
 	}
 	
