@@ -36,6 +36,15 @@ class CriteriaTestCase extends CakeTestCase {
 		/* (aun?) no se puede garantizar de que hayan suficientes documentos */
 		$this->assertTrue(5 >= count($challenge));
 	}
+	
+	/**
+	 * 
+	 * @TODO this test
+	 */
+	function testFilterDocuments() {
+		
+		
+	}
 
 	function endTest() {
 		unset($this->Criteria);

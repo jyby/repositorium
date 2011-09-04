@@ -64,14 +64,6 @@ class TagsController extends AppController {
 		'that satisf' . 
 		($c>1 ? 'y ' : 'ies ') . 
 		'that term. ';
-
-	  if(!$this->Session->check('User.esAdmin') and !$this->Session->check('User.esExperto'))
-		$msg .= 
-		  'In order to get '. 
-		  ($c>1 ? 'some of these ' : 'this ') . 
-		  'document' . 
-		  ($c>1 ? 's' : '') .
-		  ', you will have to pass a challenge! ';
 	  	    
 	  $this->redirect(array('controller' => 'documents', 'action' => 'download'));	  
 	} else {

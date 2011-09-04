@@ -289,6 +289,34 @@ class Criteria extends AppModel {
 	
 		return $challenge;
 	}
+	
+	/**
+	 * 
+	 * (untested)
+	 * @param array $documents
+	 * @param array $criterias
+	 */
+	function filterDocuments($documents = array(), $criterias = array()) {
+		if(empty($documents) || empty($criterias)) {
+			return $documents;
+		}
+		
+		$filtered = array();
+		foreach($criterias as $c) {
+			foreach($documents as $d) {
+				$cd = $this->CriteriasDocument->find('first', array(
+					'conditions' => array(
+						'document_id' => $d,
+						'criteria_id' => $c),
+					'recursive' => -1)
+				);
+				
+				if($cd['CriteriasDocument']['validated'] AND $cd['CriteriasDocument']['official_answer'] == 1) {
+					$filtered[] = $d;
+				}
+			}			
+		}
+		return array_unique($filtered);
+	}
 
 }
-?>

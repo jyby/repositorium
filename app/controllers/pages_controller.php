@@ -95,7 +95,7 @@ class PagesController extends AppController {
 	 * @access public
 	 */
 	function home() {		
-		if($this->getConnectedUser() == $this->anonymous) {
+		if(!$this->isLoggedIn()) {
 			$this->_anon();
 		} else {
 			$this->_user();

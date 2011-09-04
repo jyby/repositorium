@@ -46,7 +46,7 @@ if(Configure::read('App.subdomains')) {
   	Router::connect('/login', 			array('controller' => 'login'));
   	Router::connect('/register', 		array('controller' => 'register'));
   	Router::connect('/repositories', 	array('controller' => 'repositories'));
-  	Router::connect('/tags', 			array('controller' => 'tags'));
+  	Router::connect('/search', 			array('controller' => 'tags'));
   	Router::connect('/profile', 		array('controller' => 'users'));
   	Router::connect('/points',			array('controller' => 'points'));
 

@@ -401,3 +401,12 @@ strong {
 .textboxlist-autocomplete-result-focus {
 	background-color: #A6C9E2;
 }
+
+.checkbox {
+	padding: 0.2em;
+}
+
+.search-criteria-option {
+	display: inline;
+	padding: .5em;
+}
