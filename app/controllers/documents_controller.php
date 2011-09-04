@@ -75,12 +75,35 @@ class DocumentsController extends AppController {
   
   /**
    * 
-   * @TODO choose documents from search
-   * @TODO choose criteria
-   * @TODO points
    */
   function download() {
-  	
+  	if($this->Session->check('Search.document_ids')) {
+  		$document_ids = $this->Session->read('Search.document_ids');  		
+  		
+  		$repo = $this->requireRepository();
+  		$doc_pack = $repo['Repository']['documentpack_size'];
+  		  		
+  		$docs = array();  		
+  		foreach($document_ids as $id) {
+  			$docs[] = $this->Document->find('all', array(
+  		 		'conditions' => array(
+  		  			'Document.id' => $id
+  				),
+  		  		'recursive' => -1,
+  			));
+  		}
+  		
+  		// if there are more documents, shuffle them
+  		if(count($docs) > $doc_pack) {
+  			shuffle($docs);
+  			$docs_ids = array_rand($docs, $doc_pack);
+  			$docs_ids_array = (is_array($docs_ids) ? $docs_ids : array($docs_ids));
+  			$docs = array_intersect_key($docs, array_flip($docs_ids_array));
+  		}
+  		
+  		$this->set(compact('docs'));
+  		$this->_clean_session();  			
+  	}
   }
   
   /**
