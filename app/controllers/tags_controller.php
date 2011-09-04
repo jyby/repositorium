@@ -40,13 +40,7 @@ class TagsController extends AppController {
 		$this->redirect(array('controller' => 'tags', 'action' => 'index'));
 	}
 	
-	if(empty($this->data['Criteria']['id'])) {
-		$this->Session->setFlash('Please, choose at least one quality criteria');
-		$this->redirect(array('controller' => 'tags', 'action' => 'index'));
-	}
 	$repo = $this->requireRepository();
-	
-// 	CakeLog::write('activity', 'User '. $this->Session->read('User.id') . ' has searched for: ['. $this->data['Tag']['search'] .']');
 	
 	$tags = explode(' ', trim($this->data['Tag']['search']));
 	

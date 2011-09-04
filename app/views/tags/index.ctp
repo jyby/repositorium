@@ -11,6 +11,7 @@ $this->viewVars['title_for_layout'] = $title;
 
 <?php echo $this->Form->input('search', array('label' => false));?>	  
 
+<?php if(!empty($criterias)): ?>
 <div class="input select">
 	<label for="CriteriaId">Choose quality criteria which will be used to determine the quality of the documents searched:</label>
 	<input type="hidden" name="data[Criteria][id]" value="" id="CriteriaId">
@@ -18,6 +19,9 @@ $this->viewVars['title_for_layout'] = $title;
 	<div class="checkbox"><input type="checkbox" name="data[Criteria][id][]" value="<?php echo $c['id']; ?>" id="CriteriaId<?php echo $c['id']; ?>"><label class="search-criteria-option" for="CriteriaId<?php echo $c['id']; ?>"><?php echo $c['question']; ?></label></div>
 	<?php endforeach; ?>
 </div>
+<?php else: ?>
+<span>There aren't any quality criteria in this repository yet. The quality of the searched and/or downloaded documents is not guaranteed.</span>
+<?php endif; ?>
 
 <?php echo $this->Form->end('Search'); ?> 
 
