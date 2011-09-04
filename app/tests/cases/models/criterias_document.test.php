@@ -12,17 +12,19 @@ class CriteriasDocumentTestCase extends CakeTestCase {
 	
 	function testMassCreateAfterCriteria() {
 		$id_criterio = 42;
-		$this->CriteriasDocument->massCreateAfterCriteria($id_criterio);
+		$repo_id = 42;
+		$this->CriteriasDocument->massCreateAfterCriteria($id_criterio, $repo_id);
 	
 		$documents = $this->CriteriasDocument->Document->find('all', array(
 					'fields' => array('Document.id', 'Document.user_id'),
 					'recursive' => -1,
 					'order' => 'Document.id',
+					'conditions' => array('repository_id' => $repo_id),
 			)
 		);
 	
 		$ids = $this->CriteriasDocument->find('all', array(
-					'conditions' => array('CriteriasDocument.criteria_id' => $id_criterio), 
+					'conditions' => array('CriteriasDocument.criteria_id' => $id_criterio, 'Criteria.repository_id' => $repo_id), 
 					'fields' => array('Document.id', 'Document.user_id'), 
 					'order' => 'Document.id',
 			)
@@ -34,17 +36,19 @@ class CriteriasDocumentTestCase extends CakeTestCase {
 	
 	function testMassCreateAfterDocument() {
 		$id_documento = 42;
-		$this->CriteriasDocument->massCreateAfterDocument($id_documento);
+		$repo_id = 42;
+		$this->CriteriasDocument->massCreateAfterDocument($id_documento, $repo_id);
 	
 		$crs = $this->CriteriasDocument->Criteria->find('all', array(
 					'fields' => array('Criteria.id'),
 					'recursive' => -1,
-					'order' => 'Criteria.id'
+					'order' => 'Criteria.id',
+					'conditions' => array('repository_id' => $repo_id),
 			)
 		);
 	
 		$ids = $this->CriteriasDocument->find('all', array(
-					'conditions' => array('CriteriasDocument.document_id' => $id_documento),
+					'conditions' => array('CriteriasDocument.document_id' => $id_documento, 'Criteria.repository_id' => $repo_id),
 					'fields' => array('Criteria.id'),
 					'order' => 'Criteria.id'
 			)
@@ -57,10 +61,11 @@ class CriteriasDocumentTestCase extends CakeTestCase {
 		$confirmado = true;
 		$preguntable = true;
 		$quantity = 5;
+		$repository_id = 42;
 	
-		$this->_generateRecords();
+		$this->_generateRecords($repository_id);
 	
-		$ides = $this->CriteriasDocument->getRandomDocuments(compact('criteria_id', 'confirmado', 'preguntable', 'quantity'));
+		$ides = $this->CriteriasDocument->getRandomDocuments(compact('criteria_id', 'confirmado', 'preguntable', 'quantity', 'repository_id'));
 	
 		$this->assertTrue($quantity >= count($ides));
 	
@@ -78,10 +83,11 @@ class CriteriasDocumentTestCase extends CakeTestCase {
 		$confirmado = false;
 		$preguntable = true;
 		$quantity = 5;
+		$repository_id = 42;
 	
-		$this->_generateRecords();
+		$this->_generateRecords($repository_id);
 	
-		$ides = $this->CriteriasDocument->getRandomDocuments(compact('criteria_id', 'confirmado', 'preguntable', 'quantity'));
+		$ides = $this->CriteriasDocument->getRandomDocuments(compact('criteria_id', 'confirmado', 'preguntable', 'quantity', 'repository_id'));
 	
 		$this->assertTrue($quantity >= count($ides));
 	
@@ -98,7 +104,7 @@ class CriteriasDocumentTestCase extends CakeTestCase {
 	 * Genera $docs documentos en la tabla test, 1/$cri de cada uno de $cri criterios
 	* la mitad de ellos está validado, y la otra no
 	*/
-	function _generateRecords() {
+	function _generateRecords($repo_id) {
 		$docs = 10;
 		$cri = $this->criteria_qty;
 	
@@ -110,6 +116,7 @@ class CriteriasDocumentTestCase extends CakeTestCase {
 				$this->CriteriasDocument->set(
 				array(
 					'document_id' => $d,
+					'repository_id' => $repo_id,
 				  	'criteria_id' => $c,
 				  	'total_answers_1' => 0,
 				  	'total_answers_2' => 0,

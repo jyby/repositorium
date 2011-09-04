@@ -18,11 +18,11 @@ class RepositoryTestCase extends CakeTestCase {
 		$data = array(
 			'Repository' => array(
 				'name' => 'Foo',
+				'url' => 'required',
 				'description' => 'bar',
 				'user_id' => 1,
-				'min_points' => 15,
-				'download_cost' => 15,
-				'upload_cost' => 15
+				'documentpack_size' => 1,
+				'challenge_reward' => 1,
 			)
 		);
 		

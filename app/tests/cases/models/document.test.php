@@ -14,8 +14,10 @@ class DocumentTestCase extends CakeTestCase {
 				'Document' => array(
 					'title' => 'Lorem ipsum',
 					'content' => 'floood',
-					'tags' => 'one,two,three'
-		)
+					'tags' => 'one,two,three',
+					'user_id' => 42,
+					'repository_id' => 42,
+			)
 		);
 	
 		$this->Document->saveWithTags($data);
