@@ -99,7 +99,7 @@
 				</a>
 			</h3>
 			<div> 
-				<div><?php echo stripslashes(str_replace('\n', '<br />', Sanitize::html($d['Document']['content']))); ?></div>
+				<div><?php echo stripslashes(str_replace("\n", '<br />', Sanitize::html($d['Document']['content']))); ?></div>
 				<div>
 					<?php
 					
