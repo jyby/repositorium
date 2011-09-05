@@ -74,7 +74,7 @@
         <div id="hd">
             <div class="header">
                 <div class="logo">
-                    <?php echo $this->Html->link($this->Html->image('logo2.png'), '/', array('escape'=>false)); ?>
+                    <?php echo $this->Repo->normal_link($this->Html->image('logo2.png'), '/', array('escape'=>false)); ?>
                     <?php
                     	if($this->Session->read('Repository.name')) {
                     ?> 
