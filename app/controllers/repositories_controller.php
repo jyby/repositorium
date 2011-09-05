@@ -161,13 +161,19 @@ class RepositoriesController extends AppController {
 			
 			if($this->Repository->validates()) {
 				$repository = $this->Repository->createNewRepository($this->data, $user);
+				CakeLog::write('activity', "Repository [name=\"{$repository['Repository']['name']\"] created");
 				if(is_null($repository)) {
 					$this->Session->setFlash('An error occurred creating the repository. Please, blame the developer');
 					$this->redirect('/');
 				}
 				
 				$this->_make_user_expert();
-				$this->redirect(array('action' => 'index', $repository['Repository']['url']));			
+				if(Configure::read('App.subdomains')) {
+					$dom = Configure::read('App.domain');
+					$this->redirect("http://{$repository['Repository']['url']}.{$dom}");
+				} else {
+					$this->redirect(array('action' => 'index', $repository['Repository']['url']));
+				}			
 			} else {
 				$this->Session->setFlash($this->Repository->invalidFields(), 'flash_errors');
 			}	
