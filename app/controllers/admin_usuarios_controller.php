@@ -43,12 +43,21 @@ class AdminUsuariosController extends AppController {
 
   function listar() {
 	$this->data = $this->paginate('User');
-	$current = 'usuarios';
-	$this->set(compact('current'));
+	
+	$params = array(
+		'current' => 'usuarios',
+		'menu' => 'menu_admin',
+		'footnotes' => array('Site Administrator'),
+		'cond' => 'admin',
+	);
+	
+	$this->set($params);
   }
 
   function add() {
-  	$this->set('current', 'usuarios');	
+  	$current = 'usuarios';
+  	$menu = 'menu_admin';
+  	$this->set(compact('current', 'menu'));	
 	if (!empty($this->data)) {
 	  if ($this->User->save($this->data)) {
 		$this->Session->setFlash('User added successfully');		
@@ -72,7 +81,9 @@ class AdminUsuariosController extends AppController {
   }
 
   function edit($id = null) {
-  	$this->set('current', 'usuarios');	
+  	$current = 'usuarios';
+  	$menu = 'menu_admin';
+  	$this->set(compact('current', 'menu'));	
 	$this->User->id = $id;
 	if (empty($this->data)) {
 	  $this->data = $this->User->read();
@@ -115,10 +126,17 @@ class AdminUsuariosController extends AppController {
   		'Expert.user_id' => $id,
   	);
   	$this->data = $this->paginate('Expert');
-  	$current = 'usuarios';  	
   	$user = $this->User->find('first', array('conditions' => compact('id'), 'recursive' => -1));
-  	
-  	$this->set(compact('current', 'user'));  	
+  	$params = array(
+  		'current' => 'usuarios',
+  		'menu' => 'menu_admin',
+  		'title' => "Repositories of '{$user['User']['first_name']} {$user['User']['last_name']}'",
+  		'cond' => 'owner',
+  		'user' => $user,
+  		'footnotes' => array('This repository was created by the user'),
+  	);
+  	$this->set($params);  	
+  	$this->render('../admin_repositories/index');
   }
 }
 ?>

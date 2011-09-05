@@ -45,8 +45,9 @@ class AdminRepositoriesController extends AppController {
 	
 	function index() {
 		$current = 'repositories';
+		$menu = 'menu_admin';
 		$this->data = $this->paginate();
-		$this->set(compact('current'));
+		$this->set(compact('current', 'menu'));
 	}
 	
 	function edit($id = null) {
@@ -59,7 +60,9 @@ class AdminRepositoriesController extends AppController {
 				$this->e404();
 			
 			$this->data = $repo;
-			$this->set('current', 'repositories');
+			$current = 'repositories';
+			$menu = 'menu_admin';
+			$this->set(compact('current', 'menu'));
 		} else {
 			$this->Repository->set($this->data);
 			if(!$this->Repository->validates()) {
@@ -97,9 +100,17 @@ class AdminRepositoriesController extends AppController {
 		);
 		
 		$this->data = $this->paginate('Expert');
-		$current = 'repositories';
 		$repo = $this->Repository->find('first', array('conditions' => compact('id'), 'recursive' => -1));
+		$data = array(
+			'current' => 'repositories',
+			'repo' => $repo,
+			'menu' => 'menu_admin',
+			'title' => "Collaborators of '{$repo['Repository']['name']}' Repository",
+			'cond' => 'owner',
+			'footnotes' => array('Repository owner (only 1)'), 
+		);
 		
-		$this->set(compact('current', 'repo'));		
+		$this->set($data);
+		$this->render('../admin_usuarios/listar');		
 	}
 }
