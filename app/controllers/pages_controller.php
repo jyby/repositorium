@@ -153,8 +153,13 @@ class PagesController extends AppController {
 	}
 	
 	function _anon() {
-		$data = $this->Repository->find('all', array('limit' => 20, 'recursive' => -1));
-		$this->set(compact('data'));
+		$this->Repository->unbindModel(array('belongsTo' => array('User')), array('hasMany' => array('Criteria', 'Document')));
+		$latest_repos = $this->Repository->find('all', array(
+// 			'conditions' => $latest,
+			'order' => 'Repository.created desc'
+		));
+		
+		$this->set(compact('latest_repos'));
 		$this->render('home_anon');
 	}
 }
