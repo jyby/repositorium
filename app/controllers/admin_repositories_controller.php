@@ -88,7 +88,12 @@ class AdminRepositoriesController extends AppController {
 			$this->Session->setFlash('An error ocurred deleting the repository', 'flash_errors');
 		}
 		
-		$this->redirect($this->referer());
+		if(Configure::read('App.subdomains')) {
+			$dom = Configure::read('App.domain');
+			$this->redirect("http://www.{$dom}");
+		} else {
+			$this->redirect('index');		}
+		
 	}
 	
 	function users($id = null) {
