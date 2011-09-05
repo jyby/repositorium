@@ -98,20 +98,9 @@
                     </ul>
                 </div>
                 <div class="box optionsbox">
-                    <div class="nav form">
-                    	<?php 
-                    		//echo $this->Form->create(null, array('url' => '/tags/search'));
-                    	?>
-                    		<!--<div class="input text search"><input name="data[Tag][search]" type="text"></div>-->
-                    	<?php
-                    		//echo $this->Form->end();
-                    	?> <!--
-                        <form id="TagSearchForm" method="post" action="tags/search" accept-charset="utf-8">
-                            <div style="display:none;"><input type="hidden" name="_method" value="POST"></div>                            
-                        </form>
-                        -->
+                    <!--<div class="nav form">                    	
                         &nbsp;&nbsp;&nbsp;
-                    </div>
+                    </div>-->
                     <ul class="nav subtopmenu">
                         <?php if($this->Session->read('User.esExperto')): ?>
 	                    <li><?php echo $this->Html->link('Manage Repository', array('controller' => 'admin_documentos'));?></li>
@@ -121,12 +110,13 @@
 	                    <li><?php echo $this->Html->link('Manage Site', array('controller' => 'admin_repositories'));?></li>
                     	<?php endif; ?>
                     	
-                    	<li><?php echo $this->Html->link('Search documents', array('controller' => 'tags', 'action' => 'index')); ?></li>
+                    	<li><?php echo $this->Html->link('Search', array('controller' => 'tags', 'action' => 'index')); ?></li>
                     	
                         <li><?php echo $this->Html->link('Add document', array('controller' => 'documents', 'action' => 'upload'));?></li>
                         <?php if($this->Session->check('User.id') and $this->Session->read('User.id') > 1): ?>
                         <li><?php echo $this->Html->link('Earn points', array('controller' => 'points', 'action' => 'earn')); ?></li>
                         <?php endif; ?>
+                        &nbsp;&nbsp;
                     </ul>                    
                 </div>
             </div>

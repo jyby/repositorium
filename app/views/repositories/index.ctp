@@ -12,8 +12,6 @@
 	});	
 </script>
 
-<h1 class="h1icon"><?php echo ucwords($r['name']) . ' Repository'; ?></h1>
-
 <div id="expert-tools">
 	<div class="adm-mass">
 		<?php
@@ -29,7 +27,16 @@
 		?>
 	</div>
 </div>
-
-
-<p style="padding: 1em;">  <?php echo str_replace('\n', '<br />', Sanitize::html(ucfirst($r['description']))); ?> </p>
+<div class="yui-u padded">
+	<h1 class="getstarted"><?php echo ucwords($r['name']) . ' Repository'; ?></h1>
+	<span class="gray">Description:</span>
+	<p><?php echo str_replace('\n', '<br />', Sanitize::html(ucfirst($r['description']))); ?> </p>
+	<div class="stats padded">
+		<ul>
+			<li><span class="gray">Creator:</span> <?php echo $creator['User']['first_name'] . ' ' . $creator['User']['last_name']; ?></li>
+			<li><span class="gray">Documents:</span> <?php echo $documents; ?></li>
+			<li><span class="gray">Different tags:</span> <?php echo $tags; ?></li>
+		</ul>
+	</div>
+</div>
 

@@ -28,7 +28,7 @@ class RepositoriesController extends AppController {
 	
 	var $name = 'Repositories';
 	
-	var $uses = array('Repository', 'RepositoriesUser');
+	var $uses = array('Repository', 'RepositoriesUser', 'User', 'Document', 'Tag');
 	
 	function index($repo_url = null) {	
 		if(is_null($repo_url)) {
@@ -53,7 +53,30 @@ class RepositoriesController extends AppController {
 				$watching = $r['RepositoriesUser']['watching'];				
 			}
 			
-			$this->set(compact('repository', 'watching'));
+			// stats
+			$creator = $this->User->find('first', array(
+				'conditions' => array(
+					'User.id' => $repository['Repository']['user_id']
+				),
+				'fields' => array('User.first_name', 'User.last_name'),
+				'recursive' => -1,
+			));
+			
+			$documents = $this->Document->find('count', array(
+				'conditions' => array(
+					'Document.repository_id' => $repository['Repository']['id']
+				),
+				'recursive' => -1,
+			));
+			
+			$tags = $this->Tag->find('count', array(
+				'conditions' => array(
+					'Document.repository_id' => $repository['Repository']['id']
+				),
+				'fields' => 'DISTINCT tag'
+			));
+			
+			$this->set(compact('repository', 'watching', 'creator', 'documents', 'tags'));
 		} else {
 			$this->e404();
 		}		
