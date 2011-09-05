@@ -6,7 +6,7 @@
 		<div class="ui-state-error ui-corner-all" style="padding: 4px .7em;">
 			<p>
 				<span class="ui-icon ui-icon-alert" style="float: left; margin-right: .3em;"></span>
-				<strong>Found errors in form:</strong>
+				<strong>Error:</strong>
 				<span><?php echo $message; ?></span>		
 			</p>
 		</div>

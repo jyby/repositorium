@@ -38,17 +38,41 @@ if(Configure::read('App.subdomains')) {
   	Router::connect('/upload', array('controller' => 'documents', 'action' => 'upload'));  	
   	Router::connect('/logout', array('controller' => 'login', 'action' => 'logout'));
 
-  	Router::connect('/manage', 			array('controller' => 'admin_documentos'));
-  	Router::connect('/manage-users', 	array('controller' => 'admin_usuarios'));
-  	Router::connect('/challenges', 		array('controller' => 'challenges'));
-  	Router::connect('/criterias', 		array('controller' => 'criterias'));
-  	Router::connect('/documents', 		array('controller' => 'documents'));
-  	Router::connect('/login', 			array('controller' => 'login'));
-  	Router::connect('/register', 		array('controller' => 'register'));
-  	Router::connect('/repositories', 	array('controller' => 'repositories'));
-  	Router::connect('/search', 			array('controller' => 'tags'));
-  	Router::connect('/profile', 		array('controller' => 'users'));
-  	Router::connect('/points',			array('controller' => 'points'));
+  	Router::connect('/manage', 				array('controller' => 'admin_documentos'));
+  	Router::connect('/manage/:action', 		array('controller' => 'admin_documentos'));  	
+  	
+  	Router::connect('/manage-users', 		array('controller' => 'admin_usuarios'));
+  	Router::connect('/manage-users/:action',array('controller' => 'admin_usuarios'));
+  	
+  	Router::connect('/challenges', 			array('controller' => 'challenges'));
+  	Router::connect('/challenges/:action',	array('controller' => 'challenges'));
+  	
+  	Router::connect('/criterias', 			array('controller' => 'criterias'));
+  	Router::connect('/criterias/:action',	array('controller' => 'criterias'));
+  	
+  	Router::connect('/documents', 			array('controller' => 'documents'));
+  	Router::connect('/documents/:action', 	array('controller' => 'documents'));
+  	
+  	Router::connect('/login', 				array('controller' => 'login'));
+  	Router::connect('/login/:action', 		array('controller' => 'login'));
+  	
+  	Router::connect('/register', 			array('controller' => 'register'));
+  	Router::connect('/register/:action', 	array('controller' => 'register'));
+  	
+  	Router::connect('/repositories', 		array('controller' => 'repositories'));
+  	Router::connect('/repositories/:action',array('controller' => 'repositories'));
+  	
+  	Router::connect('/search', 				array('controller' => 'tags'));
+  	Router::connect('/search/:action', 		array('controller' => 'tags'));
+  	
+  	Router::connect('/profile', 			array('controller' => 'users'));
+  	Router::connect('/profile/:action',		array('controller' => 'users'));
+  	
+  	Router::connect('/points',				array('controller' => 'points'));
+  	Router::connect('/points/:action',		array('controller' => 'points'));
+  	
+  	Router::connect('/collaborators',		array('controller' => 'experts'));
+  	Router::connect('/collaborators/:action',array('controller' => 'experts'));
 
 /**
  * repositories

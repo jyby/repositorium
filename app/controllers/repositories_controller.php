@@ -45,9 +45,10 @@ class RepositoriesController extends AppController {
 				$user = $this->getConnectedUser();
 				$r = $this->RepositoriesUser->find('first', array(
 					'conditions' => array(
-						'repository_id' => $repository['Repository']['id'],
-						'user_id' => $user['User']['id']),
-					'recursive' => -1 
+						'RepositoriesUser.repository_id' => $repository['Repository']['id'],
+						'RepositoriesUser.user_id' => $user['User']['id'],
+						'Repository.user_id <>' => $user['User']['id']),
+// 					'recursive' => -1 
 				));				
 				$watching = $r['RepositoriesUser']['watching'];				
 			}

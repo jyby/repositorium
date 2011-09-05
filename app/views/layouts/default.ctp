@@ -91,7 +91,7 @@
                             $points = $this->Session->read('User.points');
                         ?>
                         <li>Hey, <?php echo $nombre.'!' . $points;?></li>
-                        <li><?php echo $this->Html->link('Edit profile', array('controller' => 'users')); ?></li>
+                        <li><?php echo $this->Html->link('Edit profile', array('controller' => 'users', 'action' => 'edit')); ?></li>
                         <li><?php echo $this->Html->link('Logout', '/logout'); ?></li>
                         <?php } ?>
                         &nbsp;&nbsp;

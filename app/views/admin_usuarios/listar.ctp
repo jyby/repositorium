@@ -84,6 +84,15 @@ $this->Html->addCrumb($title);
 	  <td><?php echo $u['User']['first_name']; ?></td>
 	  <td><?php echo $u['User']['last_name']; ?></td>
 	  <td>
+	  <?php if(strcmp($current,'experts') == 0): ?>
+	  	<div class="admin-doc-edit">
+	  	  <?php if($u['User']['id'] != $this->Session->read('User.id')) 
+	  	  			echo $this->Html->link('Remove member', array('controller' => 'experts', 'action' => 'remove', $u['User']['id']), null, 'Are you sure?');
+	  	  		else
+	  	  			echo 'Owner'; 
+	  	  ?>
+		</div>
+	  <?php else: ?>
 	  	<div class="admin-doc-edit">
 	  	  <?php echo $this->Html->link('See repositories', array('controller' => 'admin_usuarios', 'action' => 'repositories', $u['User']['id'])); ?>
 	  	  &nbsp; | &nbsp;
@@ -91,6 +100,7 @@ $this->Html->addCrumb($title);
 		  &nbsp; | &nbsp;
 		  <?php echo $this->Html->link('Remove', array('controller' => 'admin_usuarios', 'action' => 'remove' , $u['User']['id']), null, 'Are you sure?'); ?>
 		</div>
+	  <?php endif; ?>
 	  </td>
 	</tr>
 	<?php endforeach; ?>

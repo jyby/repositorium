@@ -20,7 +20,7 @@ class UsersController extends AppController {
   
   function edit($id = null) {
 	if($id != $this->Session->read('User.id'))
-	  $this->redirect(array('action' => 'edit', $this->Session->read('User.id')));
+	  $this->redirect(array('controller' => 'users', 'action' => 'edit', $this->Session->read('User.id')));
 
 	$this->User->id = $id;
 	if (empty($this->data)) {
