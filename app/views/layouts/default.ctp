@@ -78,7 +78,7 @@
                     <?php
                     	if($this->Session->read('Repository.name')) {
                     ?> 
-                   		<span class="repo-span"><?php echo ucwords($this->Session->read('Repository.name')) . ' repository';?></span>                    		
+                   		<span class="repo-span"><?php echo $this->Repo->link(ucwords($this->Session->read('Repository.name')) . ' repository', $this->Session->read('Repository.current'));?></span>                    		
                     <?php } ?>
                 </div>
                 <div class="box userbox">

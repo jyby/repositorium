@@ -7,7 +7,7 @@
 			<span>Welcome to Repositorium</span>
 		</div>			
 	</div> -->
-	<div class="latest-anon">
+	<div class="bordered">
 		<div class="padded">
 			<strong class="mini-header">Latest repositories</strong>
 			<?php if(count($latest_repos) > 0): ?>

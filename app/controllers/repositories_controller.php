@@ -28,7 +28,7 @@ class RepositoriesController extends AppController {
 	
 	var $name = 'Repositories';
 	
-	var $uses = array('Repository', 'RepositoriesUser', 'User', 'Document', 'Tag');
+	var $uses = array('Repository', 'RepositoriesUser', 'User', 'Document', 'Tag', 'Criteria');
 	
 	function index($repo_url = null) {	
 		if(is_null($repo_url)) {
@@ -76,7 +76,14 @@ class RepositoriesController extends AppController {
 				'fields' => 'DISTINCT tag'
 			));
 			
-			$this->set(compact('repository', 'watching', 'creator', 'documents', 'tags'));
+			$criterias = $this->Criteria->find('count', array(
+				'conditions' => array(
+					'Criteria.repository_id' => $repository['Repository']['id']
+				),
+				'recursive' => -1
+			));
+			
+			$this->set(compact('repository', 'watching', 'creator', 'documents', 'tags', 'criterias'));
 		} else {
 			$this->e404();
 		}		

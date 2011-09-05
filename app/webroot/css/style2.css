@@ -289,7 +289,7 @@ body {
 .admin-doc-texto {
 	font-family: Monospace;
 	padding-bottom: 10px;
-	padding-left: 10px;
+/* 	padding-left: 10px; */
 }
 
 .admin-info {
@@ -362,7 +362,7 @@ h3 {
 	-moz-border-radius: 5px;
 }
 
-.latest-anon {
+.bordered {
 	border: 1px solid #ccc;
 	border-radius: 5px;
 	-webkit-border-radius: 5px;

@@ -29,13 +29,14 @@
 </div>
 <div class="yui-u padded">
 	<h1 class="getstarted"><?php echo ucwords($r['name']) . ' Repository'; ?></h1>
-	<span class="gray">Description:</span>
-	<p><?php echo str_replace('\n', '<br />', Sanitize::html(ucfirst($r['description']))); ?> </p>
-	<div class="stats padded">
+	<span class="gray" style="padding-bottom: 1em; display: block">About:</span>
+	<p><?php echo str_replace("\n", '<br />', Sanitize::html(ucfirst($r['description']))); ?> </p>
+	<div class="padded">
 		<ul>
 			<li><span class="gray">Creator:</span> <?php echo $creator['User']['first_name'] . ' ' . $creator['User']['last_name']; ?></li>
 			<li><span class="gray">Documents:</span> <?php echo $documents; ?></li>
-			<li><span class="gray">Different tags:</span> <?php echo $tags; ?></li>
+			<li><span class="gray">Quality criteria:</span> <?php echo $criterias; ?></li>
+			<li><span class="gray">Different tags:</span> <?php echo $tags; ?></li>			
 		</ul>
 	</div>
 </div>

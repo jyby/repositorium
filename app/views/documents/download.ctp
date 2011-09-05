@@ -11,28 +11,24 @@ $this->viewVars['title_for_layout'] = $title;
 <div style="padding: 1em 0"><span class="info">Congratulations! Here you have <?php echo count($docs); ?> documents to download: </span></div>
 <div><span style="font-weight: bold; padding-right: 0.5em">Notice:</span><span>You just have this opportunity! if you reload this page, you will have to search and pass a challenge again (if you had to do it before to reach here)</span></div>
 <br />
-<hr />
-
 <?php foreach($docs as $d): ?>
-
-<br/>
-<br/>
-<span style="font-weight:bold"  class="admin-doc-titulo">
-	<?php echo $d['Document']['title'];?>
-</span>
-<br/>
-<br/>
-<div class="admin-doc-texto">
-<pre>
-	<?php echo str_replace(
-			'\n', 
-			'<br />', 
-			Sanitize::html($d['Document']['content']));?>				
-</pre>
+<div class="bordered padded">
+	<span style="font-weight:bold"  class="admin-doc-titulo">
+		<?php echo $d['Document']['title'];?>
+	</span>
+	<div class="admin-doc-texto">	
+		<?php 
+		echo str_replace(
+				"\n", 
+				'<br />', 
+				Sanitize::html($d['Document']['content']));
+		?>
+					
+		</div>
+		<div class="created-by">
+			Created on <?php echo $d['Document']['created']; ?> by <?php echo $d['Document']['nombre_autor']; ?>. 
+		</div>
+	<hr />
 </div>
-<div class="created-by">
-	Created on <?php echo $d['Document']['created']; ?> by <?php echo $d['Document']['nombre_autor']; ?>. 
-</div>
-<hr />
 <?php endforeach;?>
-<br />
+
