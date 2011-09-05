@@ -177,7 +177,7 @@
 				
 		<!-- mass edit -->
 		<div class="adm-mass">
-		<?php echo $this->Form->create(null, array('id' => 'adm-process', 'url' => '/admin_documentos/mass_edit/'.$criterio_n)); ?>	
+		<?php echo $this->Form->create(null, array('id' => 'adm-process', 'url' => array('controller' => 'admin_documentos', 'action' => 'mass_edit', $criterio_n))); ?>	
 			<span class="adm-opt">Selected Documents: </span>
 			<?php		
 				echo $this->Form->hidden('Action.mass_action');

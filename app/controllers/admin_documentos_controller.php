@@ -232,10 +232,6 @@ class AdminDocumentosController extends AppController {
   	$this->redirect($this->referer());
   }
 
-  function view($id = null) {
-  	$this->redirect(array('action' => 'edit/'.$id));
-  }
-
   function remove($id = null, $redirect = true, $flash = true) {
 	if (!is_null($id)) {
 	  if($this->Document->delete($id)) {
@@ -256,9 +252,9 @@ class AdminDocumentosController extends AppController {
 	  if(in_array($field, array('id', 'document_id'))) {
 		if($redirect) $this->redirect($this->referer());
 	  }
-  
-	  $this->CriteriasDocument->set(array(
-		'CriteriasDocument.id' => $id,
+  	
+	  $this->CriteriasDocument->id = $id;
+	  $this->CriteriasDocument->set(array(		
 		$field => $bool
 	  ));
 	  
@@ -293,11 +289,12 @@ class AdminDocumentosController extends AppController {
   }
   
   function mass_edit($criteria = null) {
+//   	pr($this->data['Document']); exit;
   	if(!empty($this->data) && !is_null($criteria)) {
   		/* reset stats */
   		if(strcmp($this->data['Action']['mass_action'], 'reset') == 0) {
   			foreach($this->data['Document'] as $d) {
-  				$id = $d['document_id'];	
+  				$id = $d['id'];	
   				$this->_reset_stats($id, $criteria);  			 
   			}
   			$this->Session->setFlash('Documents\' statistics restarted successfully');
@@ -305,7 +302,7 @@ class AdminDocumentosController extends AppController {
   		/* validate docs */
   		} else if(strcmp($this->data['Action']['mass_action'], 'validate') == 0) {
   			foreach($this->data['Document'] as $doc) {  				
-  				$id = $doc['document_id'];
+  				$id = $doc['id'];
   				$this->validate_document($id, $criteria ,false);
   			}  	
   			$this->Session->setFlash('Documents changed successfully');
@@ -313,7 +310,7 @@ class AdminDocumentosController extends AppController {
   		/* delete docs */
   		} else if(strcmp($this->data['Action']['mass_action'], 'delete') == 0) {
   			foreach($this->data['Document'] as $d) {
-  				$id = $d['document_id'];
+  				$id = $d['id'];
   				$this->remove($id, false, false);
   			}  			
   			$this->Session->setFlash('Documents removed successfully');
