@@ -10,6 +10,8 @@ class CriteriasController extends AppController {
 	  )
 	)
   );
+  
+//   var $helpers = array('Session', 'Form');
 
   function beforeFilter() {
 	if(!$this->isExpert()) {	  
@@ -37,16 +39,28 @@ class CriteriasController extends AppController {
   			$this->Session->write('Criteria.limit', $this->data['Criteria']['limit']);
   		} 
   	} 
-  	$limit = $this->Session->read('Criteria.limit') ? $this->Session->read('Criteria.limit') : $this->paginate['Criteria']['limit'];
-  	$repo = $this->getCurrentRepository();
-  	$this->data = $this->paginate();  
-  	$this->set(compact('limit', 'repo'));	
+
+  	$this->data = $this->paginate();
+  	$params = array(
+  		'limit' => $this->Session->read('Criteria.limit') ? $this->Session->read('Criteria.limit') : $this->paginate['Criteria']['limit'],
+  		'repo' => $this->requireRepository(),
+  		'menu' => 'menu_expert',
+  		'current' => 'criteria',
+  		'title' => 'Criteria'
+  	); 
+  
+  	$this->set($params);	
   }
 
   function add() {
-  	$repo = $this->getCurrentRepository();
-  	$current = 'Add new';
-  	$this->set(compact('repo', 'current'));
+  	$params = array(
+  	  	'repo' => $this->requireRepository(),
+  	  	'menu' => 'menu_expert',
+  	  	'current' => 'criteria',
+  	  	'title' => 'Add new criteria'
+  	);
+  	$this->set($params);
+  	
 	if(!empty($this->data)) {
 	  $this->Criteria->set($this->data);	  
 	  if($this->Criteria->validates()) {
@@ -77,15 +91,27 @@ class CriteriasController extends AppController {
 
 
   function edit($id = null) {
-  	$this->set('current', 'Edit');
+  	$repo = $this->requireRepository();
+  	$params = array(
+  	  	'menu' => 'menu_expert',
+  	  	'current' => 'criteria',
+  	  	'title' => 'Edit criteria',
+  	  	'repo' => $repo
+  	);
+  	$this->set($params);
+  	
 	$this->Criteria->id = $id;
 	if (empty($this->data)) {
 	  $this->data = $this->Criteria->read();
+	  if($this->data['Criteria']['repository_id'] != $repo['Repository']['id']) {
+	  	$this->Session->setFlash('This criteria does not correspond to current repository', 'flash_errors');
+	  	$this->redirect('index');
+	  }
 	} else {
 	  if ($this->Criteria->save($this->data)) {
 		$this->Session->setFlash('Criteria '.$id.' was successfully modified');
 		CakeLog::write('activity', 'Criteria '.$id.' was modified');
-		$this->redirect(array('controller' => 'admin_documentos', 'action' => 'index'));
+		$this->redirect(array('controller' => 'criterias', 'action' => 'index'));
 	  }
 	}
 	$this->render('add');

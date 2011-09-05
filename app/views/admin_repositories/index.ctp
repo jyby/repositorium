@@ -1,5 +1,5 @@
 <?php 
-$title = ucwords($current);
+$title = (isset($title) ? $title : ucwords($current));
 $this->viewVars['title_for_layout'] = $title;
 /* breadcrumbs */
 $this->Html->addCrumb('Manage', '/manage/');
@@ -10,10 +10,7 @@ $this->Html->addCrumb($title);
 <?php echo $this->Html->image('admin.png',array('class' => 'imgicon')) ; ?><h1 class="h1icon" style="margin-top: 15px;"><?php echo (isset($message) ? $message : $title); ?></h1>
 <div class="clearicon"></div>
 <?php echo 
-	   $this->element('menu_administrar', array(
-		 'isLogged' => $this->Session->check('User.id'), 
-		 'isAdmin' => $this->Session->check('User.esAdmin'),
-		 'isExpert' => false, //$this->Session->check('User.esExperto'),
+	   $this->element($menu, array(
          'current' => $current
 	   ));       
 ?> 
@@ -34,10 +31,16 @@ $this->Html->addCrumb($title);
   <tbody>
   	<?php
   		foreach($this->data as $cr):
+  			$ast = false;
+  			if(isset($cond)) {
+  				if(strcmp($cond, 'owner') == 0) {
+  					$ast = $user['User']['id'] == $cr['Repository']['user_id'];
+  				}
+  			}
   	?>
   		<tr>
   			<td><?php echo $cr['Repository']['id']; ?></td>
-  			<td><?php echo $this->Html->link($cr['Repository']['name'], array('controller' => 'admin_repositories', 'action' => 'edit', $cr['Repository']['id']));?></td>
+  			<td><?php echo $this->Html->link($cr['Repository']['name'], array('controller' => 'admin_repositories', 'action' => 'edit', $cr['Repository']['id'])) . ($ast ? '*' : '');?></td>
   			<td><?php echo $this->Repo->link($this->Repo->url($cr['Repository']['url']), $cr['Repository']['url']);?></td>
   			<td>  			
 	  			<div class="admin-doc-texto">
@@ -73,5 +76,13 @@ $this->Html->addCrumb($title);
 </table>
 <!-- end core table-->
 
+<?php if(isset($footnotes)) {
+		$i = 1; 
+		foreach($footnotes as $f): ?>
+<span><?php for($j=0; $j<$i; $j++) echo '*';?> <em><?php echo $f; ?></em></span>
+<?php 
+		$i++;
+		endforeach; 
+	  } ?>
 
 <?php echo $this->element('paginator'); ?> 

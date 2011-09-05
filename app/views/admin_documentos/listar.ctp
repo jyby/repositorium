@@ -1,4 +1,4 @@
-﻿<?php App::import('Sanitize'); ?>
+<?php App::import('Sanitize'); ?>
 <script type="text/javascript">	
 	$(document).ready(function() {		
 		$("#select-all").click(function() {
@@ -102,10 +102,7 @@
 <?php echo $this->Html->image('admin.png',array('class' => 'imgicon')) ; ?><h1 class="h1icon"><?php echo $title; ?></h1>
 <div class="clearicon"></div>
 <?php echo 
-	   $this->element('menu_administrar', array(
-		 'isLogged' => $this->Session->check('User.id'), 
-		 'isAdmin' => false, //$this->Session->check('User.esAdmin'),
-		 'isExpert' => $this->Session->check('User.esExperto'),
+	   $this->element($menu, array(
          'current' => $current
 	   ));       
 ?> 
@@ -154,7 +151,7 @@
 			<?php echo $this->Form->create(null, array('url' => '/admin_documentos/'.$current, 'name' => 'select_criterio')); ?>
 			<span class="adm-opt">Criteria: </span>
 			<?php			 
-				echo $this->Form->select('pregunta', $criterio_list, $criterio_n, array('empty' => false, 'onChange' => 'select_criterio.submit()'));
+				echo $this->Form->select('question', $criterio_list, $criterio_n, array('empty' => false, 'onChange' => 'select_criterio.submit()'));
 				echo $this->Form->end(); 
 			?>
 		</div>
@@ -219,7 +216,7 @@
 		<td>
 			<!-- doc -->
 			<span class="admin-doc-titulo">
-				<?php echo $this->Html->link(Sanitize::html($d['Document']['title']), array('action' => 'view', $id), array('escape' => false)) ;?>
+				<?php echo $this->Html->link(Sanitize::html($d['Document']['title']), array('action' => 'edit', $id, $criterio_n), array('escape' => false)) ;?>
 			</span>
 			<div class="admin-doc-texto">			
 				<?php echo $this->Text->truncate(
@@ -229,7 +226,7 @@
 						Sanitize::html($d['Document']['content'])), 
 					350, 
 					array(
-						'ending' => '<a href="'.$this->Html->url(array('controller' => 'admin_documentos', 'action' => 'edit', $id)).'">...</a>', 
+						'ending' => '<a href="'.$this->Html->url(array('controller' => 'admin_documentos', 'action' => 'edit', $id, $criterio_n)).'">...</a>', 
 						'exact' => false, 
 						'html' => true)); 
 				?>				
@@ -269,7 +266,7 @@
 		<td>
 			<!-- options -->
 			<div class="admin-doc-edit">
-				<?php echo $this->Html->link('Edit', array('action' => 'edit', $id)); ?>
+				<?php echo $this->Html->link('Edit', array('action' => 'edit', $id, $criterio_n)); ?>
 				&nbsp; | &nbsp;   
 				<?php echo $this->Html->link('Remove', array('action' => 'remove', $id), array(), "Are you sure?"); ?>
 			</div>

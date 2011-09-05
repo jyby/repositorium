@@ -35,7 +35,7 @@ $(document).ready(function() {
 		e.preventDefault();
 		var ok = confirm("Are you sure to (in)validate this document?");
 		if(ok)
-			$(window.location).attr('href', '<?php echo $this->Html->url(array('controller' => 'admin_documentos', 'action' => 'validate_document/'. $id . '/' . $criterios_n)); ?>');
+			$(window.location).attr('href', '<?php echo $this->Html->url(array('controller' => 'admin_documentos', 'action' => 'validate_document', $id, $criterios_n)); ?>');
 	});
 	
 	$('.adm-reset').click(function(e) {
@@ -72,10 +72,7 @@ echo $this->Form->end();
 <div class="clearicon"></div>
 
 <?php //echo 
-	   $this->element('menu_administrar', array(
-		 'isLogged' => $this->Session->check('User.id'), 
-		 'isAdmin' => false, //$this->Session->check('User.esAdmin'),
-		 'isExpert' => $this->Session->check('User.esExperto'),
+	   $this->element($menu, array(
          'current' => $current
 	   ));       
 ?> 
@@ -157,7 +154,7 @@ echo $this->Form->end();
 			<?php
 				$est = $this->data['CriteriasDocument'];
 				// official data				
-				$off_answer = (is_null($est['is_positive']) ? '' : $est['is_positive']);
+				$off_answer = (is_null($est['official_answer']) ? '' : $est['official_answer']);
 				$off_type = $est['validated'];
 				
 				// possible data 
@@ -168,7 +165,7 @@ echo $this->Form->end();
 			<?php echo $this->Form->hidden('CriteriasDocument.id'); ?>			
 			
 			<label for="CriteriasDocumentIsPositive" style="display:inline; font-weight: normal;">Official answer:</label>
-			<?php echo $this->Form->select('CriteriasDocument.is_positive', $answers, $off_answer); ?>
+			<?php echo $this->Form->select('CriteriasDocument.official_answer', $answers, $off_answer); ?>
 			
 			<div style="clear: both; height: 10px;"></div>
 			

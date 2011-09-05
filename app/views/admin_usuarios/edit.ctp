@@ -10,10 +10,7 @@ $this->Html->addCrumb('Edit user');
 <?php echo $this->Html->image('users.png',array('class' => 'imgicon')) ; ?><h1 class="h1icon">Edit user - <?php echo $this->data['User']['email'];?></h1>
 <div class="clearicon"></div>
 <?php echo 
-	   $this->element('menu_administrar', array(
-		 'isLogged' => $this->Session->check('User.id'), 
-		 'isAdmin' => $this->Session->check('User.esAdmin'),
-		 'isExpert' => false, //$this->Session->check('User.esExperto'),
+	   $this->element($menu, array(
          'current' => $current
 	   ));       
 ?> 

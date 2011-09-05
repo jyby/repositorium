@@ -1,7 +1,5 @@
 <?php
-	$title = 'List of criteria';
-	$this->viewVars['title_for_layout'] = "Administer $title";
-	$current = 'criterios';
+	$this->viewVars['title_for_layout'] = $title;
 	/* breadcrumbs */
 	$this->Html->addCrumb($repo['Repository']['name'], '/repositories/'.$repo['Repository']['url']);
 	$this->Html->addCrumb('Manage', '/manage/');
@@ -20,10 +18,7 @@
 <?php echo $this->Html->image('admin.png',array('class' => 'imgicon')) ; ?><h1 class="h1icon" style="margin-top: 15px;"><?php echo $title; ?></h1>
 <div class="clearicon"></div>
 <?php echo 
-	   $this->element('menu_administrar', array(
-		 'isLogged' => $this->Session->check('User.id'), 
-		 'isAdmin' => false, //$this->Session->check('User.esAdmin'),
-		 'isExpert' => $this->Session->check('User.esExperto'),
+	   $this->element($menu, array(
          'current' => $current
 	   ));       
 ?> 
@@ -32,7 +27,7 @@
 <div id="expert-tools">
 	<!-- number of items -->
 	<div class="adm-limit" style="float: left">
-		<?php echo $this->Form->create(null, array('url' => '/criterios/', 'name' => 'select_limit')); ?>
+		<?php echo $this->Form->create(null, array('url' => '/criterias/', 'name' => 'select_limit')); ?>
 		<span class="adm-opt">Show: </span>
 		<?php			 
 			$options = array(
@@ -65,7 +60,7 @@
 	<tr class="ui-widget-header">
 	  <!--<th width="10" style="text-align:center;font-size:9px"><input type="checkbox" id="select-all" /><label for="select-all">select</label></th>--> 
 	  <th width="550"><?php echo $this->Paginator->sort('Question', 'Criteria.question'); ?></th>
-	  <th width="220" title=""><?php echo $this->Paginator->sort('Award pack size', 'Criteria.documentpack_size'); ?></th>
+	  <th width="220" title=""><?php echo $this->Paginator->sort('Bonus by passing a challenge', 'Criteria.challenge_reward'); ?></th>
 	  <th width="220"><?php echo $this->Paginator->sort('Bonus by validated document', 'Criteria.documentvalidation_reward');?></th>
 	  <!--<th width="220"><?php //echo $this->Paginator->sort();?></th> -->
 	  <th width="100">Options</th>
@@ -76,8 +71,8 @@
   		foreach($this->data as $cr):
   	?>
   		<tr>
-  			<td><?php echo $this->Html->link($cr['Criteria']['question'], array('action' => 'edit', $cr['Criteria']['id']));?></td>
-  			<td><?php echo $cr['Criteria']['documentpack_size'];?></td>
+  			<td><?php echo $this->Html->link(Sanitize::html($cr['Criteria']['question']), array('action' => 'edit', $cr['Criteria']['id']));?></td>
+  			<td><?php echo $cr['Criteria']['challenge_reward'];?></td>
   			<td><?php echo $cr['Criteria']['documentvalidation_reward'];?></td>
   			<td>
   				<!-- options -->

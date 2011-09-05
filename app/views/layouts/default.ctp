@@ -114,7 +114,7 @@
                     </div>
                     <ul class="nav subtopmenu">
                         <?php if($this->Session->read('User.esExperto')): ?>
-	                    <li><?php echo $this->Html->link('Manage Documents', array('controller' => 'admin_documentos'));?></li>
+	                    <li><?php echo $this->Html->link('Manage Repository', array('controller' => 'admin_documentos'));?></li>
                     	<?php endif; ?>
                     	
                     	<?php if($this->Session->read('User.esAdmin')): ?>

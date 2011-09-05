@@ -50,7 +50,7 @@ class AdminDocumentosController extends AppController {
 
 
   function index() {
-	$this->redirect(array('action'=>'validados'));
+	$this->redirect(array('action'=>'no_validados'));
   }
   
   function _beforeList($confirmado, $all = false) {
@@ -122,8 +122,9 @@ class AdminDocumentosController extends AppController {
 	$ordering = $this->Session->read('CriteriasDocument.order') ? $this->Session->read('CriteriasDocument.order') : $this->_arrayToStr($this->paginate['CriteriasDocument']['order']);
 	$filter = $this->Session->read('CriteriasDocument.filter') ? $this->Session->read('CriteriasDocument.filter') : 'all';
 	$repo = $this->getCurrentRepository();
+	$menu = 'menu_expert';
 	
-	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter', 'repo'));
+	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter', 'repo', 'menu'));
 	$this->render('listar');
   }
 
@@ -137,8 +138,9 @@ class AdminDocumentosController extends AppController {
 	$ordering = $this->Session->read('CriteriasDocument.order') ? $this->Session->read('CriteriasDocument.order') : $this->_arrayToStr($this->paginate['CriteriasDocument']['order']);
 	$filter = $this->Session->read('CriteriasDocument.filter') ? $this->Session->read('CriteriasDocument.filter') : 'all';
 	$repo = $this->getCurrentRepository();
+	$menu = 'menu_expert';
 	
-	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter', 'repo'));
+	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter', 'repo', 'menu'));
 	$this->render('listar');
   }	
   
@@ -152,8 +154,9 @@ class AdminDocumentosController extends AppController {
 	$ordering = $this->Session->read('CriteriasDocument.order') ? $this->Session->read('CriteriasDocument.order') : $this->_arrayToStr($this->paginate['CriteriasDocument']['order']);
 	$filter = $this->Session->read('CriteriasDocument.filter') ? $this->Session->read('CriteriasDocument.filter') : 'all';
 	$repo = $this->getCurrentRepository();
+	$menu = 'menu_expert';
 	
-	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter', 'repo'));
+	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter', 'repo', 'menu'));
 	$this->render('listar');
   }
 
@@ -162,7 +165,13 @@ class AdminDocumentosController extends AppController {
 	$this->redirect(array('controller' => 'documents', 'action' => 'upload'));
   }
   
-  function edit($id = null, $criterio = 1) {
+  function edit($id = null, $criterio = null) {
+  	if(is_null($criterio)) {
+		$this->redirect('index');  		
+  	}
+  	
+  	$repo = $this->requireRepository();
+  	
   	if(empty($this->data)) {		
 	  // stats
 	  $this->data = $this->CriteriasDocument->find(
@@ -170,7 +179,8 @@ class AdminDocumentosController extends AppController {
 		array(
 			'conditions' => array(
 				'CriteriasDocument.document_id' => $id,
-				'CriteriasDocument.criteria_id' => $criterio
+				'CriteriasDocument.criteria_id' => $criterio,
+				'Criteria.repository_id' => $repo['Repository']['id'],
 			)
 		));
 		
@@ -187,17 +197,18 @@ class AdminDocumentosController extends AppController {
 	  
 	  // user
 	  $raw_user = $this->User->find('first', array('conditions' => array('User.id' => $this->data['Document']['user_id']), 'recursive' => -1));
-	  $this->data['User']['user_id'] = $raw_user['User']['first_name'] . ' '. $raw_user['User']['last_name'] . ' ('.$raw_user['User']['email'].')';
+	  $this->data['User']['autor'] = $raw_user['User']['first_name'] . ' '. $raw_user['User']['last_name'] . ' ('.$raw_user['User']['email'].')';
 	  
 	  // criteria
-	  $criterios_list = $this->Criteria->find('list');
+	  $criterios_list = $this->Criteria->find('list', array('conditions' => array('Criteria.repository_id' => $repo['Repository']['id'])));
 	  $criterios_n = $criterio;
 	  
 	  // repo
 	  $repo = $this->getCurrentRepository();
+	  $menu = 'menu_admin';
 	  
 	  $this->set('data',$this->data);
-	  $this->set(compact('criterios_list', 'criterios_n', 'repo'));	  
+	  $this->set(compact('criterios_list', 'criterios_n', 'repo', 'menu'));	  
 	} else {
 	  // save stats info
 	  if($this->CriteriasDocument->save($this->data))
@@ -326,8 +337,8 @@ class AdminDocumentosController extends AppController {
 		));
 		
 		// set respuesta_oficial to 1 if not set  				  				
-		if($doc['CriteriasDocument']['is_positive'] === null) {			
-			$this->set_field('respuesta_oficial_de_un_experto', $doc['CriteriasDocument']['id'], 1, false);
+		if($doc['CriteriasDocument']['official_answer'] === null) {			
+			$this->set_field('official_answer', $doc['CriteriasDocument']['id'], 1, false);
 		} 				
 		$this->set_field('validated', $doc['CriteriasDocument']['id'] , ($doc['CriteriasDocument']['validated']+1)%2, false);
   	}
