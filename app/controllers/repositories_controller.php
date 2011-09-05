@@ -167,7 +167,7 @@ class RepositoriesController extends AppController {
 				}
 				
 				$this->_make_user_expert();
-				$this->set_repository_by_url($repository['Repository']['url']);				
+				$this->redirect(array('action' => 'index', $repository['Repository']['url']));			
 			} else {
 				$this->Session->setFlash($this->Repository->invalidFields(), 'flash_errors');
 			}	
