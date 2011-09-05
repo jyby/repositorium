@@ -31,10 +31,19 @@ class ExpertsController extends AppController {
 			'Expert.repository_id' => $repo['Repository']['id']
 		);
 		$this->data = $this->paginate('Expert');
-		$current = 'usuarios';
-		$title = 'Repository Collaborators';
-		$menu = 'menu_expert';
-		$this->set(compact('current', 'title', 'menu'));
+		
+		$params = array(
+			'current' => 'experts',
+			'title' => 'Repository Collaborators',
+			'menu' => 'menu_expert',
+			'repo' => $repo,
+			'cond' => 'owner',
+			'footnotes' => array('Repository owner'),
+			'add_button' => false,
+			'collaborator_button' => true,
+		); 
+		
+		$this->set($params);
 		$this->render('../admin_usuarios/listar');
 	}
 }

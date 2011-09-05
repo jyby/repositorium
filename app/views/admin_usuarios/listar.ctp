@@ -9,10 +9,19 @@ $this->Html->addCrumb($title);
 ?>
 <script type="text/javascript">
 	$(document).ready(function() {
+		<?php if(!isset($add_button) || $add_button == true): ?>
 		$("#adm-new-user").click(function(e) {
 			e.preventDefault();
 			$(window.location).attr('href', '<?php echo $this->Html->url(array('controller' => 'admin_usuarios', 'action' => 'add'));?>');
-		});	
+		});
+		<?php endif; ?>
+		
+		<?php if(isset($collaborator_button)): ?>
+		$("#adm-new-expert").click(function(e) {
+			e.preventDefault();
+			$(window.location).attr('href', '<?php echo $this->Html->url(array('controller' => 'experts', 'action' => 'add'));?>');
+		});
+		<?php endif; ?>
 	});	
 </script>
 <?php echo $this->Html->image('admin.png',array('class' => 'imgicon')) ; ?><h1 class="h1icon" style="margin-top: 15px;"><?php echo $title; ?></h1>
@@ -34,9 +43,12 @@ $this->Html->addCrumb($title);
 	<!-- mass edit -->
 	<div class="adm-mass">
 		<!--<span class="adm-opt">Selected Documents: </span>-->
-		<?php		
+		<?php
+			if(isset($collaborator_button))
+				echo $this->Form->button('Add a collaborator', array('id' => 'adm-new-expert'));
 			echo '&nbsp;&nbsp;&nbsp;';
-			echo $this->Form->button('Add new user', array('id' => 'adm-new-user'));
+			if(!isset($add_button) || $add_button == true)
+				echo $this->Form->button('Add new user', array('id' => 'adm-new-user'));
 		?>
 	</div>
 	<!-- end mass edit-->	

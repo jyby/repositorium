@@ -9,6 +9,8 @@ if(isset($current)) {
 	$classes['cr'] = 'current';
   } else if(strcmp($current, 'usuarios') == 0) {
 	$classes['usr'] = 'current';
+  } else if(strcmp($current, 'experts') == 0) {
+	$classes['usr'] = 'current';
   }
 }
 ?>
@@ -38,6 +40,12 @@ echo $this->Form->radio('radiomenu',
 								array(
 									'value' => $current , 
 									'onClick' => 'document.location="'.$this->Html->url(array('controller' => 'criterias', 'action' => 'index')) .'";'));						
+									
+echo $this->Form->radio('radiomenu',
+	        					array('experts' => 'Collaborators'),
+								array(
+									'value' => $current , 
+									'onClick' => 'document.location="'.$this->Html->url(array('controller' => 'experts', 'action' => 'index')) .'";'));									
 ?>
 </div>
 <script>
