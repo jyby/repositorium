@@ -161,7 +161,7 @@ class RepositoriesController extends AppController {
 			
 			if($this->Repository->validates()) {
 				$repository = $this->Repository->createNewRepository($this->data, $user);
-				CakeLog::write('activity', "Repository [name=\"{$repository['Repository']['name']\"] created");
+				CakeLog::write('activity', "Repository [name=\"{$repository['Repository']['name']}\"] created");
 				if(is_null($repository)) {
 					$this->Session->setFlash('An error occurred creating the repository. Please, blame the developer');
 					$this->redirect('/');
