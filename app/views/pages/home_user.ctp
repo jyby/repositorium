@@ -4,7 +4,7 @@
     <div class="yui-g first">
         <div class="yui-u first">
         	<div class="padded">
-				<strong class="mini-header">Your Repositories</strong>
+				<strong class="mini-header">Your created Repositories</strong>
 				<?php if(count($your_repos) > 0): ?>
 				<ul>
 					<?php foreach($your_repos as $r) { ?>
@@ -48,7 +48,7 @@
 	    </div>
         <div class="yui-u">
 	        <div class="padded">
-				<strong class="mini-header">Latest repositories</strong>
+				<strong class="mini-header">Newest repositories</strong>
 				<?php if(count($latest_repos) > 0): ?>
 				<ul>
 					<?php foreach($latest_repos as $r) { ?>

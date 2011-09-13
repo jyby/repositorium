@@ -9,7 +9,7 @@
 	</div> -->
 	<div class="bordered">
 		<div class="padded">
-			<strong class="mini-header">Latest repositories</strong>
+			<strong class="mini-header">Newest repositories</strong>
 			<?php if(count($latest_repos) > 0): ?>
 			<ul>
 				<?php foreach($latest_repos as $r) { ?>
