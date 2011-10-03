@@ -28,7 +28,7 @@ class RepositoriesController extends AppController {
 	
 	var $name = 'Repositories';
 	
-	var $uses = array('Repository', 'RepositoriesUser', 'User', 'Document', 'Tag', 'Criteria');
+	var $uses = array('Repository', 'RepositoriesUser', 'User', 'Document', 'Tag', 'Criteria','Source');
 	
 	function index($repo_url = null) {	
 		if(is_null($repo_url)) {
@@ -151,6 +151,7 @@ class RepositoriesController extends AppController {
 	}
 	
 	function create() {
+		
 		if($this->getConnectedUser() == $this->anonymous)
 			$this->redirect(array('controller' => 'login'));
 		
@@ -177,7 +178,9 @@ class RepositoriesController extends AppController {
 			} else {
 				$this->Session->setFlash($this->Repository->invalidFields(), 'flash_errors');
 			}	
-		}		
+		}
+		$sources =  $this->Source->find('list',array('fields' => array('Source.id', 'Source.name')));
+		$this->set(compact('sources'));
 	}
 
 	

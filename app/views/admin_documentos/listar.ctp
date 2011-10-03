@@ -207,7 +207,7 @@
   <tbody>
   <?php 
   	$i = 0;
-  	foreach($data as $d):  
+  	foreach($data as $d):
   		$id = $d['Document']['id'];  	
   ?>
 	<tr>
@@ -218,17 +218,24 @@
 			<span class="admin-doc-titulo">
 				<?php echo $this->Html->link(Sanitize::html($d['Document']['title']), array('action' => 'edit', $id, $criterio_n), array('escape' => false)) ;?>
 			</span>
-			<div class="admin-doc-texto">			
-				<?php echo $this->Text->truncate(
-					str_replace(
-						'\n', 
-						'<br />', 
-						Sanitize::html($d['Document']['content'])), 
-					350, 
-					array(
-						'ending' => '<a href="'.$this->Html->url(array('controller' => 'admin_documentos', 'action' => 'edit', $id, $criterio_n)).'">...</a>', 
-						'exact' => false, 
-						'html' => true)); 
+			<div class="admin-doc-texto">		
+				<?php
+				if ($repo['Source']['name']=='File'){
+					echo '<a href="/repositorium/'.$d['Document']['Folio']['path'].$d['Document']['Folio']['filename'].'">
+						<img src="/repositorium/img/pdf.png" alt="pdf icon" width="32" height="32" />'.$d['Document']['Folio']['filename'].'</a>';
+				} 
+				else{
+					echo $this->Text->truncate(
+						str_replace(
+							'\n', 
+							'<br />', 
+							Sanitize::html($d['Document']['content'])), 
+						350, 
+						array(
+							'ending' => '<a href="'.$this->Html->url(array('controller' => 'admin_documentos', 'action' => 'edit', $id, $criterio_n)).'">...</a>', 
+							'exact' => false, 
+							'html' => true));
+				} 
 				?>				
 			</div>
 			<div class="created-by">

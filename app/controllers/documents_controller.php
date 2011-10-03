@@ -2,7 +2,7 @@
 class DocumentsController extends AppController {
 
 	var $name = 'Documents';
-	var $uses = array('Document', 'User');
+	var $uses = array('Document', 'User', 'Repository', 'Folio');
 	
 	/**
 	 * User Model
@@ -43,15 +43,51 @@ class DocumentsController extends AppController {
    * @TODO dispatch handling
    */
   function upload() {
+  	$repo = $this->requireRepository();
+  	
+  	// File Repos vars
+  	$fileTypeOK = false;
+  	$savedFile = false;
+  	$folder = "";
+  	
+  	
   	if(!empty($this->data)) {  	
 	  	$user = $this->getConnectedUser();
-	  	$repo = $this->requireRepository();
 	  	
 	  	$this->data['Document']['repository_id'] = $repo['Repository']['id']; 
 	  	$this->data['Document']['user_id'] = $user['User']['id'];
-	  	$this->Document->set($this->data);  
+	  	$this->Document->set($this->data);
+	  	
+	  	// if file exists, save it into directory
+	  	if(!empty($this->data['Document']['file'])) {
+	  		
+	  		$folder = "docfiles/";
+	  		$folder_path = WWW_ROOT.$folder;
+	  		
+	  		if(!is_dir($folder_path)) {
+	  			mkdir($folder_path);
+	  		}
+	  		
+	  		if(is_uploaded_file($this->data['Document']['file']['tmp_name'])){
+	  			$permitted = array('application/pdf','application/msword');
+	  			// check filetype is ok
+	  			foreach($permitted as $type) {
+	  				if($type == $this->data['Document']['file']['type']) {
+	  					$fileTypeOK = true;
+	  					$savedFile = move_uploaded_file($this->data['Document']['file']['tmp_name'],
+	  						$folder_path . $this->data['Document']['file']['name']);
+	  					break;
+	  				}
+	  			}
+	  			if(!$fileTypeOK)
+	  				$this->Session->setFlash('File type not allowed');	
+	  		}
+	  	}
 	  	
 	  	// errors
+	  	if(!empty($this->data['Document']['file']) and !$fileTypeOK){
+	  		$this->Session->setFlash('File type not allowed');
+	  	}
 	  	if(empty($this->data['Document']['tags'])) {
 	  		$this->Session->setFlash('You must include at least one tag');
 	  	} else if(!$this->Document->validates()) {
@@ -60,11 +96,26 @@ class DocumentsController extends AppController {
 		} else if(!$this->Document->saveWithTags($this->data)) {
 			$this->Session->setFlash('There was an error trying to save the document. Please try again later');
 		} else {
+			// now that Document is saved, let's add File register
+			if($fileTypeOK and $savedFile){
+				$folio['filename'] = $this->data['Document']['file']['name'];
+				$folio['size'] = $this->data['Document']['file']['size'];
+				$folio['document_id'] = $this->Document->id;
+				$folio['type'] = 'pdf';
+				$folio['path'] = $folder;
+				$this->Folio->set($folio);
+				$this->Folio->save();
+			}
+			
 			$this->Session->setFlash('Document saved successfuly');
 			$this->_clean_session();
 			$this->redirect(array('controller' => 'repositories', 'action' => 'index', $repo['Repository']['url']));
-		} 	
+		}
+		
   	}
+  	
+  	$source = $this->Repository->getSourceType($repo['Repository']['source_id']);
+	$this->set(compact('source'));
   }
 
   
@@ -142,6 +193,7 @@ class DocumentsController extends AppController {
   	}
   	$this->set(compact('premio', 'doc_objs'));
   }
+  
   
 }
 ?>

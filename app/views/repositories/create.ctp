@@ -17,6 +17,12 @@ $this->Html->addCrumb($title);
 
 <?php echo $this->Form->input('description'); ?>
 
+<!-- source types for repo -->
+<div class="select required">
+	<label for="source_id">Select a Document Type for this repository</label>
+	<?php echo $this->Form->select('source_id', $sources);?>
+</div> 
+
 <?php //echo $this->Form->input('min_points', array('label' => 'Minimum points assigned to each new user of this repository')); ?>
 
 <?php echo $this->Form->input('download_cost', array('label' => 'Cost (in points) of each document to be downloaded')); ?>

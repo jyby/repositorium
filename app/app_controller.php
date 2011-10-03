@@ -62,6 +62,12 @@ class AppController extends Controller {
 	var $Expert;
 	
 	/**
+	 * Addon Model
+	 * @var Addon
+	 */
+	var $Addon;
+	
+	/**
 	 * Anonymous user representation, use with AppController::getConnectedUser()
 	 */
 	var $anonymous = array(

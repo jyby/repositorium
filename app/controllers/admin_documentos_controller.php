@@ -11,7 +11,7 @@
 
 class AdminDocumentosController extends AppController {
   
-  var $uses = array('Criteria', 'Document', 'CriteriasDocument', 'Tag', 'User', 'Expert');
+  var $uses = array('Criteria', 'Document', 'CriteriasDocument', 'Tag', 'User', 'Expert', 'Folio');
   var $helpers = array('Text', 'Number');
   var $paginate = array(
 	'CriteriasDocument' => array(
@@ -109,6 +109,15 @@ class AdminDocumentosController extends AppController {
 		));  		
   	}
   	
+  	// add Folio to every Doc if this is a File Repo
+  	if($repo['Source']['name'] == "File"){
+  		foreach($data as $key => $value){
+  			$data[$key]['Document'] += $this->Folio->find('first', array(
+  					'conditions' => array('Folio.document_id' => $data[$key]['Document']['id']), 
+  					'recursive' => -1));
+  			//$data[$key]['Document'][] = $this->Folio->find('first', array('conditions' => array('Folio.document_id' => $data[$key]['Document']['id']), 'recursive' => -1));
+  		}
+  	}
 	return compact('criterio_list', 'criterio_n', 'data');
   }
   
@@ -124,7 +133,7 @@ class AdminDocumentosController extends AppController {
 	$repo = $this->getCurrentRepository();
 	$menu = 'menu_expert';
 	
-	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter', 'repo', 'menu'));
+	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter', 'repo', 'menu', 'folio'));
 	$this->render('listar');
   }
 
@@ -140,7 +149,7 @@ class AdminDocumentosController extends AppController {
 	$repo = $this->getCurrentRepository();
 	$menu = 'menu_expert';
 	
-	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter', 'repo', 'menu'));
+	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter', 'repo', 'menu', 'folio'));
 	$this->render('listar');
   }	
   
@@ -156,7 +165,7 @@ class AdminDocumentosController extends AppController {
 	$repo = $this->getCurrentRepository();
 	$menu = 'menu_expert';
 	
-	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter', 'repo', 'menu'));
+	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter', 'repo', 'menu', 'folio'));
 	$this->render('listar');
   }
 
@@ -194,6 +203,13 @@ class AdminDocumentosController extends AppController {
 	  foreach($raw_tags as $t)
 		$tags[] = $t['Tag']['tag'];	  
 	  $this->data['Document']['tags'] = implode($tags,', ');
+	  
+	  // add Folio to  Doc if this is a File Repo
+	  if($repo['Source']['name'] == "File"){
+	  	$this->data['Document'] += $this->Folio->find('first', array(
+    					'conditions' => array('Folio.document_id' => $this->data['Document']['id']), 
+    					'recursive' => -1)); 
+	  }
 	  
 	  // user
 	  $raw_user = $this->User->find('first', array('conditions' => array('User.id' => $this->data['Document']['user_id']), 'recursive' => -1));

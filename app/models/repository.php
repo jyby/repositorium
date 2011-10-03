@@ -13,6 +13,15 @@ class Repository extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
+		'source_id' => array(
+			'notEmpty' => array(
+				'rule' => array('notEmpty'),
+				'message' => 'Please select a Document Type',
+				'allowEmpty' => false,
+				'required' => true,
+				'last' => true, // Stop validation after this rule
+			)
+		),
 		'url' => array(
 			'notEmpty' => array(
 				'rule' => array('notEmpty'),
@@ -118,6 +127,13 @@ class Repository extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+		'Source' => array(
+			'className' => 'Source',
+			'foreignKey' => 'source_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''
 		)
 	);
 
@@ -188,7 +204,9 @@ class Repository extends AppModel {
 			if(!$this->Expert->save($expert)) {
 				$ds->rollback($this);
 				return null;
-			}			
+			}
+			
+					
 		$ds->commit($this);
 		return $this->find('first', array('conditions' => array('id' => $this->getLastInsertID()), 'recursive' => -1));
 	}
@@ -196,6 +214,13 @@ class Repository extends AppModel {
 	function afterSave($created) {
 		if($created)
 			$this->RepositoriesUser->massCreateAfterRepository($repository_id = $this->id);
+	}
+	
+	function getSourceType($repository_sourceid){
+		$source = $this->Source->find('first', 
+			array('conditions' => array('id' => $repository_sourceid),
+				'fields' => array('Source.name')));
+		return $source['Source']['name'];
 	}
 
 }

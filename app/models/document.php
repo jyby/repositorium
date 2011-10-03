@@ -57,6 +57,19 @@ class Document extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
+		'Folio' => array(
+			'className' => 'Folio',
+			'foreignKey' => 'document_id',
+			'dependent' => true,
+			'conditions' => '',
+			'fields' => '',
+			'order' => '',
+			'limit' => '',
+			'offset' => '',
+			'exclusive' => '',
+			'finderQuery' => '',
+			'counterQuery' => ''
+		),
 		'CriteriasDocument' => array(
 			'className' => 'CriteriasDocument',
 			'foreignKey' => 'criteria_id',

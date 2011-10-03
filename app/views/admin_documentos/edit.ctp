@@ -122,13 +122,23 @@ echo $this->Form->end();
 				echo "</div>";
 				
 				echo '<div style="clear: both; height: 10px;"></div>';
-				echo $this->Form->input('Document.content', array(
-				  'label' => 'Content ',
-				  'value' => stripslashes(str_replace('\n',"\n",$this->data['Document']['content'])),
-				  'style' => 'width: 90%; height: 300px;'
-				  //'rows' => 14,
-				  //'cols' => 60,
-				));	
+				if($repo['Source']['name']=='File'){?>
+					<label for="DocumentFile">Content</label>
+					<div class="admin-doc-texto">
+					<?php echo '<a href="/repositorium/'.$this->data['Document']['Folio']['path'].$this->data['Document']['Folio']['filename'].'">
+											<img src="/repositorium/img/pdf.png" alt="pdf icon" width="32" height="32" />'.$this->data['Document']['Folio']['filename'].'</a>';?>
+					</div>
+				<?php  	
+				}
+				else{
+					echo $this->Form->input('Document.content', array(
+					  'label' => 'Content ',
+					  'value' => stripslashes(str_replace('\n',"\n",$this->data['Document']['content'])),
+					  'style' => 'width: 90%; height: 300px;'
+					  //'rows' => 14,
+					  //'cols' => 60,
+					));
+				}	
 			?>
 				<div class="created-by">
 					<span>Created by <?php echo $this->Text->autoLinkEmails($this->data['User']['autor']); ?> on <?php echo $this->data['Document']['created']; ?></span> 
