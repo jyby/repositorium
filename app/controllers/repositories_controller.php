@@ -171,18 +171,13 @@ class RepositoriesController extends AppController {
 				$this->_make_user_expert();
 				// adding Cogs to a new Set
 				$selectCogs = $this->data['Repository']['Cogs'];
-				//$this->Kit->create();
-				$this->Kit->set('carlos','carlos win');
-				$this->Kit->save(null);
-				//$this->Kit->commit();
-				exit();
+				
+				$this->Kit->save();
 				
 				foreach($selectCogs as $cog){
-					print("Carlos");
-					print($cog);
-					$this->CogsSet->set('set_id', $this->Kit->id);
-					$this->CogsSet->set('cog_id', $cog);
-					$this->CogsSet->save();
+					$this->CogsKit->set('kit_id', $this->Kit->id);
+					$this->CogsKit->set('cog_id', $cog);
+					$this->CogsKit->save();
 				}
 
 				if(Configure::read('App.subdomains')) {
