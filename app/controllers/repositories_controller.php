@@ -28,7 +28,7 @@ class RepositoriesController extends AppController {
 	
 	var $name = 'Repositories';
 	
-	var $uses = array('Repository', 'RepositoriesUser', 'User', 'Document', 'Tag', 'Criteria','Source');
+	var $uses = array('Repository', 'RepositoriesUser', 'User', 'Document', 'Tag', 'Criteria','Cog', 'Restriction', 'Set', 'CogsSet', 'RestrictionsSet');
 	
 	function index($repo_url = null) {	
 		if(is_null($repo_url)) {
@@ -169,18 +169,24 @@ class RepositoriesController extends AppController {
 				}
 				
 				$this->_make_user_expert();
+				//adding modifiers to succesfully saved Repository
+				//TODO: cabiar a Component
+				//	$this->ModifiersRepository->associate($repository['Repository']['id'], $modifier);
+				//}
+				
 				if(Configure::read('App.subdomains')) {
 					$dom = Configure::read('App.domain');
 					$this->redirect("http://{$repository['Repository']['url']}.{$dom}");
 				} else {
 					$this->redirect(array('action' => 'index', $repository['Repository']['url']));
-				}			
+				}
+
 			} else {
 				$this->Session->setFlash($this->Repository->invalidFields(), 'flash_errors');
 			}	
 		}
-		$sources =  $this->Source->find('list',array('fields' => array('Source.id', 'Source.name')));
-		$this->set(compact('sources'));
+		$cogs =  $this->Cog->find('superlist', array('fields'=>array('id','name','description'), 'separator'=>': '));
+		$this->set(compact('cogs'));
 	}
 
 	

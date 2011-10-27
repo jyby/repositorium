@@ -88,7 +88,7 @@ class Document extends AppModel {
 	 * @param string $delimiter (of tags)
 	 * @return true if successfully, false otherwise
 	 */
-	function saveWithTags($data = array(), $delimiter = ',') {
+	function saveWithTags(&$data = array(), $delimiter = ',') {
 		if(!empty($data)) {
 			$this->create();
 	
@@ -111,22 +111,23 @@ class Document extends AppModel {
 					$dataSource->rollback($this); // ROLLBACK
 				return false;
 			}
-	
+			
 			$id = $this->id;
-			 
+			
 			if($there_are_tags) {
-				$data = array();
+				$tagData = array();
 				$i = 0;
 				foreach($tags as $tag) {
-					$data[$i]['Tag'] = array(
+					$tagData[$i]['Tag'] = array(
 	        	            'tag' => $tag,
 	        	            'document_id' => $id
 					);
 					$i += 1;
 				}
 				 
-				if($this->Tag->saveAll($data)) {
+				if($this->Tag->saveAll($tagData)) {
 					$dataSource->commit($this); // C0MMIT
+					
 					return true;
 				} else {
 					$dataSource->rollback($this); // ROLLBACK

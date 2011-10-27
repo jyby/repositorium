@@ -13,15 +13,6 @@ class Repository extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 		),
-		'source_id' => array(
-			'notEmpty' => array(
-				'rule' => array('notEmpty'),
-				'message' => 'Please select a Document Type',
-				'allowEmpty' => false,
-				'required' => true,
-				'last' => true, // Stop validation after this rule
-			)
-		),
 		'url' => array(
 			'notEmpty' => array(
 				'rule' => array('notEmpty'),
@@ -128,12 +119,12 @@ class Repository extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'Source' => array(
-			'className' => 'Source',
-			'foreignKey' => 'source_id',
+		'Set' => array(
+			'className' => 'User',
+			'foreignKey' => 'user_id',
 			'conditions' => '',
 			'fields' => '',
-			'order' => ''
+			'order' => ''			
 		)
 	);
 
@@ -216,11 +207,12 @@ class Repository extends AppModel {
 			$this->RepositoriesUser->massCreateAfterRepository($repository_id = $this->id);
 	}
 	
-	function getSourceType($repository_sourceid){
-		$source = $this->Source->find('first', 
-			array('conditions' => array('id' => $repository_sourceid),
-				'fields' => array('Source.name')));
-		return $source['Source']['name'];
+	function getModifiers($repository_id){
+		$modifiers = $this->ModifiersRepository->find('all', 
+			array('conditions' => array('ModifiersRepository.repository_id' => $repository_id),
+				'recursive' => 1,
+				'fields' => array('Modifier.id','Modifier.name', 'Modifier.sysname')));
+		return $modifiers;
 	}
 
 }

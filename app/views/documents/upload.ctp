@@ -15,12 +15,11 @@ $(document).ready(function() {
 <fieldset class="datafields">
 <?php echo $this->Form->create(null, array('url' => '/documents/upload', 'type' => 'file', 'inputDefaults' => array('error' => false)));?>
 <?php echo $this->Form->input('Document.title', array('class' => 'ingresar-documento', 'label' => 'Title', 'default' => '', 'size' => 50)); ?>
-<?php if($source=='File'){
-		echo '<label for="DocumentFile">File</label>';
-		echo $this->Form->file('file', array('class' => 'upload-documento', 'size' => 30));
-}
-	else{
-		echo $this->Form->input('Document.content', array('class' => 'ingresar-documento', 'label' => 'Content', 'rows' => 14, 'cols' => 80, 'default' => ''));		
+<?php
+	echo $this->Form->input('Document.content', array('class' => 'ingresar-documento', 'label' => 'Content', 'rows' => 14, 'cols' => 80, 'default' => ''));
+	
+	foreach($modifiers as $mod){
+		echo $this->element($mod."/form", array('flag' => 'value'));;
 	}
 ?>
 <div style="width:400px">
