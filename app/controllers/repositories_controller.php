@@ -28,7 +28,7 @@ class RepositoriesController extends AppController {
 	
 	var $name = 'Repositories';
 	
-	var $uses = array('Repository', 'RepositoriesUser', 'User', 'Document', 'Tag', 'Criteria','Cog', 'Restriction', 'Set', 'CogsSet', 'RestrictionsSet');
+	var $uses = array('Repository', 'RepositoriesUser', 'User', 'Document', 'Tag', 'Criteria','Cog', 'Restriction', 'Kit', 'CogsKit', 'KitsRestriction');
 	
 	function index($repo_url = null) {	
 		if(is_null($repo_url)) {
@@ -169,11 +169,22 @@ class RepositoriesController extends AppController {
 				}
 				
 				$this->_make_user_expert();
-				//adding modifiers to succesfully saved Repository
-				//TODO: cabiar a Component
-				//	$this->ModifiersRepository->associate($repository['Repository']['id'], $modifier);
-				//}
+				// adding Cogs to a new Set
+				$selectCogs = $this->data['Repository']['Cogs'];
+				//$this->Kit->create();
+				$this->Kit->set('carlos','carlos win');
+				$this->Kit->save(null);
+				//$this->Kit->commit();
+				exit();
 				
+				foreach($selectCogs as $cog){
+					print("Carlos");
+					print($cog);
+					$this->CogsSet->set('set_id', $this->Kit->id);
+					$this->CogsSet->set('cog_id', $cog);
+					$this->CogsSet->save();
+				}
+
 				if(Configure::read('App.subdomains')) {
 					$dom = Configure::read('App.domain');
 					$this->redirect("http://{$repository['Repository']['url']}.{$dom}");

@@ -1,20 +1,20 @@
 <?php
-class CogsSet extends AppModel {
-	var $name = 'CogsSet';
+class KitsRestriction extends AppModel {
+	var $name = 'KitsRestriction';
 	
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 	var $belongsTo = array(
-		'Cog' => array(
-			'className' => 'Cog',
-			'foreignKey' => 'cog_id',
+		'Kit' => array(
+			'className' => 'Kit',
+			'foreignKey' => 'kit_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
 		),
-		'Set' => array(
-			'className' => 'Set',
-			'foreignKey' => 'set_id',
+		'Restriction' => array(
+			'className' => 'Restriction',
+			'foreignKey' => 'restriction_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''

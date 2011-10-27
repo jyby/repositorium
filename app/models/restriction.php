@@ -1,11 +1,11 @@
 <?php
 class Restriction extends AppModel {
-	var $name = 'restriction';
+	var $name = 'Restriction';
 	var $displayField = 'name';
 
 	var $hasMany = array(
-		'RestrictionsSet' => array(
-			'className' => 'RestrictionsSet',
+		'KitsRestriction' => array(
+			'className' => 'KitsRestriction',
 			'foreignKey' => 'restriction_id',
 			'dependent' => true,
 		)
