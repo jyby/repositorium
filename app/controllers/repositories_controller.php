@@ -158,6 +158,18 @@ class RepositoriesController extends AppController {
 		if(!empty($this->data)) {
 			$user = $this->getConnectedUser();
 			$this->data['Repository']['user_id'] = $user['User']['id'];
+			
+			// adding Cogs to a new Set
+			$selectCogs = $this->data['Repository']['Cogs'];
+			$this->Kit->save();
+			foreach($selectCogs as $cog){
+				$this->CogsKit->set('kit_id', $this->Kit->id);
+				$this->CogsKit->set('cog_id', $cog);
+				$this->CogsKit->save();
+			}
+			// update Repository kit_id
+			$this->data['Repository']['kit_id'] = $this->Kit->id;
+			
 			$this->Repository->set($this->data);
 			
 			if($this->Repository->validates()) {
@@ -169,16 +181,6 @@ class RepositoriesController extends AppController {
 				}
 				
 				$this->_make_user_expert();
-				// adding Cogs to a new Set
-				$selectCogs = $this->data['Repository']['Cogs'];
-				
-				$this->Kit->save();
-				
-				foreach($selectCogs as $cog){
-					$this->CogsKit->set('kit_id', $this->Kit->id);
-					$this->CogsKit->set('cog_id', $cog);
-					$this->CogsKit->save();
-				}
 
 				if(Configure::read('App.subdomains')) {
 					$dom = Configure::read('App.domain');

@@ -2,7 +2,7 @@
 class DocumentsController extends AppController {
 
 	var $name = 'Documents';
-	var $uses = array('Document', 'User', 'Repository', 'Folio', 'ModifiersRepository');
+	var $uses = array('Document', 'User', 'Repository', 'CogsKit');
 	
 	/**
 	 * User Model
@@ -44,30 +44,30 @@ class DocumentsController extends AppController {
    */
   function upload() {
   	$repo = $this->requireRepository();
-  	//@TODO: mejorar 
-  	$modifiers = $this->ModifiersRepository->find('list', array(
-  		  				'conditions' => array('Repository.id' => $repo['Repository']['id']), 
+  	
+  	$cogs = $this->CogsKit->find('list', array(
+  		  				'conditions' => array('CogsKit.kit_id' => $repo['Repository']['kit_id'], 'CogsKit.cog_id' != '0'), 
   		  				'recursive' => 1,
-  		  				'fields'=>array('Modifier.sysname')));
+  		  				'fields'=>array('Cog.sysname')));
   	
   	if(!empty($this->data)) {
 		//attach necesary behaviors
-		foreach ($modifiers as $mod){
+		foreach ($cogs as $cog){
 			$configArray = array('cod'=> 1);
 			$configArray['data'] =& $this->data;
 			$configArray['session'] =& $this->Session;
-  			$this->Document->Behaviors->attach($mod, $configArray);
+  			$this->Document->Behaviors->attach($cog, $configArray);
 		}
   		
 		$this->save($this->data);
 		
-  		foreach ($modifiers as $mod){
-  			$this->Document->Behaviors->detach($mod);
+  		foreach ($cogs as $cog){
+  			$this->Document->Behaviors->detach($cog);
   		}
   	}
   	
   	
-	$this->set(compact('modifiers'));
+	$this->set(compact('cogs'));
   }
 
   
@@ -153,6 +153,7 @@ class DocumentsController extends AppController {
   	 
   	$this->data['Document']['repository_id'] = $repo['Repository']['id'];
   	$this->data['Document']['user_id'] = $user['User']['id'];
+  	$this->data['Document']['kit_id'] = $repo['Repository']['kit_id'];
   	$this->Document->set($this->data);
   	 
   	// errors

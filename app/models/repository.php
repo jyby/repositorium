@@ -119,9 +119,9 @@ class Repository extends AppModel {
 			'fields' => '',
 			'order' => ''
 		),
-		'Set' => array(
-			'className' => 'User',
-			'foreignKey' => 'user_id',
+		'Kit' => array(
+			'className' => 'Kit',
+			'foreignKey' => 'kit_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''			

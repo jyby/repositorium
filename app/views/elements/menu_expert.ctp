@@ -45,7 +45,12 @@ echo $this->Form->radio('radiomenu',
 	        					array('experts' => 'Collaborators'),
 								array(
 									'value' => $current , 
-									'onClick' => 'document.location="'.$this->Html->url(array('controller' => 'experts', 'action' => 'index')) .'";'));									
+									'onClick' => 'document.location="'.$this->Html->url(array('controller' => 'experts', 'action' => 'index')) .'";'));
+echo $this->Form->radio('radiomenu',
+								array('cogs' => 'Update Cogs'),
+								array(
+									'value' => $current , 
+									'onClick' => 'document.location="'.$this->Html->url(array('controller' => 'cogs', 'action' => 'index')) .'";'));									
 ?>
 </div>
 <script>

@@ -1,7 +1,7 @@
 <?php
-class File extends AppModel {
-	var $name = 'file';
-	var $displayField = 'file';
+class Folio extends AppModel {
+	var $name = 'Folio';
+	var $displayField = 'filename';
 
 	var $belongsTo = array(
 		'Document' => array(
@@ -12,6 +12,10 @@ class File extends AppModel {
 			'order' => ''
 		)
 	);
+	
+	function fallar(){
+		print("fail");
+	}
 	
 }
 ?>

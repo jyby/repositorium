@@ -3,7 +3,7 @@ class User extends AppModel {
 	var $name = 'User';
 	var $displayField = 'email';
 	var $virtualFields = array(
-		'full_name' => 'CONCAT(User.first_name, \' \', User.last_name)'
+		'full_name' => 'CONCAT(first_name, \' \', last_name)'
 	);
 	var $validate = array(
 		'email' => array(

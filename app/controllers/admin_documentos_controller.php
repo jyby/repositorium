@@ -109,15 +109,6 @@ class AdminDocumentosController extends AppController {
 		));  		
   	}
   	
-  	// add Folio to every Doc if this is a File Repo
-  	if($repo['Source']['name'] == "File"){
-  		foreach($data as $key => $value){
-  			$data[$key]['Document'] += $this->Folio->find('first', array(
-  					'conditions' => array('Folio.document_id' => $data[$key]['Document']['id']), 
-  					'recursive' => -1));
-  			//$data[$key]['Document'][] = $this->Folio->find('first', array('conditions' => array('Folio.document_id' => $data[$key]['Document']['id']), 'recursive' => -1));
-  		}
-  	}
 	return compact('criterio_list', 'criterio_n', 'data');
   }
   
