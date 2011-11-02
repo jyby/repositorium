@@ -56,6 +56,16 @@
 	Configure::write('App.encoding', 'UTF-8');
 
 /**
+ * Application subdomains feature
+ */
+ 	Configure::write('App.subdomains', false);
+
+/**
+ * Domain name (only if subdomains feature is enabled)
+ */
+ 	Configure::write('App.domain', 'repositorium.cl');
+
+/**
  * To configure CakePHP *not* to use mod_rewrite and to
  * use CakePHP pretty URLs, remove these .htaccess
  * files:
@@ -195,9 +205,14 @@
  *
  * CakePHP session IDs are also regenerated between requests if
  * 'Security.level' is set to 'high'.
+ *
+ * If you're using the Subdomains feature, it must be set to 'low'
  */
-	Configure::write('Security.level', 'medium');
-
+ if(Configure::read('App.subdomains'))
+	Configure::write('Security.level', 'low');
+ else
+    Configure::write('Security.level', 'medium');
+    
 /**
  * A random string used in security hashing methods.
  */

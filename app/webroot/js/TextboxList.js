@@ -13,7 +13,6 @@ Script: TextboxList.js
 (function($){
 	
 $.TextboxList = function(element, _options){
-	
 	var original, container, list, current, focused = false, index = [], blurtimer, events = {};
 	var options = $.extend(true, {
     prefix: 'textboxlist',
@@ -283,7 +282,7 @@ $.TextboxListBit = function(type, value, textboxlist, _options){
 		growingOptions: {},
 		stopEnter: true,
 		addOnBlur: false,
-		addKeys: [13]
+		addKeys: [44]
 	}, _options);
 	
 	this.type = type;
@@ -315,12 +314,12 @@ $.TextboxListBit = function(type, value, textboxlist, _options){
 				blur(true);
 				if (options.addOnBlur) toBox(); 
 			});				
-			if (options.addKeys || options.stopEnter){
+			if (true){
 				element.keydown(function(ev){
 					if (!focused) return;
 					var evStop = function(){ ev.stopPropagation(); ev.preventDefault(); };
 					if (options.stopEnter && ev.which === 13) evStop();
-					if ($.inArray(ev.which, splat(options.addKeys)) != -1){
+					if (ev.which==188){
 						evStop();
 						toBox();
 					}

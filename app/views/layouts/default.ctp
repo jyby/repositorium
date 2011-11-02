@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 /**
  * default.ctp
  * 
@@ -6,7 +6,6 @@
  * 
  * @package   views
  * @author    Mauricio Quezada <mquezada@dcc.uchile.cl>
- * @copyright Copyright (c) 2011 
  */
 ?>
 <!DOCTYPE html>
@@ -56,30 +55,6 @@
 					}
 			}}});
 	}
-
-//	function add_close_button(){
-//		var flash=$("#flashMessage");
-//		//Create the Div
-//		var div_close = $("<div></div>");
-//		div_close.css({'float' : 'right', 'text-align' : 'right'});
-//		//Create the A
-//		var a_close = $("<a></a>");
-//		a_close.css({'color' : '#333', 'cursor' : 'pointer'});
-//		a_close.html("X");
-//		a_close.click(close_flashMessage);
-//		//Append A to Div
-//		div_close.append(a_close);
-//		//Append the Div to the flashMessage Div
-//		flash.append(div_close);
-//	}
-//	
-//	function close_flashMessage(){
-//		$("#flashMessage").hide('slow');
-//	}
-//	
-//	$(function(){
-//		add_close_button();
-//	});
 	
 	//Improve the flashMessage
 	$("#flashMessage").addClass("ui-state-highlight ui-corner-all flash-style");
@@ -99,45 +74,49 @@
         <div id="hd">
             <div class="header">
                 <div class="logo">
-                    <?php echo $this->Html->link($this->Html->image('logo2.png'), '/', array('escape'=>false)); ?>
+                    <?php echo $this->Repo->normal_link($this->Html->image('logo2.png'), '/', array('escape'=>false)); ?>
+                    <?php
+                    	if($this->Session->read('Repository.name')) {
+                    ?> 
+                   		<span class="repo-span"><?php echo $this->Repo->link(ucwords($this->Session->read('Repository.name')) . ' repository', $this->Session->read('Repository.current'));?></span>                    		
+                    <?php } ?>
                 </div>
                 <div class="box userbox">
                     <ul class="nav topmenu">
-                        <?php if(!$this->Session->check('Usuario.id')) { ?>
-                        <li><?php echo $this->Html->link('Sign in', '/registro', array('escape' => false)); ?></li>
-                        <li><?php echo $this->Html->link('Log in', '/iniciar_sesion', array('escape' => false)); ?></li>
+                        <?php if(!$this->Session->check('User.id')) { ?>
+                        <li><?php echo $this->Html->link('Sign in', array('controller' => 'register'), array('escape' => false)); ?></li>
+                        <li><?php echo $this->Html->link('Log in', array('controller' => 'login'), array('escape' => false)); ?></li>
                         <?php } else {
-                            $nombre = $this->Session->read('Usuario.nombre');
-		                    $puntos = $this->Session->read('Usuario.puntos');
+                            $nombre = $this->Session->read('User.first_name');
+                            $points = $this->Session->read('User.points');
                         ?>
-                        <li>Hey, <?php echo $nombre.'! ('.$puntos.' points)';?></li>
-                        <li><?php echo $this->Html->link('Edit profile', '/usuarios'); ?></li>
-                        <li><?php echo $this->Html->link('Logout', '/iniciar_sesion/logout'); ?></li>
+                        <li>Hey, <?php echo $nombre.'!' . $points;?></li>
+                        <li><?php echo $this->Html->link('Edit profile', array('controller' => 'users', 'action' => 'edit')); ?></li>
+                        <li><?php echo $this->Html->link('Logout', '/logout'); ?></li>
                         <?php } ?>
+                        &nbsp;&nbsp;
                     </ul>
                 </div>
                 <div class="box optionsbox">
-                    <div class="nav form">
-                    	<?php 
-                    		echo $this->Form->create(null, array('url' => '/tags/search'));
-                    	?>
-                    		<div class="input text search"><input name="data[Tag][search]" type="text"></div>
-                    	<?php
-                    		echo $this->Form->end();
-                    	?> <!--
-                        <form id="TagSearchForm" method="post" action="tags/search" accept-charset="utf-8">
-                            <div style="display:none;"><input type="hidden" name="_method" value="POST"></div>                            
-                        </form>
-                        -->
-                    </div>
+                    <!--<div class="nav form">                    	
+                        &nbsp;&nbsp;&nbsp;
+                    </div>-->
                     <ul class="nav subtopmenu">
-                        <?php if($this->Session->check('Usuario.esAdmin') or $this->Session->check('Usuario.esExperto')): ?>
-	                    <li><?php echo $this->Html->link('Manage', '/admin_documentos');?></li>
-                    	<?php endif; ?>                        
-                        <li><?php echo $this->Html->link('Add document', array('controller' => 'subir_documento', 'action' => 'index'));?></li>
-                        <?php if($this->Session->check('Usuario.id') and $this->Session->read('Usuario.id') > 1): ?>
-                        <li><?php echo $this->Html->link('Earn points', array('controller' => 'desafios', 'action' => 'earn')); ?></li>
+                        <?php if($this->Session->read('User.esExperto')): ?>
+	                    <li><?php echo $this->Html->link('Manage Repository', array('controller' => 'admin_documentos'));?></li>
+                    	<?php endif; ?>
+                    	
+                    	<?php if($this->Session->read('User.esAdmin')): ?>
+	                    <li><?php echo $this->Html->link('Manage Site', array('controller' => 'admin_repositories'));?></li>
+                    	<?php endif; ?>
+                    	
+                    	<li><?php echo $this->Html->link('Search', array('controller' => 'tags', 'action' => 'index')); ?></li>
+                    	
+                        <li><?php echo $this->Html->link('Add document', array('controller' => 'documents', 'action' => 'upload'));?></li>
+                        <?php if($this->Session->check('User.id') and $this->Session->read('User.id') > 1): ?>
+                        <li><?php echo $this->Html->link('Earn points', array('controller' => 'points', 'action' => 'earn')); ?></li>
                         <?php endif; ?>
+                        &nbsp;&nbsp;
                     </ul>                    
                 </div>
             </div>

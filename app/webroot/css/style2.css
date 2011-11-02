@@ -78,7 +78,16 @@ fieldset{
 	padding: 10px;
 	border-bottom: 1px solid #ccc;
 	font-weight: bold;
-/* 	margin-top: 15px; */
+	margin-top: 15px;
+}
+
+.getstarted {
+	display: block;	
+	font-size: 2em;
+	width: 98%;
+	padding: 10px;
+	font-weight: bold;
+	margin-top: 15px;
 }
 
 label{
@@ -149,6 +158,7 @@ body {
 .logo {
   float: left;
   margin-left: 10px;
+  vertical-align: middle;
 }
 
 .nav {
@@ -279,7 +289,7 @@ body {
 .admin-doc-texto {
 	font-family: Monospace;
 	padding-bottom: 10px;
-	padding-left: 10px;
+/* 	padding-left: 10px; */
 }
 
 .admin-info {
@@ -352,6 +362,13 @@ h3 {
 	-moz-border-radius: 5px;
 }
 
+.bordered {
+	border: 1px solid #ccc;
+	border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+}
+
 .adm-edit-doc, .adm-expert-panel {
 	padding: 15px;
 	min-height: 620px;
@@ -386,6 +403,10 @@ strong {
 	font-family: 'Tahoma';
 }
 	
+.repo-span {
+	font-weight: bold;
+	font-size: 1.3em;
+}
 
 /* Textboxlist */
 .textboxlist-autocomplete-results {
@@ -395,4 +416,27 @@ strong {
 
 .textboxlist-autocomplete-result-focus {
 	background-color: #A6C9E2;
+}
+
+.checkbox {
+	padding: 0.2em;
+}
+
+.search-criteria-option {
+	display: inline;
+	padding: .5em;
+}
+
+.padded {
+	padding: 1em;	
+}
+
+.mini-header {
+	font-size: .9em;
+	padding-bottom: 1em;
+	display:block;
+}
+
+.gray {
+	color: #777;
 }
