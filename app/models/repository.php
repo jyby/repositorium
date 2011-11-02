@@ -207,13 +207,7 @@ class Repository extends AppModel {
 			$this->RepositoriesUser->massCreateAfterRepository($repository_id = $this->id);
 	}
 	
-	function getModifiers($repository_id){
-		$modifiers = $this->ModifiersRepository->find('all', 
-			array('conditions' => array('ModifiersRepository.repository_id' => $repository_id),
-				'recursive' => 1,
-				'fields' => array('Modifier.id','Modifier.name', 'Modifier.sysname')));
-		return $modifiers;
-	}
+	
 
 }
 ?>

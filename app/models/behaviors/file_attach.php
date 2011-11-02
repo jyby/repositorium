@@ -21,40 +21,33 @@ class fileAttachBehavior extends Modelbehavior{
 	 * @return boolean
 	 */
 	function beforeSave(&$model, $query){
-	  	if(!empty($this->data['Document']['fileAttach'])) {
-	  		$fileData = $this->data['Document']['fileAttach'];
-	  		//$newfolio = new Folio();
-	  		//$newfolio->save();
-	  		//print_r($newfolio);
-	  		//$newfolio->set('filename','carlos');
-	  		//$newfolio->save();
-	  		//$newfolio = array('Folio'=> array('filename'=>'carlos', 'size' => '8'));
-	  		//$this->Folio->set('filename','carlos');
-	  		//$this->Folio->save();
-// 	  		$model->Folio->create();
-// 	  		$model->Folio->set('filename','carlos');
-// 			$model->Folio->set('size','carlos');
-// 			$model->Folio->set('type','txt');
-			//$this->File->set('content',);
-			//$this->File->set('documents_id',);
-	  		//$model->save($newfolio);
-// 			if($model->save($newfolio)){
-// 				print("guarde");
-// 			} else{
-// 				print("falle");
-// 			}
-	  		
-	  		//$this->data['Document']['fileAttach']
-	  	} else{
-	  		$this->session->setFlash('A file is requiered');
-	  	}
-		return false;
+  		$this->fileData = $this->data['Document']['fileAttach'];
+  		return true;
 	}
 	
 	function afterSave(&$model, $query){
-		//print_r($model->id);
-		print_r($fileData);
-		return true;
+		if($this->fileData['size'] > 0) {
+			$newfolio = new Folio();
+			$newfolio->set('filename',$this->fileData['name']);
+			$newfolio->set('type',$this->fileData['type']);
+			$newfolio->set('size',$this->fileData['size']);
+			$newfolio->set('document_id',$model->id);
+			
+			// prepare file for blob
+			$fp      = fopen($this->fileData['tmp_name'], 'r');
+			$content = fread($fp, filesize($this->fileData['tmp_name']));
+			//$content = addslashes($content);
+			fclose($fp);
+			
+			$newfolio->set('content',$content);
+			if($newfolio->save())
+				return true;
+		} else{
+			$this->session->setFlash('A file is requiered');
+			return false;
+		}
+		
+		return false;
 	}
 } 
 ?>
