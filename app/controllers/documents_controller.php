@@ -2,7 +2,7 @@
 class DocumentsController extends AppController {
 
 	var $name = 'Documents';
-	var $uses = array('Document', 'User', 'Repository', 'CogsKit');
+	var $uses = array('Document', 'User', 'Repository', 'CogsKit', 'Folio');
 	
 	/**
 	 * User Model
@@ -97,7 +97,16 @@ class DocumentsController extends AppController {
   			$docs = array_intersect_key($docs, array_flip($docs_ids_array));
   		}
   		
-  		$this->set(compact('docs', 'doc_pack'));
+  		// cgajardo: cogs to be attached
+  		$cogs = $this->CogsKit->find('all', array('conditions' => array('CogsKit.kit_id' => $repo['Repository']['kit_id'], 'CogsKit.cog_id' != '0'), 'recursive' => 2, 'fields' => array("Cog.sysname")));
+  		
+  		// cgajardo: attach folios that belongs to each document
+  		foreach ($docs as &$doc){
+  			$doc['files'] = array();
+  			$doc['files'] = $this->Folio->find('all' , array('conditions' => array('Folio.document_id' => $doc['Document']['id']), 'recursive' => -1, 'fields' => array("Folio.id","Folio.filename","Folio.type")));
+  		}
+  		
+  		$this->set(compact('docs', 'doc_pack', 'cogs'));
   		$this->_clean_session();  			
   	}
   }

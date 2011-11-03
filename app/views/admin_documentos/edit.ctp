@@ -122,8 +122,7 @@ echo $this->Form->end();
 				echo "</div>";
 				
 				echo '<div style="clear: both; height: 10px;"></div>';
-
-				//TODO: define	
+	
 				echo $this->Form->input('Document.content', array(
 				  'label' => 'Content ',
 				  'value' => stripslashes(str_replace('\n',"\n",$this->data['Document']['content'])),
@@ -131,6 +130,13 @@ echo $this->Form->end();
 				  //'rows' => 14,
 				  //'cols' => 60,
 					));
+				
+				
+				// cgajardo: attach edit snippets for each repo-component
+				foreach($cogs as $cog){
+					echo $this->element($cog['Cog']['sysname'].'/edit', array("folios"=>$folios));
+				}
+				
 					
 			?>
 				<div class="created-by">

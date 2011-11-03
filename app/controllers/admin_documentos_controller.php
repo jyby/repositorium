@@ -211,8 +211,14 @@ class AdminDocumentosController extends AppController {
 	  $repo = $this->getCurrentRepository();
 	  $menu = 'menu_admin';
 	  
+	  // cogs
+	  $cogs = $this->CogsKit->find('all', array('conditions' => array('CogsKit.kit_id' => $repo['Repository']['kit_id'], 'CogsKit.cog_id' != '0'), 'recursive' => 2, 'fields' => array("Cog.sysname")));
+	  
+	  // folios
+	  $folios = $this->Folio->find('all' , array('conditions' => array('Folio.document_id' => $this->data['Document']['id']), 'recursive' => -1, 'fields' => array("Folio.id","Folio.filename","Folio.type")));
+	  
 	  $this->set('data',$this->data);
-	  $this->set(compact('criterios_list', 'criterios_n', 'repo', 'menu'));	  
+	  $this->set(compact('criterios_list', 'criterios_n', 'repo', 'menu', 'folios','cogs'));	  
 	} else {
 	  // save stats info
 	  if($this->CriteriasDocument->save($this->data))

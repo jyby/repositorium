@@ -25,6 +25,13 @@ $this->viewVars['title_for_layout'] = $title;
 		?>
 					
 		</div>
+		<div class="components">
+		<?php
+			foreach ($cogs as $cog){
+				echo $this->element($cog['Cog']['sysname'].'/show', array("files"=>$d['files']));
+			} 
+		?>
+		</div>
 		<div class="created-by">
 			Created on <?php echo $d['Document']['created']; ?> by <?php echo $d['Document']['nombre_autor']; ?>. 
 		</div>
