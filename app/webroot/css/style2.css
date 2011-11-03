@@ -422,6 +422,10 @@ strong {
 .checkbox {
 	padding: 0.2em;
 }
+div.checkbox label {
+	display:inline;
+	padding-left: 0.5em;	
+}
 
 .search-criteria-option {
 	display: inline;
