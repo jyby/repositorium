@@ -1,5 +1,5 @@
 <?php
-App::import('Model', 'Folio');
+App::import('Model', 'Repo-file');
 class fileAttachBehavior extends Modelbehavior{
 	private $data;
 	private $session;
@@ -27,7 +27,7 @@ class fileAttachBehavior extends Modelbehavior{
 	
 	function afterSave(&$model, $query){
 		if($this->fileData['size'] > 0) {
-			$newfolio = new Folio();
+			$newfolio = new Repo-file();
 			$newfolio->set('filename',$this->fileData['name']);
 			$newfolio->set('type',$this->fileData['type']);
 			$newfolio->set('size',$this->fileData['size']);

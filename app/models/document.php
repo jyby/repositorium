@@ -57,8 +57,8 @@ class Document extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		'Folio' => array(
-			'className' => 'Folio',
+		'Repo-file' => array(
+			'className' => 'Repo-file',
 			'foreignKey' => 'document_id',
 			'dependent' => true,
 			'conditions' => '',

@@ -214,11 +214,11 @@ class AdminDocumentosController extends AppController {
 	  // cogs
 	  $cogs = $this->CogsKit->find('all', array('conditions' => array('CogsKit.kit_id' => $repo['Repository']['kit_id'], 'CogsKit.cog_id' != '0'), 'recursive' => 2, 'fields' => array("Cog.sysname")));
 	  
-	  // folios
-	  $folios = $this->Folio->find('all' , array('conditions' => array('Folio.document_id' => $this->data['Document']['id']), 'recursive' => -1, 'fields' => array("Folio.id","Folio.filename","Folio.type")));
+	  // Files
+	  $files = $this->Repo-file->find('all' , array('conditions' => array('Repo-file.document_id' => $this->data['Document']['id']), 'recursive' => -1, 'fields' => array("Repo-file.id","Repo-file.filename","Repo-file.type")));
 	  
 	  $this->set('data',$this->data);
-	  $this->set(compact('criterios_list', 'criterios_n', 'repo', 'menu', 'folios','cogs'));	  
+	  $this->set(compact('criterios_list', 'criterios_n', 'repo', 'menu', 'files','cogs'));	  
 	} else {
 	  // save stats info
 	  if($this->CriteriasDocument->save($this->data))

@@ -21,12 +21,7 @@ $this->Html->addCrumb($title);
 <div class="select required">
 	<label for="cog_id">Select some modifiers for this Repository</label>
 	<?php
-	$cogs[0] = array(
-                'name' => $cogs[0],
-                'value' => '0',
-                'disabled' => 1
-            );
-	echo $this->Form->input("Cogs", array("type"=>"select", "multiple"=>"checkbox", "default"=>"0", "options"=>$cogs));
+	echo $this->Form->input("Cogs", array("type"=>"select", "multiple"=>"checkbox", "options"=>$cogs));
 	?>
 </div> 
 

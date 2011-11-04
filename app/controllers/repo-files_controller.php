@@ -1,6 +1,6 @@
 <?php
 /**
- * folios_controller.php
+ * repo-files_controller.php
  *r
  * 
  * @package   controller
@@ -8,10 +8,10 @@
  * @copyright Copyright (c) 2011 
  */
 
-class FoliosController extends AppController {
+class Repo-filesController extends AppController {
 
 	var $helpers = array('Js' => array('Jquery'));
-	var $uses = array('Document', 'Folio');
+	var $uses = array('Document', 'Repo-file');
 	
 	/**
 	 * Document Model
@@ -27,11 +27,11 @@ class FoliosController extends AppController {
 		}
 		
 		Configure::write('debug', 0);
-		$file = $this->Folio->findById($id);
-		header('Content-type: ' . $file['Folio']['type']);
-		header('Content-length: ' . $file['Folio']['size']); 
-		header('Content-Disposition: attachment; filename="'.$file['Folio']['filename'].'"');
-		echo $file['Folio']['content'];
+		$file = $this->Repo-file->findById($id);
+		header('Content-type: ' . $file['Repo-file']['type']);
+		header('Content-length: ' . $file['Repo-file']['size']); 
+		header('Content-Disposition: attachment; filename="'.$file['Repo-file']['filename'].'"');
+		echo $file['Repo-file']['content'];
 		exit();
 	}
 }

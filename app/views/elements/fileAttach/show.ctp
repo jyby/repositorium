@@ -2,6 +2,6 @@
 <?php 
 	foreach($files as $file){
 		// TODO cgajardo: improve to block unwanted downloads 
-		echo "<a href='/repositorium/folios/download/".$file['Folio']['id']."'>".$file['Folio']['filename']."</a>";
+		echo "<a href='/repositorium/repo-files/download/".$file['Repo-file']['id']."'>".$file['Repo-file']['filename']."</a>";
 	} 
 ?>

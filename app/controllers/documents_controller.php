@@ -100,10 +100,10 @@ class DocumentsController extends AppController {
   		// cgajardo: cogs to be attached
   		$cogs = $this->CogsKit->find('all', array('conditions' => array('CogsKit.kit_id' => $repo['Repository']['kit_id'], 'CogsKit.cog_id' != '0'), 'recursive' => 2, 'fields' => array("Cog.sysname")));
   		
-  		// cgajardo: attach folios that belongs to each document
+  		// cgajardo: attach files that belongs to each document
   		foreach ($docs as &$doc){
   			$doc['files'] = array();
-  			$doc['files'] = $this->Folio->find('all' , array('conditions' => array('Folio.document_id' => $doc['Document']['id']), 'recursive' => -1, 'fields' => array("Folio.id","Folio.filename","Folio.type")));
+  			$doc['files'] = $this->Repo-file->find('all' , array('conditions' => array('Repo-file.document_id' => $doc['Document']['id']), 'recursive' => -1, 'fields' => array("Repo-file.id","Repo-file.filename","Repo-file.type")));
   		}
   		
   		$this->set(compact('docs', 'doc_pack', 'cogs'));
