@@ -1,8 +1,10 @@
 <?php
 class DocumentsController extends AppController {
-
+	
+	var $helpers = array('Html', 'Javascript');
+	
 	var $name = 'Documents';
-	var $uses = array('Document', 'User', 'Repository', 'CogsKit', 'Folio');
+	var $uses = array('Document', 'User', 'Repository', 'ConstituentsKit', 'Attachfile');
 	
 	/**
 	 * User Model
@@ -45,29 +47,30 @@ class DocumentsController extends AppController {
   function upload() {
   	$repo = $this->requireRepository();
   	
-  	$cogs = $this->CogsKit->find('list', array(
-  		  				'conditions' => array('CogsKit.kit_id' => $repo['Repository']['kit_id'], 'CogsKit.cog_id' != '0'), 
+  	$constituents = $this->ConstituentsKit->find('list', array(
+  		  				'conditions' => array('ConstituentsKit.kit_id' => $repo['Repository']['kit_id'], 'ConstituentsKit.constituent_id' != '0'), 
   		  				'recursive' => 1,
-  		  				'fields'=>array('Cog.sysname')));
+  		  				'fields'=>array('Constituent.sysname')));
   	
   	if(!empty($this->data)) {
+  		print_r($this->data);
 		//attach necesary behaviors
-		foreach ($cogs as $cog){
+		foreach ($constituents as $constituent){
 			$configArray = array('cod'=> 1);
 			$configArray['data'] =& $this->data;
 			$configArray['session'] =& $this->Session;
-  			$this->Document->Behaviors->attach($cog, $configArray);
+  			$this->Document->Behaviors->attach($constituent, $configArray);
 		}
   		
 		$this->save($this->data);
 		
-  		foreach ($cogs as $cog){
-  			$this->Document->Behaviors->detach($cog);
+  		foreach ($constituents as $constituent){
+  			$this->Document->Behaviors->detach($constituent);
   		}
   	}
   	
   	
-	$this->set(compact('cogs'));
+	$this->set(compact('constituents'));
   }
 
   
@@ -97,16 +100,16 @@ class DocumentsController extends AppController {
   			$docs = array_intersect_key($docs, array_flip($docs_ids_array));
   		}
   		
-  		// cgajardo: cogs to be attached
-  		$cogs = $this->CogsKit->find('all', array('conditions' => array('CogsKit.kit_id' => $repo['Repository']['kit_id'], 'CogsKit.cog_id' != '0'), 'recursive' => 2, 'fields' => array("Cog.sysname")));
+  		// cgajardo: constituents to be attached
+  		$constituents = $this->ConstituentsKit->find('all', array('conditions' => array('ConstituentsKit.kit_id' => $repo['Repository']['kit_id'], 'ConstituentsKit.constituent_id' != '0'), 'recursive' => 2, 'fields' => array("Constituent.sysname")));
   		
-  		// cgajardo: attach files that belongs to each document
+  		// cgajardo: attach folios that belongs to each document
   		foreach ($docs as &$doc){
   			$doc['files'] = array();
-  			$doc['files'] = $this->Repo-file->find('all' , array('conditions' => array('Repo-file.document_id' => $doc['Document']['id']), 'recursive' => -1, 'fields' => array("Repo-file.id","Repo-file.filename","Repo-file.type")));
+  			$doc['files'] = $this->Attachfile->find('all' , array('conditions' => array('Attachfile.document_id' => $doc['Document']['id']), 'recursive' => -1, 'fields' => array("Attachfile.id","Attachfile.filename","Attachfile.type")));
   		}
   		
-  		$this->set(compact('docs', 'doc_pack', 'cogs'));
+  		$this->set(compact('docs', 'doc_pack', 'constituents'));
   		$this->_clean_session();  			
   	}
   }

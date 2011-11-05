@@ -11,7 +11,7 @@
 
 class AdminDocumentosController extends AppController {
   
-  var $uses = array('Criteria', 'Document', 'CriteriasDocument', 'Tag', 'User', 'Expert', 'Folio', 'CogsKit');
+  var $uses = array('Criteria', 'Document', 'CriteriasDocument', 'Tag', 'User', 'Expert', 'Attachfile', 'ConstituentsKit');
   var $helpers = array('Text', 'Number');
   var $paginate = array(
 	'CriteriasDocument' => array(
@@ -155,10 +155,6 @@ class AdminDocumentosController extends AppController {
 	$filter = $this->Session->read('CriteriasDocument.filter') ? $this->Session->read('CriteriasDocument.filter') : 'all';
 	$repo = $this->getCurrentRepository();
 	$menu = 'menu_expert';
-	//$cogs = $this->CogsKit->find('list', array(
-	//		  		  				'conditions' => array('CogsKit.kit_id' => $repo['Repository']['kit_id'], 'CogsKit.cog_id' != '0'), 
-	//		  		  				'recursive' => 1,
-	//		  		  				'fields'=>array('Cog.sysname')));
 	
 	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter', 'repo', 'menu'));
 	$this->render('listar');
@@ -211,14 +207,14 @@ class AdminDocumentosController extends AppController {
 	  $repo = $this->getCurrentRepository();
 	  $menu = 'menu_admin';
 	  
-	  // cogs
-	  $cogs = $this->CogsKit->find('all', array('conditions' => array('CogsKit.kit_id' => $repo['Repository']['kit_id'], 'CogsKit.cog_id' != '0'), 'recursive' => 2, 'fields' => array("Cog.sysname")));
+	  // constituents
+	  $constituents = $this->ConstituentsKit->find('all', array('conditions' => array('ConstituentsKit.kit_id' => $repo['Repository']['kit_id'], 'ConstituentsKit.constituent_id' != '0'), 'recursive' => 2, 'fields' => array("Constituent.sysname")));
 	  
-	  // Files
-	  $files = $this->Repo-file->find('all' , array('conditions' => array('Repo-file.document_id' => $this->data['Document']['id']), 'recursive' => -1, 'fields' => array("Repo-file.id","Repo-file.filename","Repo-file.type")));
+	  // folios
+	  $folios = $this->Attachfile->find('all' , array('conditions' => array('Attachfile.document_id' => $this->data['Document']['id']), 'recursive' => -1, 'fields' => array("Attachfile.id","Attachfile.filename","Attachfile.type")));
 	  
 	  $this->set('data',$this->data);
-	  $this->set(compact('criterios_list', 'criterios_n', 'repo', 'menu', 'files','cogs'));	  
+	  $this->set(compact('criterios_list', 'criterios_n', 'repo', 'menu', 'folios','constituents'));	  
 	} else {
 	  // save stats info
 	  if($this->CriteriasDocument->save($this->data))

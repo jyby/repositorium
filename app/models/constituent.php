@@ -1,12 +1,12 @@
 <?php
-class Cog extends AppModel {
-	var $name = 'Cog';
+class Constituent extends AppModel {
+	var $name = 'Constituent';
 	var $displayField = 'name';
 
 	var $hasMany = array(
-		'CogsKit' => array(
-			'className' => 'CogsKit',
-			'foreignKey' => 'cog_id',
+		'ConstituentsKit' => array(
+			'className' => 'ConstituentsKit',
+			'foreignKey' => 'constituent_id',
 			'dependent' => true,
 		)
 	);

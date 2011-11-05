@@ -133,8 +133,8 @@ echo $this->Form->end();
 				
 				
 				// cgajardo: attach edit snippets for each repo-component
-				foreach($cogs as $cog){
-					echo $this->element($cog['Cog']['sysname'].'/edit', array("files"=>$files));
+				foreach($constituents as $constituent){
+					echo $this->element($constituent['Constituent']['sysname'].'/edit', array("folios"=>$folios));
 				}
 				
 					

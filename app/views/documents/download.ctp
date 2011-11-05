@@ -27,8 +27,8 @@ $this->viewVars['title_for_layout'] = $title;
 		</div>
 		<div class="components">
 		<?php
-			foreach ($cogs as $cog){
-				echo $this->element($cog['Cog']['sysname'].'/show', array("files"=>$d['files']));
+			foreach ($constituents as $constituent){
+				echo $this->element($constituent['Constituent']['sysname'].'/show', array("files"=>$d['files']));
 			} 
 		?>
 		</div>

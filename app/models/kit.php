@@ -3,8 +3,8 @@ class Kit extends AppModel {
 	var $name = 'Kit';
 
 	var $hasMany = array(
-		'CogsKit' => array(
-			'className' => 'CogsKit',
+		'ConstituentsKit' => array(
+			'className' => 'ConstituentsKit',
 			'foreignKey' => 'kit_id',
 			'dependent' => true,
 		),

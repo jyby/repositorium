@@ -18,8 +18,8 @@ $(document).ready(function() {
 <?php
 	echo $this->Form->input('Document.content', array('class' => 'ingresar-documento', 'label' => 'Content', 'rows' => 14, 'cols' => 80, 'default' => ''));
 	
-	foreach($cogs as $cog){
-		echo $this->element($cog."/form", array('flag' => 'value'));;
+	foreach($constituents as $constituent){
+		echo $this->element($constituent."/form", array('flag' => 'value'));;
 	}
 ?>
 <div style="width:400px">

@@ -1,13 +1,13 @@
 <?php
-class CogsKit extends AppModel {
-	var $name = 'CogsKit';
+class ConstituentsKit extends AppModel {
+	var $name = 'ConstituentsKit';
 	
 	//The Associations below have been created with all possible keys, those that are not needed can be removed
 
 	var $belongsTo = array(
-		'Cog' => array(
-			'className' => 'Cog',
-			'foreignKey' => 'cog_id',
+		'Constituent' => array(
+			'className' => 'Constituent',
+			'foreignKey' => 'constituent_id',
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''

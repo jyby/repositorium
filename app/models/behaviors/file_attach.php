@@ -1,5 +1,5 @@
 <?php
-App::import('Model', 'Repo-file');
+App::import('Model', 'Attachfile');
 class fileAttachBehavior extends Modelbehavior{
 	private $data;
 	private $session;
@@ -21,13 +21,14 @@ class fileAttachBehavior extends Modelbehavior{
 	 * @return boolean
 	 */
 	function beforeSave(&$model, $query){
+		//TODO cgajardo: temporal solution
   		$this->fileData = $this->data['Document']['fileAttach'];
   		return true;
 	}
 	
 	function afterSave(&$model, $query){
 		if($this->fileData['size'] > 0) {
-			$newfolio = new Repo-file();
+			$newfolio = new Attachfile();
 			$newfolio->set('filename',$this->fileData['name']);
 			$newfolio->set('type',$this->fileData['type']);
 			$newfolio->set('size',$this->fileData['size']);

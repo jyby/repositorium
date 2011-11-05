@@ -12,9 +12,9 @@ class Restriction extends AppModel {
 	);
 	
 	var $belongsTo = array(
-			'Cog' => array(
-				'className' => 'Cog',
-				'foreignKey' => 'cog_id',
+			'Constituent' => array(
+				'className' => 'Constituent',
+				'foreignKey' => 'constituent_id',
 				'conditions' => '',
 				'fields' => '',
 				'order' => ''

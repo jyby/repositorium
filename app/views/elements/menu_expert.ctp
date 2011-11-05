@@ -47,10 +47,10 @@ echo $this->Form->radio('radiomenu',
 									'value' => $current , 
 									'onClick' => 'document.location="'.$this->Html->url(array('controller' => 'experts', 'action' => 'index')) .'";'));
 echo $this->Form->radio('radiomenu',
-								array('cogs' => 'Update Cogs'),
+								array('constituents' => 'Update Constituents'),
 								array(
 									'value' => $current , 
-									'onClick' => 'document.location="'.$this->Html->url(array('controller' => 'cogs', 'action' => 'index')) .'";'));									
+									'onClick' => 'document.location="'.$this->Html->url(array('controller' => 'constituents', 'action' => 'index')) .'";'));									
 ?>
 </div>
 <script>

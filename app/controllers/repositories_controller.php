@@ -28,7 +28,7 @@ class RepositoriesController extends AppController {
 	
 	var $name = 'Repositories';
 	
-	var $uses = array('Repository', 'RepositoriesUser', 'User', 'Document', 'Tag', 'Criteria','Cog', 'Restriction', 'Kit', 'CogsKit', 'KitsRestriction');
+	var $uses = array('Repository', 'RepositoriesUser', 'User', 'Document', 'Tag', 'Criteria','Constituent', 'Restriction', 'Kit', 'ConstituentsKit', 'KitsRestriction');
 	
 	function index($repo_url = null) {	
 		if(is_null($repo_url)) {
@@ -159,13 +159,13 @@ class RepositoriesController extends AppController {
 			$user = $this->getConnectedUser();
 			$this->data['Repository']['user_id'] = $user['User']['id'];
 			
-			// adding Cogs to a new Set
-			$selectCogs = $this->data['Repository']['Cogs'];
+			// adding Constituents to a new Kit
+			$selectConstituents = $this->data['Repository']['Constituents'];
 			$this->Kit->save();
-			foreach($selectCogs as $cog){
-				$this->CogsKit->set('kit_id', $this->Kit->id);
-				$this->CogsKit->set('cog_id', $cog);
-				$this->CogsKit->save();
+			foreach($selectConstituents as $constituent){
+				$this->ConstituentsKit->set('kit_id', $this->Kit->id);
+				$this->ConstituentsKit->set('constituent_id', $constituent);
+				$this->ConstituentsKit->save();
 			}
 			// update Repository kit_id
 			$this->data['Repository']['kit_id'] = $this->Kit->id;
@@ -193,8 +193,8 @@ class RepositoriesController extends AppController {
 				$this->Session->setFlash($this->Repository->invalidFields(), 'flash_errors');
 			}	
 		}
-		$cogs =  $this->Cog->find('superlist', array('fields'=>array('id','name','description'), 'separator'=>': '));
-		$this->set(compact('cogs'));
+		$constituents =  $this->Constituent->find('superlist', array('fields'=>array('id','name','description'), 'separator'=>': '));
+		$this->set(compact('constituents'));
 	}
 
 	

@@ -19,9 +19,9 @@ $this->Html->addCrumb($title);
 
 <!-- source types for repo -->
 <div class="select required">
-	<label for="cog_id">Select some modifiers for this Repository</label>
+	<label for="constituent_id">Select some modifiers for this Repository</label>
 	<?php
-	echo $this->Form->input("Cogs", array("type"=>"select", "multiple"=>"checkbox", "options"=>$cogs));
+	echo $this->Form->input("Constituents", array("type"=>"select", "multiple"=>"checkbox", "options"=>$constituents));
 	?>
 </div> 
 
