@@ -13,9 +13,15 @@ $(document).ready(function() {
 <div class="clearicon"></div>
 
 <fieldset class="datafields">
-<?php echo $this->Form->create(null, array('url' => '/documents/upload', 'inputDefaults' => array('error' => false)));?>
+<?php echo $this->Form->create(null, array('url' => '/documents/upload', 'type' => 'file', 'inputDefaults' => array('error' => false)));?>
 <?php echo $this->Form->input('Document.title', array('class' => 'ingresar-documento', 'label' => 'Title', 'default' => '', 'size' => 50)); ?>
-<?php echo $this->Form->input('Document.content', array('class' => 'ingresar-documento', 'label' => 'Content', 'rows' => 14, 'cols' => 80, 'default' => '')); ?>
+<?php
+	echo $this->Form->input('Document.content', array('class' => 'ingresar-documento', 'label' => 'Content', 'rows' => 14, 'cols' => 80, 'default' => ''));
+	
+	foreach($constituents as $constituent){
+		echo $this->element($constituent."/form", array('flag' => 'value'));;
+	}
+?>
 <div style="width:400px">
 	<?php echo $this->Form->input('Document.tags', array('class' => 'ingresar-documento', 'size' => 100, 'label' => 'Tags (You may add more tags separating them by commas (,))')); ?>     
 </div>

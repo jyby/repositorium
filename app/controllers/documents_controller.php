@@ -1,8 +1,10 @@
 <?php
 class DocumentsController extends AppController {
-
+	
+	var $helpers = array('Html', 'Javascript');
+	
 	var $name = 'Documents';
-	var $uses = array('Document', 'User');
+	var $uses = array('Document', 'User', 'Repository', 'ConstituentsKit', 'Attachfile');
 	
 	/**
 	 * User Model
@@ -43,28 +45,31 @@ class DocumentsController extends AppController {
    * @TODO dispatch handling
    */
   function upload() {
-  	if(!empty($this->data)) {  	
-	  	$user = $this->getConnectedUser();
-	  	$repo = $this->requireRepository();
-	  	
-	  	$this->data['Document']['repository_id'] = $repo['Repository']['id']; 
-	  	$this->data['Document']['user_id'] = $user['User']['id'];
-	  	$this->Document->set($this->data);  
-	  	
-	  	// errors
-	  	if(empty($this->data['Document']['tags'])) {
-	  		$this->Session->setFlash('You must include at least one tag');
-	  	} else if(!$this->Document->validates()) {
-			$errors = $this->Document->invalidFields();
-			$this->Session->setFlash($errors, 'flash_errors');
-		} else if(!$this->Document->saveWithTags($this->data)) {
-			$this->Session->setFlash('There was an error trying to save the document. Please try again later');
-		} else {
-			$this->Session->setFlash('Document saved successfuly');
-			$this->_clean_session();
-			$this->redirect(array('controller' => 'repositories', 'action' => 'index', $repo['Repository']['url']));
-		} 	
+  	$repo = $this->requireRepository();
+  	
+  	$constituents = $this->ConstituentsKit->find('list', array(
+  		  				'conditions' => array('ConstituentsKit.kit_id' => $repo['Repository']['kit_id'], 'ConstituentsKit.constituent_id' != '0'), 
+  		  				'recursive' => 1,
+  		  				'fields'=>array('Constituent.sysname')));
+  	
+  	if(!empty($this->data)) {
+		//attach necesary behaviors
+		foreach ($constituents as $constituent){
+			$configArray = array('cod'=> 1);
+			$configArray['data'] =& $this->data;
+			$configArray['session'] =& $this->Session;
+  			$this->Document->Behaviors->attach($constituent, $configArray);
+		}
+  		
+		$this->save($this->data);
+		
+  		foreach ($constituents as $constituent){
+  			$this->Document->Behaviors->detach($constituent);
+  		}
   	}
+  	
+  	
+	$this->set(compact('constituents'));
   }
 
   
@@ -94,7 +99,16 @@ class DocumentsController extends AppController {
   			$docs = array_intersect_key($docs, array_flip($docs_ids_array));
   		}
   		
-  		$this->set(compact('docs', 'doc_pack'));
+  		// cgajardo: constituents to be attached
+  		$constituents = $this->ConstituentsKit->find('all', array('conditions' => array('ConstituentsKit.kit_id' => $repo['Repository']['kit_id'], 'ConstituentsKit.constituent_id' != '0'), 'recursive' => 2, 'fields' => array("Constituent.sysname")));
+  		
+  		// cgajardo: attach folios that belongs to each document
+  		foreach ($docs as &$doc){
+  			$doc['files'] = array();
+  			$doc['files'] = $this->Attachfile->find('all' , array('conditions' => array('Attachfile.document_id' => $doc['Document']['id']), 'recursive' => -1, 'fields' => array("Attachfile.id","Attachfile.filename","Attachfile.type")));
+  		}
+  		
+  		$this->set(compact('docs', 'doc_pack', 'constituents'));
   		$this->_clean_session();  			
   	}
   }
@@ -142,6 +156,32 @@ class DocumentsController extends AppController {
   	}
   	$this->set(compact('premio', 'doc_objs'));
   }
+  
+  function save(&$data){
+  	
+  	$repo = $this->requireRepository();
+  	$user = $this->getConnectedUser();
+  	 
+  	$this->data['Document']['repository_id'] = $repo['Repository']['id'];
+  	$this->data['Document']['user_id'] = $user['User']['id'];
+  	$this->data['Document']['kit_id'] = $repo['Repository']['kit_id'];
+  	$this->Document->set($this->data);
+  	 
+  	// errors
+  	if(empty($this->data['Document']['tags'])) {
+  		$this->Session->setFlash('You must include at least one tag');
+  	} else if(!$this->Document->validates()) {
+  		$errors = $this->Document->invalidFields();
+  		$this->Session->setFlash($errors, 'flash_errors');
+  	} else if(!$this->Document->saveWithTags($this->data)) {
+  		$this->Session->setFlash('There was an error trying to save the document. Please try again later');
+  	} else {
+  		$this->Session->setFlash('Document saved successfuly');
+  		$this->_clean_session();
+  		$this->redirect(array('controller' => 'repositories', 'action' => 'index', $repo['Repository']['url']));
+  	}
+  }
+  
   
 }
 ?>

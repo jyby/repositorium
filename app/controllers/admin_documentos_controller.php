@@ -11,7 +11,7 @@
 
 class AdminDocumentosController extends AppController {
   
-  var $uses = array('Criteria', 'Document', 'CriteriasDocument', 'Tag', 'User', 'Expert');
+  var $uses = array('Criteria', 'Document', 'CriteriasDocument', 'Tag', 'User', 'Expert', 'Attachfile', 'ConstituentsKit');
   var $helpers = array('Text', 'Number');
   var $paginate = array(
 	'CriteriasDocument' => array(
@@ -207,8 +207,14 @@ class AdminDocumentosController extends AppController {
 	  $repo = $this->getCurrentRepository();
 	  $menu = 'menu_admin';
 	  
+	  // constituents
+	  $constituents = $this->ConstituentsKit->find('all', array('conditions' => array('ConstituentsKit.kit_id' => $repo['Repository']['kit_id'], 'ConstituentsKit.constituent_id' != '0'), 'recursive' => 2, 'fields' => array("Constituent.sysname")));
+	  
+	  // folios
+	  $folios = $this->Attachfile->find('all' , array('conditions' => array('Attachfile.document_id' => $this->data['Document']['id']), 'recursive' => -1, 'fields' => array("Attachfile.id","Attachfile.filename","Attachfile.type")));
+	  
 	  $this->set('data',$this->data);
-	  $this->set(compact('criterios_list', 'criterios_n', 'repo', 'menu'));	  
+	  $this->set(compact('criterios_list', 'criterios_n', 'repo', 'menu', 'folios','constituents'));	  
 	} else {
 	  // save stats info
 	  if($this->CriteriasDocument->save($this->data))

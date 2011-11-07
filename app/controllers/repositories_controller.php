@@ -28,7 +28,7 @@ class RepositoriesController extends AppController {
 	
 	var $name = 'Repositories';
 	
-	var $uses = array('Repository', 'RepositoriesUser', 'User', 'Document', 'Tag', 'Criteria');
+	var $uses = array('Repository', 'RepositoriesUser', 'User', 'Document', 'Tag', 'Criteria','Constituent', 'Restriction', 'Kit', 'ConstituentsKit', 'KitsRestriction');
 	
 	function index($repo_url = null) {	
 		if(is_null($repo_url)) {
@@ -151,12 +151,25 @@ class RepositoriesController extends AppController {
 	}
 	
 	function create() {
+		
 		if($this->getConnectedUser() == $this->anonymous)
 			$this->redirect(array('controller' => 'login'));
 		
 		if(!empty($this->data)) {
 			$user = $this->getConnectedUser();
 			$this->data['Repository']['user_id'] = $user['User']['id'];
+			
+			// adding Constituents to a new Kit
+			$selectConstituents = $this->data['Repository']['Constituents'];
+			$this->Kit->save();
+			foreach($selectConstituents as $constituent){
+				$this->ConstituentsKit->set('kit_id', $this->Kit->id);
+				$this->ConstituentsKit->set('constituent_id', $constituent);
+				$this->ConstituentsKit->save();
+			}
+			// update Repository kit_id
+			$this->data['Repository']['kit_id'] = $this->Kit->id;
+			
 			$this->Repository->set($this->data);
 			
 			if($this->Repository->validates()) {
@@ -168,16 +181,20 @@ class RepositoriesController extends AppController {
 				}
 				
 				$this->_make_user_expert();
+
 				if(Configure::read('App.subdomains')) {
 					$dom = Configure::read('App.domain');
 					$this->redirect("http://{$repository['Repository']['url']}.{$dom}");
 				} else {
 					$this->redirect(array('action' => 'index', $repository['Repository']['url']));
-				}			
+				}
+
 			} else {
 				$this->Session->setFlash($this->Repository->invalidFields(), 'flash_errors');
 			}	
-		}		
+		}
+		$constituents =  $this->Constituent->find('superlist', array('fields'=>array('id','name','description'), 'separator'=>': '));
+		$this->set(compact('constituents'));
 	}
 
 	

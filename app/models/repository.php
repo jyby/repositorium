@@ -118,6 +118,13 @@ class Repository extends AppModel {
 			'conditions' => '',
 			'fields' => '',
 			'order' => ''
+		),
+		'Kit' => array(
+			'className' => 'Kit',
+			'foreignKey' => 'kit_id',
+			'conditions' => '',
+			'fields' => '',
+			'order' => ''			
 		)
 	);
 
@@ -188,7 +195,9 @@ class Repository extends AppModel {
 			if(!$this->Expert->save($expert)) {
 				$ds->rollback($this);
 				return null;
-			}			
+			}
+			
+					
 		$ds->commit($this);
 		return $this->find('first', array('conditions' => array('id' => $this->getLastInsertID()), 'recursive' => -1));
 	}
@@ -197,6 +206,8 @@ class Repository extends AppModel {
 		if($created)
 			$this->RepositoriesUser->massCreateAfterRepository($repository_id = $this->id);
 	}
+	
+	
 
 }
 ?>

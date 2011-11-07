@@ -96,6 +96,7 @@ CREATE TABLE IF NOT EXISTS `documents` (
   `modified` datetime NOT NULL,
   `repository_id` int(255) NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
+  `kit_id` INT(255) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -135,6 +136,7 @@ CREATE TABLE IF NOT EXISTS `repositories` (
   `documentpack_size` int(255) NOT NULL,
   `challenge_reward` int(255) NOT NULL DEFAULT '0',
   `active` tinyint(4) NOT NULL DEFAULT '1',
+  `kit_id` INT(255) NOT NULL DEFAULT '0' ,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -188,6 +190,99 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
+-- ----------------------------------------------------------
+--
+-- Estructura de tabla para la tabla `constituents`
+--
+
+CREATE  TABLE IF NOT EXISTS `constituents` (
+  `id` INT(255) NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(45) NOT NULL ,
+  `description` VARCHAR(140) NOT NULL ,
+  `sysname` VARCHAR(45) NOT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB
+AUTO_INCREMENT = 5
+DEFAULT CHARACTER SET = utf8;
+
+-- ---------------------------------------------
+--
+-- Estructura de tabla para la tabla `kits'
+--
+CREATE  TABLE IF NOT EXISTS `kits` (
+  `id` INT(255) NOT NULL AUTO_INCREMENT ,
+  `created` DATETIME NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB;
+
+-- ----------------------------------------------
+--
+-- Estructura de tabla para la relacion entre kits y contituents
+--
+CREATE  TABLE IF NOT EXISTS `constituents_kits` (
+  `id` INT(255) NOT NULL AUTO_INCREMENT ,
+  `constituent_id` INT(255) NOT NULL ,
+  `kit_id` INT(255) NOT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB
+AUTO_INCREMENT = 6
+DEFAULT CHARACTER SET = utf8;
+
+-- ---------------------------------------------
+--
+-- Estructura para la tabla `restictions`
+--
+
+CREATE  TABLE IF NOT EXISTS `restrictions` (
+  `id` INT(255) NOT NULL AUTO_INCREMENT ,
+  `name` VARCHAR(45) NOT NULL ,
+  `description` VARCHAR(140) NOT NULL ,
+  `behaviorname` VARCHAR(45) NOT NULL ,
+  `constituent_id` INT(255) NOT NULL ,
+  PRIMARY KEY (`id`) )
+ENGINE = InnoDB
+AUTO_INCREMENT = 5
+DEFAULT CHARACTER SET = utf8;
+
+-- ---------------------------------------------
+--
+-- Estructura para la relacion entre kits y restrictions
+--
+
+CREATE  TABLE IF NOT EXISTS `kits_restrictions` (
+  `id` INT(255) NOT NULL AUTO_INCREMENT ,
+  `restriction_id` INT(255) NOT NULL ,
+  `kit_id` INT(255) NOT NULL ,
+  PRIMARY KEY (`id`))
+ENGINE = InnoDB;
+
+-- ---------------------------------------------
+--
+-- Estructura para la relacion entre attachfiles y documents
+--
+
+CREATE  TABLE IF NOT EXISTS `attachfiles` (
+  `id` INT(11) NOT NULL AUTO_INCREMENT ,
+  `filename` VARCHAR(45) NOT NULL ,
+  `size` INT(11) NOT NULL ,
+  `type` VARCHAR(45) NOT NULL ,
+  `content` LONGBLOB NOT NULL ,
+  `documents_id` INT(255) NOT NULL ,
+  PRIMARY KEY (`id`) ,
+  INDEX `fk_folios_documents1` (`documents_id` ASC) ,
+  CONSTRAINT `fk_folios_documents1`
+    FOREIGN KEY (`documents_id` )
+    REFERENCES `documents` (`id` )
+    ON DELETE CASCADE
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB
+AUTO_INCREMENT = 4
+DEFAULT CHARACTER SET = utf8;
+
+
+
+-- -------------------------------------------------
+
 --
 -- Volcado de datos para la tabla `users`
 --
@@ -199,3 +294,10 @@ INSERT INTO `users` (`id`, `email`, `first_name`, `last_name`, `password`, `salt
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
+--
+-- Datos base para contituents base
+--
+INSERT INTO `constituents` (id,name,description,sysname) VALUES (0,'Content','Main content of a Document','');
+INSERT INTO `constituents` (id,name,description,sysname) VALUES (1,'Attach File','Allow users to attach files to Document','attachFile');

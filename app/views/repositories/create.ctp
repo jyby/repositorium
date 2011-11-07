@@ -17,6 +17,19 @@ $this->Html->addCrumb($title);
 
 <?php echo $this->Form->input('description'); ?>
 
+<!-- source types for repo -->
+<div class="select required">
+	<label for="constituent_id">Select some modifiers for this Repository</label>
+	<?php
+	$constituents[0] = array(
+		'name' => $constituents[0],
+		'value' => '0',
+		'disabled' => 1
+	);
+	echo $this->Form->input("Constituents", array("type"=>"select", "multiple"=>"checkbox", "default"=>"0", "options"=>$constituents));
+	?>
+</div> 
+
 <?php //echo $this->Form->input('min_points', array('label' => 'Minimum points assigned to each new user of this repository')); ?>
 
 <?php echo $this->Form->input('download_cost', array('label' => 'Cost (in points) of each document to be downloaded')); ?>

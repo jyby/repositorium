@@ -122,13 +122,22 @@ echo $this->Form->end();
 				echo "</div>";
 				
 				echo '<div style="clear: both; height: 10px;"></div>';
+	
 				echo $this->Form->input('Document.content', array(
 				  'label' => 'Content ',
 				  'value' => stripslashes(str_replace('\n',"\n",$this->data['Document']['content'])),
 				  'style' => 'width: 90%; height: 300px;'
 				  //'rows' => 14,
 				  //'cols' => 60,
-				));	
+					));
+				
+				
+				// cgajardo: attach edit snippets for each repo-component
+				foreach($constituents as $constituent){
+					echo $this->element($constituent['Constituent']['sysname'].'/edit', array("folios"=>$folios));
+				}
+				
+					
 			?>
 				<div class="created-by">
 					<span>Created by <?php echo $this->Text->autoLinkEmails($this->data['User']['autor']); ?> on <?php echo $this->data['Document']['created']; ?></span> 
