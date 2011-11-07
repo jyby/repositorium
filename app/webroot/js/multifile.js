@@ -143,7 +143,7 @@ function MultiSelector( list_target, max ){
 		};
 
 		// Set row value
-		new_row.innerHTML = element.value;
+		new_row.innerHTML = element.value.replace("C:\\fakepath\\","["+(this.id-1)+"] ")+" ";
 
 		// Add button
 		new_row.appendChild( new_row_button );

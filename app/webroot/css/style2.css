@@ -440,4 +440,11 @@ strong {
 
 .gray {
 	color: #777;
-} 
+}
+
+/** by cgajardo **/
+
+div.checkbox label {
+    display:inline;
+    padding-left: 0.5em;    
+}

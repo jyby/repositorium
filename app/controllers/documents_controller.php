@@ -53,7 +53,6 @@ class DocumentsController extends AppController {
   		  				'fields'=>array('Constituent.sysname')));
   	
   	if(!empty($this->data)) {
-  		print_r($this->data);
 		//attach necesary behaviors
 		foreach ($constituents as $constituent){
 			$configArray = array('cod'=> 1);

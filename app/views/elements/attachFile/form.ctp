@@ -1,5 +1,5 @@
 <div class="input required">
-<label for="DocumentFileAttach">Attach a File</label>
+<label for="DocumentFileAttach">Attach some file (at least one)</label>
 <?php
 	$javascript->link('multifile.js', false);
 ?>
@@ -8,7 +8,8 @@
 <!--  ensayo -->
 <input id="attached_files" type="file" name="attachedfile_1" >
 </br>
-Files:
+</br>
+Files Attached:
 <!-- This is where the output will appear -->
 <div id="files_list"></div>
 <script>
