@@ -1,0 +1,5 @@
+:::NOTES:::
+
+Naming Rules:
+* All CakePHP rules must be considered.
+* Avoid the use of CakePHP and PHP keywords or reserved names to name your model entities (http://api.cakephp.org/classes http://php.net/manual/en/reserved.keywords.php)
