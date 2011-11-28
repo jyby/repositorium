@@ -84,7 +84,7 @@
                 <div class="box userbox">
                     <ul class="nav topmenu">
                         <?php if(!$this->Session->check('User.id')) { ?>
-                        <li><?php echo $this->Html->link('Sign in', array('controller' => 'register'), array('escape' => false)); ?></li>
+                        <li><?php echo $this->Html->link('Sign up', array('controller' => 'register'), array('escape' => false)); ?></li>
                         <li><?php echo $this->Html->link('Log in', array('controller' => 'login'), array('escape' => false)); ?></li>
                         <?php } else {
                             $nombre = $this->Session->read('User.first_name');
