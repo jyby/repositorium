@@ -22,6 +22,9 @@ class attachFileBehavior extends Modelbehavior{
 	 */
 	function beforeSave(&$model, $query){
   		$this->fileData = $this->data['files'];
+  		if(count($this->fileData) <= 1){
+  			return false;
+  		}
   		return true;
 	}
 	

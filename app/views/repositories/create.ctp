@@ -20,11 +20,13 @@ $this->Html->addCrumb($title);
 <!-- source types for repo -->
 <div class="select required">
 	<label for="constituent_id">Select some modifiers for this Repository</label>
+	<input type="hidden" name="data[Repository][Constituents][0]" value="0" id="RepositoryConstituents0">
 	<?php
+	# cgajardo: fix to persist "content" selection even when it's actually disabled, using javascript
 	$constituents[0] = array(
-		'name' => $constituents[0],
+		'name' => $constituents[0]." (required)",
 		'value' => '0',
-		'disabled' => 1
+		'onClick' => 'this.checked=true'
 	);
 	echo $this->Form->input("Constituents", array("type"=>"select", "multiple"=>"checkbox", "default"=>"0", "options"=>$constituents));
 	?>
