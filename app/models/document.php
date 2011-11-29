@@ -118,6 +118,8 @@ class Document extends AppModel {
 				$tagData = array();
 				$i = 0;
 				foreach($tags as $tag) {
+					//cgajardo: issue #37
+					if($tag=="") continue;
 					$tagData[$i]['Tag'] = array(
 	        	            'tag' => $tag,
 	        	            'document_id' => $id
