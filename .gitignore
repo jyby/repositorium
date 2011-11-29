@@ -17,3 +17,5 @@ app/tmp/logs/*
 
 app/webroot/docfiles/*.JPG
 app/webroot/docfiles/*.pdf
+
+app/plugins/ucursos_downloader
