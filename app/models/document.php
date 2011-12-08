@@ -119,7 +119,7 @@ class Document extends AppModel {
 				$i = 0;
 				foreach($tags as $tag) {
 					//cgajardo: issue #37
-					if($tag=="") continue;
+					if(trim($tag)=="") continue;
 					$tagData[$i]['Tag'] = array(
 	        	            'tag' => $tag,
 	        	            'document_id' => $id
