@@ -1,3 +1,9 @@
+
+error{
+	background-color:#F00 !important;
+	font-weight: bold;
+	}
+	
 .link-avoid{
 	color : #346E9C !important;
 	font-weight: bold;

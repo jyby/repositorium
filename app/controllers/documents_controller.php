@@ -1,10 +1,10 @@
 <?php
 class DocumentsController extends AppController {
 	
-	var $helpers = array('Html', 'Javascript');
+	var $helpers = array('Html', 'Javascript', 'Ajax');
 	
 	var $name = 'Documents';
-	var $uses = array('Document', 'User', 'Repository', 'ConstituentsKit', 'Attachfile');
+	var $uses = array('Document', 'User', 'Repository', 'ConstituentsKit', 'Attachfile', 'Tag', 'TagsNew');
 	
 	/**
 	 * User Model
@@ -30,11 +30,12 @@ class DocumentsController extends AppController {
 			$this->redirect(array('controller' => 'points', 'action' => 'process'));	
 		}
 	}
-	
+
   function index() {
 	$this->e404();
   }
   
+ 
   function _clean_session() {
   	$this->Session->delete('Document');
   }
@@ -62,9 +63,10 @@ class DocumentsController extends AppController {
 		}
   		
 		$this->save($this->data);
-		
+		echo "chao";
   		foreach ($constituents as $constituent){
-  			$this->Document->Behaviors->detach($constituent);
+  			echo "a";
+			$this->Document->Behaviors->detach($constituent);
   		}
   	}
   	
@@ -105,7 +107,7 @@ class DocumentsController extends AppController {
   		// cgajardo: attach folios that belongs to each document
   		foreach ($docs as &$doc){
   			$doc['files'] = array();
-  			$doc['files'] = $this->Attachfile->find('all' , array('conditions' => array('Attachfile.document_id' => $doc['Document']['id']), 'recursive' => -1, 'fields' => array("Attachfile.id","Attachfile.filename","Attachfile.type")));
+  			$doc['files'] = $this->Attachfile->find('all' , array('conditions' => array('Attachfile.documents_id' => $doc['Document']['id']), 'recursive' => -1, 'fields' => array("Attachfile.id","Attachfile.filename","Attachfile.type")));
   		}
   		
   		$this->set(compact('docs', 'doc_pack', 'constituents'));
@@ -158,28 +160,36 @@ class DocumentsController extends AppController {
   }
   
   function save(&$data){
-  	
+  	//echo 'entro al SAVE QL';
   	$repo = $this->requireRepository();
   	$user = $this->getConnectedUser();
-  	 
   	$this->data['Document']['repository_id'] = $repo['Repository']['id'];
-  	$this->data['Document']['user_id'] = $user['User']['id'];
-  	$this->data['Document']['kit_id'] = $repo['Repository']['kit_id'];
-  	$this->Document->set($this->data);
-  	 
+	$this->data['Document']['user_id'] = $user['User']['id'];
+	$this->data['Document']['kit_id'] = $repo['Repository']['kit_id'];
+	//$this->data['Document']['status'] = "0";
+	//print_r($this->data);
+	$this->Document->set($this->data);
+	//echo "hizo el set :S<br/>";
+	//echo $this->Document->saveWithTags($this->data);
+	//echo "LA MUGRE FUNCIONA";
   	// errors
   	if(empty($this->data['Document']['tags'])) {
+		//echo "bleh!";
   		$this->Session->setFlash('You must include at least one tag');
   	} else if(!$this->Document->validates()) {
-  		$errors = $this->Document->invalidFields();
+  		//echo "bleh!!";
+		$errors = $this->Document->invalidFields();
   		$this->Session->setFlash($errors, 'flash_errors');
   	} else if(!$this->Document->saveWithTags($this->data)) {
-  		$this->Session->setFlash('There was an error trying to save the document. Please try again later');
+  		//echo "bleh!!";
+		$this->Session->setFlash('There was an error trying to save the document. Please try again later');
   	} else {
-  		$this->Session->setFlash('Document saved successfuly');
+  		//echo "bleh!!!";
+		$this->Session->setFlash('Document saved successfuly');
   		$this->_clean_session();
   		$this->redirect(array('controller' => 'repositories', 'action' => 'index', $repo['Repository']['url']));
   	}
+	//echo "no hizo ni una wa";
   }
   
   

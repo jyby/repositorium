@@ -28,7 +28,7 @@ class RepositoriesController extends AppController {
 	
 	var $name = 'Repositories';
 	
-	var $uses = array('Repository', 'RepositoriesUser', 'User', 'Document', 'Tag', 'Criteria','Constituent', 'Restriction', 'Kit', 'ConstituentsKit', 'KitsRestriction');
+	var $uses = array('Repository','TagsNew', 'RepositoriesUser', 'User', 'Document', 'Tag', 'Criteria','Constituent', 'Restriction', 'Kit', 'ConstituentsKit', 'KitsRestriction');
 	
 	function index($repo_url = null) {	
 		if(is_null($repo_url)) {
@@ -149,6 +149,31 @@ class RepositoriesController extends AppController {
 			$this->e404();
 		}		
 	}
+	
+	
+	function test22() {
+	
+	$results = $this->Document->find('list', array('fields' => array('Document.title')));
+	$this->set('results', $results);
+}
+	function test() {
+	//$results22 = $this->Document->DocuTags->find('all');
+	
+	//Cuenta cuantos tags distintos tiene asociado un documento con document.id
+	//$results22 = $this->Document->DocuTags->find('count', array('conditions' => array('DocuTags.document_id' => '4')));
+	//Retorna los nombres de todos los tags asociados al documento con document.id
+	//$results22 = $this->Document->DocuTags->find('list', array('conditions' => array('DocuTags.document_id' => '4')));
+	//$results22 = $this->Document->DocuTags->find('list'); //Devuelve en una lista ordenada de 0-n el valor del id
+	 //$results22 = $this->Document->DocuTags->find('list', array('fields' => array(
+	 //'Document.id', 'Document.title'),
+	 //'conditions' => array('DocuTags.document_id' => '4')
+	 // ));
+	//$results22 = $this->Document->find('all');
+	//$results22 = $this->Document->find('first', array('conditions' => array('Document.title'=>"DocumentoPrueba1")));
+	$results22 = $this->Document->find('list', array('fields' => array(
+	'Document.id', 'Document.title', 'Document.content', 'Document.user_id', 'Document.created', 'Document.modified', 'Document.repository_id', 'Document.active', 'Document.kit_id', 'Document.status')));
+	$this->set('results22', $results22);
+}
 	
 	function create() {
 		

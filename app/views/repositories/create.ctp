@@ -1,4 +1,4 @@
-<?php
+	<?php
 $title = "New Repository";	
 $this->viewVars['title_for_layout'] = $title;
 $this->Html->addCrumb('Repositories', '/repositories');
@@ -39,7 +39,15 @@ $this->Html->addCrumb($title);
 <?php echo $this->Form->input('upload_cost', array('label' => 'Cost (in points) of each document to be uploaded')); ?>
 
 <?php echo $this->Form->input('documentpack_size', array('label' => 'Size of each pack of documents for document download')); ?>
-
+<br />
+<div name="ponderation_div" class="yui-u padded"> <label for="ponderation_div"> <strong>Duplicated Control</strong> </label>
+<label for="ponderation_elements">Score given to each new document if there is already a similar entry in the Repositorium. Upon reaching a score of 100 the document is labeled as duplicated.</label>
+<?php echo $this->Form->input('pdr_tittle', array('label' => 'Points added to the score if title is similar')); ?>
+<?php echo $this->Form->input('pdr_tags', array('label' => 'Points added to the score if tag is similar')); ?>
+<?php echo $this->Form->input('pdr_text', array('label' => 'Points added to the score if text is similar')); ?>
+<?php echo $this->Form->input('pdr_files', array('label' => 'Points added to the score if file name is similar')); ?>
+</div>
+<br />
 <?php //echo $this->Form->input('challenge_reward', array('label' => 'Amount of points to be rewarded after passing successfuly a challenge')); ?>
 
 <?php echo $this->Form->end('Done'); ?>
