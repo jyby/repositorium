@@ -163,6 +163,7 @@ class RepositoriesController extends AppController {
 			$selectConstituents = $this->data['Repository']['Constituents'];
 			$this->Kit->save();
 			foreach($selectConstituents as $constituent){
+				$this->ConstituentsKit->create();
 				$this->ConstituentsKit->set('kit_id', $this->Kit->id);
 				$this->ConstituentsKit->set('constituent_id', $constituent);
 				$this->ConstituentsKit->save();
