@@ -103,24 +103,6 @@ CREATE TABLE IF NOT EXISTS `documents` (
 -- --------------------------------------------------------
 
 --
--- Estructura de tabla para la tabla `documents_tagsnews`
---
-
-CREATE TABLE IF NOT EXISTS `documents_tagsnews` (
-  `id` int(255) NOT NULL AUTO_INCREMENT,
-  `document_id` int(255) NOT NULL,
-  `tagsnew_id` int(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `document_id` (`document_id`),
-  UNIQUE KEY `document_id_2` (`document_id`),
-  KEY `document_id_3` (`document_id`),
-  KEY `tagsnew_id` (`tagsnew_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
-
-
--- --------------------------------------------------------
-
---
 -- Estructura de tabla para la tabla `experts`
 --
 
@@ -186,22 +168,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `tags_news`
---
-
-CREATE TABLE IF NOT EXISTS `tags_news` (
-  `id` int(255) NOT NULL AUTO_INCREMENT,
-  `value` varchar(20) CHARACTER SET utf8 NOT NULL,
-  `created` datetime NOT NULL,
-  `modified` datetime NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1;
-
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -311,63 +278,6 @@ CREATE  TABLE IF NOT EXISTS `attachfiles` (
 ENGINE = InnoDB
 AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8;
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `similarity_coefficients`
---
-
-CREATE TABLE IF NOT EXISTS `similarity_coefficients` (
-  `repository_id` int(255) NOT NULL,
-  `pdr_tittle` int(11) NOT NULL,
-  `pdr_files` int(11) NOT NULL,
-  `pdr_tags` int(11) NOT NULL,
-  UNIQUE KEY `repository_id_2` (`repository_id`),
-  KEY `repository_id` (`repository_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
--- --------------------------------------------------------
-
---
--- Estructura de tabla para la tabla `warned_documents`
---
-
-CREATE TABLE IF NOT EXISTS `warned_documents` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_created_warning_document` int(255) NOT NULL,
-  `id_existing_document` int(255) NOT NULL,
-  PRIMARY KEY (`id`),
-  KEY `id_created_warning_document` (`id_created_warning_document`),
-  KEY `id_existing_document` (`id_existing_document`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
-
-
--- Filtros para la tabla `attachfiles`
---
-ALTER TABLE `attachfiles`
-  ADD CONSTRAINT `fk_folios_documents1` FOREIGN KEY (`documents_id`) REFERENCES `documents` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `documents_tagsnews`
---
-ALTER TABLE `documents_tagsnews`
-  ADD CONSTRAINT `documents_tagsnews_ibfk_2` FOREIGN KEY (`tagsnew_id`) REFERENCES `tags_news` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
-  ADD CONSTRAINT `documents_tagsnews_ibfk_1` FOREIGN KEY (`document_id`) REFERENCES `documents` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `similarity_coefficients`
---
-ALTER TABLE `similarity_coefficients`
-  ADD CONSTRAINT `similarity_coefficients_ibfk_1` FOREIGN KEY (`repository_id`) REFERENCES `repositories` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
-
---
--- Filtros para la tabla `warned_documents`
---
-ALTER TABLE `warned_documents`
-  ADD CONSTRAINT `id_created_warning_document` FOREIGN KEY (`id_created_warning_document`) REFERENCES `documents` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
-  ADD CONSTRAINT `id_existing_document` FOREIGN KEY (`id_existing_document`) REFERENCES `documents` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 
 

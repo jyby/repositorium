@@ -127,12 +127,6 @@ class Repository extends AppModel {
 			'order' => ''			
 		)
 	);
-		     // var $hasOne = array(
-		 // 'SimilarityCoefficient' => array( 
-		 // 'className' => 'SimilarityCoefficient',
-		 // 'dependent' => true
-		 // )
-	 // );
 
 	var $hasMany = array(
 		'Criteria' => array(

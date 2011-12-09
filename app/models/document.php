@@ -42,27 +42,7 @@ class Document extends AppModel {
 			'order' => ''
 		)
 	);
-	//document_id	tagsnew_id
-	//'joinTable'              => 'documents_tagsnews',
-	//documents_tagsnews
-	//	'className'           	 => '',
-    // var $hasAndBelongsToMany = array(
-	// 'DocuTags' =>array(
-		// 'className'           	 => 'documents_tagsnews',
-		// 'joinTable'              => 'documents_tagsnews',
-		// 'foreignKey'             => 'document_id',
-		// 'associationForeignKey'  => 'tagsnew_id',
-		// 'with'                   => '',
-		// 'conditions'             => '',
-		// 'order'                  => '',
-		// 'limit'                  => '',
-		// 'unique'                 => false,
-		// 'finderQuery'            => '',
-		// 'deleteQuery'            => '',
-		// 'insertQuery'            => ''
-	// )        
-	// );  
-	
+
 	var $hasMany = array(
 		'Tag' => array(
 			'className' => 'Tag',
@@ -90,14 +70,6 @@ class Document extends AppModel {
 			'finderQuery' => '',
 			'counterQuery' => ''
 		),
-		// 'AlertDocument' => array(
-		// 'className' => 'WarnedDocument',
-		// 'foreignKey' => 'id_created_warning_document'
-        // ),
-        // 'SimilarDocument' => array(
-		// 'className' => 'WarnedDocument',
-		// 'foreignKey' => 'id_existing_document'
-        // ),
 		'CriteriasDocument' => array(
 			'className' => 'CriteriasDocument',
 			'foreignKey' => 'criteria_id',
@@ -147,7 +119,7 @@ class Document extends AppModel {
 				$i = 0;
 				foreach($tags as $tag) {
 					//cgajardo: issue #37
-					if(trim($tag)=="") continue;
+					if($tag=="") continue;
 					$tagData[$i]['Tag'] = array(
 	        	            'tag' => $tag,
 	        	            'document_id' => $id
@@ -166,56 +138,7 @@ class Document extends AppModel {
 		}
 		return false;
 	}
-	/* 
-	function saveWithTagsNew(&$data = array(), $delimiter = ',') {
-		if(!empty($data)) {
-			$this->create();
 	
-			$there_are_tags = false;
-			if(isset($data['Document']['tags'])) {
-				$dataSource = $this->getDataSource();
-				$there_are_tags = true;
-				$dataSource->begin($this); // BEGIN
-			}
-	
-			if($there_are_tags) {
-				$tags = explode($delimiter, $data['Document']['tags']);
-				$tags = array_map("trim", $tags);
-				unset($data['Document']['tags']);
-			}
-	
-			$this->set($data);
-			if(!$this->save()) {
-				if($there_are_tags)
-					$dataSource->rollback($this); // ROLLBACK
-				return false;
-			}
-			
-			$id = $this->id;
-			
-			if($there_are_tags) {
-				$tagData = array();
-				$i = 0;
-				foreach($tags as $tag) {
-					$tagData[$i]['Tag'] = array(
-	        	            'tag' => $tag,
-	        	            'document_id' => $id
-					);
-					$i += 1;
-				}
-				 
-				if($this->Tag->saveAll($tagData)) {
-					$dataSource->commit($this); // C0MMIT
-					
-					return true;
-				} else {
-					$dataSource->rollback($this); // ROLLBACK
-				}
-			}
-		}
-		return false;
-	}
-	 */
 	
 	// done: multiples criterios
 	// done: multiple repositories

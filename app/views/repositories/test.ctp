@@ -1,1 +1,0 @@
-<? echo debug($results22); ?>
