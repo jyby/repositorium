@@ -39,7 +39,7 @@ class Repository extends AppModel {
 				//'on' => 'create', // Limit validation to 'create' or 'update' operations
 			),
 			'length' => array(
-				'rule' => array('minLength', 4),
+				'rule' => array('minLength', 2),
 				'message' => 'Repository url must be at least 4 characters',
 				//'allowEmpty' => false,
 				//'required' => false,
