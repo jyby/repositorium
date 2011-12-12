@@ -148,7 +148,13 @@
     	</div>
 
         <div id="ft">
-            <div class="footer"></div>
+            <div class="footer">
+            	<div class="box footerbox">
+            		<ul class="footernav">
+            			<li><a href="http://github.com/jyby/repositorium/issues/new" target="_blank">Report a bug</a></li>
+            		</ul>
+            	</div>
+            </div>
         </div>
     </div>
 </body>
