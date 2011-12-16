@@ -264,14 +264,9 @@ CREATE  TABLE IF NOT EXISTS `attachfiles` (
   `size` INT(11) NOT NULL ,
   `type` VARCHAR(45) NOT NULL ,
   `content` LONGBLOB NOT NULL ,
-  `documents_id` INT(255) NOT NULL ,
+  `document_id` INT(255) NOT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `fk_folios_documents1` (`documents_id` ASC) ,
-  CONSTRAINT `fk_folios_documents1`
-    FOREIGN KEY (`documents_id` )
-    REFERENCES `documents` (`id` )
-    ON DELETE CASCADE
-    ON UPDATE NO ACTION)
+  INDEX `fk_folios_documents1` (`documents_id` ASC))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
