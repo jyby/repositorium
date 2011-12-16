@@ -202,7 +202,6 @@ CREATE  TABLE IF NOT EXISTS `constituents` (
   `sysname` VARCHAR(45) NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8;
 
 -- ---------------------------------------------
@@ -225,7 +224,6 @@ CREATE  TABLE IF NOT EXISTS `constituents_kits` (
   `kit_id` INT(255) NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB
-AUTO_INCREMENT = 6
 DEFAULT CHARACTER SET = utf8;
 
 -- ---------------------------------------------
@@ -241,7 +239,6 @@ CREATE  TABLE IF NOT EXISTS `restrictions` (
   `constituent_id` INT(255) NOT NULL ,
   PRIMARY KEY (`id`) )
 ENGINE = InnoDB
-AUTO_INCREMENT = 5
 DEFAULT CHARACTER SET = utf8;
 
 -- ---------------------------------------------
@@ -276,7 +273,6 @@ CREATE  TABLE IF NOT EXISTS `attachfiles` (
     ON DELETE CASCADE
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-AUTO_INCREMENT = 4
 DEFAULT CHARACTER SET = utf8;
 
 
