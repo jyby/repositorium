@@ -295,5 +295,5 @@ INSERT INTO `users` (`id`, `email`, `first_name`, `last_name`, `password`, `salt
 --
 -- Datos base para contituents base
 --
-INSERT INTO `constituents` (id,name,description,sysname) VALUES (0,'Content','Main content of a Document','');
+INSERT INTO `constituents` (id,name,description,sysname) VALUES (0,'Content','Main content of a Document','content');
 INSERT INTO `constituents` (id,name,description,sysname) VALUES (1,'Attach File','Allow users to attach files to Document','attachFile');
