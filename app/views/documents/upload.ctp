@@ -28,6 +28,10 @@ $(document).ready(function() {
 			
 			echo("<div id='checked_content'></div>");
 		}
+		if ($constituent=='attachFile'){
+			
+			echo("<div id='checked_attachFile'></div>");
+		}
 	}
 ?>
 <div style="width:400px">
