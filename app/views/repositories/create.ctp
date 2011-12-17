@@ -41,16 +41,5 @@ $this->Html->addCrumb($title);
 <?php echo $this->Form->input('documentpack_size', array('label' => 'Size of each pack of documents for document download')); ?>
 
 <?php //echo $this->Form->input('challenge_reward', array('label' => 'Amount of points to be rewarded after passing successfuly a challenge')); ?>
-<br /><br />
-<div name="ponderation_div" class="yui-u padded"> 
-<label for="ponderation_div"> <strong>Duplicate Data Control</strong> </label>
-<label for="ponderation_elements">Score given to each new document if there is already a similar entry in this Repositorium. Upon reaching a score of 100 the document is considered to be a duplicate and labeled as such.</label>
-<?php echo $this->Form->input('pdr_tittle', array('label' => 'Points added if title is similar')); ?>
-<?php echo $this->Form->input('pdr_tags', array('label' => 'Points added when is identical tags')); ?>
-<?php echo $this->Form->input('pdr_text', array('label' => 'Points added when text is similar')); ?>
-<?php echo $this->Form->input('pdr_files', array('label' => 'Points added for each file already on the repository')); ?>
-</div>
-<br />
+
 <?php echo $this->Form->end('Done'); ?>
-
-
