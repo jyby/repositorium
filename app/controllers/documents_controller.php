@@ -1,7 +1,7 @@
 <?php
 class DocumentsController extends AppController {
 	
-	var $helpers = array('Html', 'Javascript');
+	var $helpers = array('Html', 'Javascript', 'Ajax');
 	
 	var $name = 'Documents';
 	var $uses = array('Document', 'User', 'Repository', 'ConstituentsKit', 'Attachfile');
@@ -61,8 +61,17 @@ class DocumentsController extends AppController {
   			$this->Document->Behaviors->attach($constituent, $configArray);
 		}
   		
-		$this->save($this->data);
 		
+		//echo '<pre>';
+		//print_r ($this->data);
+		//echo $this->data['Document']['tags'];
+		//print_r ($this->Document);
+		//echo '</pre>';
+		//$this->data['Document']['title']
+		//$similar_tags= $this-> 
+		//$result= $this->Document->find('count', array('conditions' =>array('Document.title' => $q,'Document.repository_id' => $id)));
+		$this->save($this->data);
+				
   		foreach ($constituents as $constituent){
   			$this->Document->Behaviors->detach($constituent);
   		}

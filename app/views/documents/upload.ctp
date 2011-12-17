@@ -1,4 +1,7 @@
 <?php
+echo $javascript->link('checker.js',false);
+?>
+<?php
 $title = "Add new document";	
 $this->viewVars['title_for_layout'] = $title;
 $this->Html->addCrumb($title);
@@ -14,10 +17,17 @@ $(document).ready(function() {
 
 <fieldset class="datafields">
 <?php echo $this->Form->create(null, array('url' => '/documents/upload', 'type' => 'file', 'inputDefaults' => array('error' => false)));?>
-<?php echo $this->Form->input('Document.title', array('class' => 'ingresar-documento', 'label' => 'Title', 'default' => '', 'size' => 50)); ?>
+<?php echo $this->Form->input('Document.title', array('class' => 'ingresar-documento', 'label' => 'Title', 'default' => '', 'size' => 50, 'onChange'=>'CheckTitle(DocumentTitle.value)'));?> 
+<?php echo $ajax->div('checked_title'); 
+	  echo $ajax->divEnd('checked_title'); ?>
 <?php
 	foreach($constituents as $constituent){
-		echo $this->element($constituent."/form", array('flag' => 'value'));;
+		echo $this->element($constituent."/form", array('flag' => 'value'));
+		
+		if ($constituent=='content'){
+			
+			echo("<div id='checked_content'></div>");
+		}
 	}
 ?>
 <div style="width:400px">

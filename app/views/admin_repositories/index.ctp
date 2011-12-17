@@ -77,7 +77,7 @@ $this->Html->addCrumb($title);
 <!-- end core table-->
 
 <?php if(isset($footnotes)) {
-		$i = 1; 
+		$i = 1;
 		foreach($footnotes as $f): ?>
 <span><?php for($j=0; $j<$i; $j++) echo '*';?> <em><?php echo $f; ?></em></span>
 <?php 
