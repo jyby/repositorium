@@ -196,14 +196,23 @@
 	</div>
 </div>
 <!-- end expert tools -->
-
+<?php
+	echo '<pre>';
+	foreach($data as $d):
+	echo print_r($d['Document']);
+	//echo print_r($data['Document']);
+	//echo print_r($aux);
+	endforeach;
+	echo '</pre>'
+	
+	//<table id="tabla_documentos" class="ui-widget ui-widget-content tabla" style="width: 40% ;float:left margin-top: 10px;">
+?>
+<div id="DivContent"  style="margin-top: 30px;">
 <!-- core table -->
-<table id="tabla_documentos" class="ui-widget ui-widget-content tabla" style="width: 100%">
+<table id="tabla_documentos" class="ui-widget ui-widget-content tabla" style="width: 40% ;float:left ">
   <thead>
 	<tr class="ui-widget-header">
-	  <th width="3%" style="text-align:center;font-size:9px" class="clickable"><input type="checkbox" id="select-all" /><label for="select-all">select</label></th> 
 	  <th width="55%">Document</th>
-	  <th width="27%">Statistics <?php /* echo $this->Paginator->sort('Statistics', "CriteriasDocument.total_respuestas_2_{$rest}"); */ ?></th>
 	  <th width="15%">Options</th>
 	</tr>
   </thead>
@@ -214,12 +223,71 @@
   		$id = $d['Document']['id'];  	
   ?>
 	<tr>
-		<td class="clickable"><div class="adm-checkbox" style="font-size:9px"><?php echo $this->Form->checkbox('Document.'.$i.'.id', array('value' => $id, 'class' => 'adm-checkbox-form')); 
-						    echo "<label for='Document".$i."Id'>check</label>"; ?></div></td>
+
 		<td>
 			<!-- doc -->
 			<span class="admin-doc-titulo">
-				<?php echo $this->Html->link(Sanitize::html($d['Document']['title']), array('action' => 'edit', $id, $criterio_n), array('escape' => false)) ;?>
+				<?php echo $this->Html->link(Sanitize::html($d['Document']['title']), array('action' => 'edit', $id, $criterio_n,0), array('escape' => false)) ;?>
+			</span>
+			<div class="admin-doc-texto">		
+				<?php
+				echo $this->Text->truncate(
+					str_replace(
+						'\n', 
+						'<br />', 
+						Sanitize::html($d['Document']['content'])), 
+					350, 
+					array(
+						'ending' => '<a href="'.$this->Html->url(array('controller' => 'admin_documentos', 'action' => 'edit', $id, $criterio_n)).'">...</a>', 
+						'exact' => false, 
+						'html' => true));
+						//if($d['Document']['warned_documents']==''){echo 'BLAAAAA';}
+				?>				
+			</div>
+			<div class="created-by">
+				Created on <?php echo $d['Document']['created']; ?> by <?php echo $d['Document']['nombre_autor']; ?>. 
+			</div>
+		</td>
+		<td>
+			<!-- options -->
+			<div class="admin-doc-edit">
+				<?php echo $this->Html->link('Edit', array('action' => 'edit', $id, $criterio_n,0)); ?>
+				&nbsp; | &nbsp;   
+				<?php echo $this->Html->link('Remove', array('action' => 'remove', $id), array(), "Are you sure?"); ?>
+			</div>
+		</td>
+	</tr>  
+  <?php 
+  	$i += 1;
+  	endforeach;
+//OnClick="CheckTag(DocumentTags.value)"	
+  ?>
+  </tbody>
+</table>
+<!-- end core table -->
+<?php echo $this->Html->link('Edit both documents', array('action' => 'edit', $id, $criterio_n,0)); ?>
+
+<input type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" 
+id="Compare_documents" name="Compare_documents" value="Compare selected documents"  OnClick="" />
+
+<table id="tabla_documentos_2" class="ui-widget ui-widget-content tabla" style="width: 40% ;float:right">
+  <thead>
+	<tr class="ui-widget-header">
+	  <th width="55%">Document</th>
+	  <th width="15%">Options</th>
+	</tr>
+  </thead>
+  <tbody>
+  <?php 
+  	$i = 0;
+  	foreach($data as $d):
+  		$id = $d['Document']['id'];  	
+  ?>
+	<tr>
+		<td>
+			<!-- doc -->
+			<span class="admin-doc-titulo">
+				<?php echo $this->Html->link(Sanitize::html($d['Document']['title']), array('action' => 'edit', $id, $criterio_n,0), array('escape' => false)) ;?>
 			</span>
 			<div class="admin-doc-texto">		
 				<?php
@@ -240,37 +308,9 @@
 			</div>
 		</td>
 		<td>
-			<!-- consenso -->
-			<?php				
-				// convencion............. 1 = no, 2 = si
-				$no = $d['CriteriasDocument']["total_answers_1"];
-				$si = $d['CriteriasDocument']["total_answers_2"];
-				$tot = $no + $si;
-				
-				$pno = porcentaje($no, $tot);
-				$psi = porcentaje($si, $tot);				
-			?>
-			<?php if($d['CriteriasDocument']['total_respuestas']>0): ?>
-			<div style="width: 95%; clear:both; margin: 0 auto; height: 2em">
-				<div style="float:left;"><?php echo 'Yes ('.$this->Number->precision($psi, 1).'%)'; ?></div>
-				<div style="float:right;"><?php echo 'No ('.$this->Number->precision($pno, 1).'%)'; ?></div>				
-			</div>		
-			<div class="progressbar-doc-<?php echo $id; ?>" style="width: 95%; margin: 0 auto;background-image:none;background-color:#E79A3D"></div>
-			<script>$('.progressbar-doc-<?php echo $id; ?>').progressbar({value: <?php echo $psi; ?>});</script>
-			<div style="text-align:center;width:95%;clear:both; margin: 0 auto; height: 2em">
-				<?php echo $d['CriteriasDocument']['total_respuestas'] ; ?> 
-				answers<?php if($d['CriteriasDocument']['validated']==1){echo ", official ".(($d['CriteriasDocument']['is_positive']==0)?("No"):("Yes")) ;} ?>
-			</div>
-			<?php else: ?>
-				<div style="text-align:center">
-					There is no data to display yet...
-				</div>
-			<?php endif;?>
-		</td>
-		<td>
 			<!-- options -->
 			<div class="admin-doc-edit">
-				<?php echo $this->Html->link('Edit', array('action' => 'edit', $id, $criterio_n)); ?>
+				<?php echo $this->Html->link('Edit', array('action' => 'edit', $id, $criterio_n,0)); ?>
 				&nbsp; | &nbsp;   
 				<?php echo $this->Html->link('Remove', array('action' => 'remove', $id), array(), "Are you sure?"); ?>
 			</div>
@@ -282,7 +322,7 @@
   ?>
   </tbody>
 </table>
-<!-- end core table -->
+</div>
 </form>
 <?php echo $this->element('paginator_info'); ?>
 

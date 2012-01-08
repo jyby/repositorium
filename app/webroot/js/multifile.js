@@ -38,12 +38,17 @@
  *      [for duplicate name bug]
  *         'neal'
  */
-function MultiSelector( list_target, max ){
+function MultiSelector( list_target, max,outputDiv){
+
+
+	this.outputDiv = outputDiv;
 
 	// Where to write the list
 	this.list_target = list_target;
 	// How many elements?
 	this.count = 0;
+	//Div
+	//var strDiv=stringDiv;
 	// How many elements?
 	this.id = 0;
 	// Is there a maximum?
@@ -120,9 +125,11 @@ function MultiSelector( list_target, max ){
 
 		// References
 		new_row.element = element;
-
+		
+		var helperVar =this;
+		
 		// Delete function
-		new_row_button.onclick= function(){
+		new_row_button.onclick= function(helperVar){
 
 			// Remove element from form
 			this.parentNode.element.parentNode.removeChild( this.parentNode.element );
@@ -136,6 +143,20 @@ function MultiSelector( list_target, max ){
 			// Re-enable input element (if it's disabled)
 			this.parentNode.element.multi_selector.current_element.disabled = false;
 
+			
+			
+			
+			//Delete all names from helper list
+		    document.getElementById(this.parentNode.element.multi_selector.outputDiv).innerHTML="<div><div>";
+		
+		    //Add files to helper div	//Descomentar despues
+			//var helperText = this.parentNode.element.multi_selector.list_target.innerText.split(/\r\n|\r|\n/);
+			//alert(helperText);
+			
+			//Descomentar despues
+		    //document.getElementById(this.parentNode.element.multi_selector.outputDiv).innerHTML = 
+			//this.parentNode.element.multi_selector.list_target.innerText;
+			
 			// Appease Safari
 			//    without it Safari wants to reload the browser window
 			//    which nixes your already queued uploads
@@ -144,12 +165,27 @@ function MultiSelector( list_target, max ){
 
 		// Set row value
 		new_row.innerHTML = element.value.replace("C:\\fakepath\\","["+(this.id-1)+"] ")+" ";
-
+		
+		//document.getElementById(this.outputDiv).innerHTML+=element.value.replace("C:\\fakepath\\","")+","
+		//document.write('<b>Estoy en el multifile.sj HUEHUEHUEHUE</b>');
 		// Add button
 		new_row.appendChild( new_row_button );
-
+		
 		// Add it to the list
 		this.list_target.appendChild( new_row );
+		
+		//Delete all names from helper list
+		document.getElementById(this.outputDiv).innerHTML="";
+		
+		//Add files to helper div	//Descomentar despues
+		//document.getElementById(this.outputDiv).innerHTML=this.list_target.innerText;
+		
+		
+		var helperText = this.list_target.innerText.split(/\r\n|\r|\n/);
+		//alert(helperText);
+		//CheckFile("lala");
+		
+	
 		
 	};
 

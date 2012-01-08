@@ -50,7 +50,13 @@ echo $this->Form->radio('radiomenu',
 								array('constituents' => 'Update Constituents'),
 								array(
 									'value' => $current , 
-									'onClick' => 'document.location="'.$this->Html->url(array('controller' => 'constituents', 'action' => 'index')) .'";'));									
+									'onClick' => 'document.location="'.$this->Html->url(array('controller' => 'constituents', 'action' => 'index')) .'";'));
+echo $this->Form->radio('radiomenu',
+								array('warned' => 'Warned Documents'),
+								array(
+									'value' => $current , 
+									'onClick' => 'document.location="'.$this->Html->url(array('controller' => 'admin_documentos', 'action' => 'warneds')) .'";'));
+									
 ?>
 </div>
 <script>

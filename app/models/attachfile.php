@@ -13,7 +13,8 @@ class Attachfile extends AppModel {
 		)
 	);
 		//devuelve la cantidad de archivos del documento nuevo que ya existen
-	function findFilesCount($repo_id = null, $files = array()) {
+		//y asigna en session los documentos que tienen al menos un archivo igual
+	function findFilesCount($repo_id = null, $files = array(),$documents_controller) {
 			if(is_null($repo_id)) {
 			return null;
 		}
@@ -23,6 +24,7 @@ class Attachfile extends AppModel {
 		//echo '</pre>';
 				$docs = array();
 		foreach ($files as $file) {
+			//comparar content
 			$tmp = $this->find('all', array(
 			  		'conditions' => array(
 						'Attachfile.filename' => $file,
@@ -31,7 +33,10 @@ class Attachfile extends AppModel {
 			  		'fields' => array('Attachfile.document_id')
 				)
 			);
-				
+			//echo '<pre>';
+			//echo 'tmp tiene lo siguiente:';
+			//print_r($tmp);
+			//echo '</pre>';
 			$hola = array();
 			foreach($tmp as $t) {
 				$hola[] = $t['Attachfile']['document_id'];
@@ -40,16 +45,124 @@ class Attachfile extends AppModel {
 		}
 				if(count($docs) > 0) {
 				//echo 'Entro al if de count>0';
-				//echo '<pre>';
-				//echo '$docs es:';
-				//print_r($docs);
-				//echo '</pre>';
+				 //echo '<pre>';
+				 //echo '$docs es:';
+				 //print_r($docs);
+				 //echo '</pre>';
+				$res = array();
+			// for ($i = 0; $i+1 < count($docs); $i++) {
+				// $res = array_intersect($docs[$i], $docs[$i+1]);
+			// }
+			$foo= array();
+			$k=0;
+			for ($i = 0; $i < count($docs);$i++){
+			    foreach($docs[$i] as $doc){
+				$foo[$k]=$doc;
+				$k++;
+				}
+			}
+			$foo=array_unique($foo);
+				 //echo '<pre>';
+				 //echo '$foo es:';
+				 //print_r($foo);
+				 //echo '</pre>';
+				$foo=array_values($foo);
+				$documents_controller->Session->write("sim_files", $foo);
+				// echo '<pre>';
+				// echo 'sim_files en Session es:';
+				// print_r($documents_controller->Session->read("sim_files"));
+				// echo '</pre>';
+
 		}
 
 		return count($docs);
 	}
+	//Retorna la cantidad de archivos que tienen igualdad de sha(content) en al menos 1 de los files del documento nuevo
+	//Genera una variable "sim_files_sha" en Session, con la lista de documentos con igualdad de shas
+	function findFilesShaCount($repo_id = null, $files = array(),$documents_controller) {
+			if(is_null($repo_id)) {
+			return null;
+		}
+		//echo '<pre>';
+		//echo 'El files_tmp que le llego a findFilesSha es el siguiente';
+		//print_r($files);
+		//print_r($this->test_sha());
+		//echo '</pre>';
+		
+				$docs = array();
+			//echo '<pre>';
+			//echo 'tmp de filesSha tiene lo siguiente:';
+			//print_r($tmp);
+			//echo 'Content del attachfile ($this->content)es:';
+			//print_r($this->content);
+			//echo $this->content;
+			
+			//WARNING $this   es gigante
+			//echo 'this es';
+			//print_r($this);
+			
+			//echo '$Attachfile es';
+			//print_r($Attachfile);  //Vacio o null
+			//echo 'El file_tmp contra el que se comparo es:';
+			//echo $file;	//no esta definido aqui
+			//print_r($file);
+			//echo '</pre>';
+		foreach ($files as $file) {
+			//comparar content
+			$tmp = $this->find('all', array(
+			  		'conditions' => array(
+						'SHA1(Attachfile.content)' => $file,
+						'Document.repository_id' => $repo_id
+					),
+			  		'fields' => array('Attachfile.document_id')
+				)
+			);
+			//echo '<pre>';
+			//echo 'tmp sha tiene lo siguiente:';
+			//print_r($tmp);
+			//echo '</pre>';
+			$hola = array();
+			foreach($tmp as $t) {
+				$hola[] = $t['Attachfile']['document_id'];
+			}
+			$docs[] = $hola;
+		}
+				//echo '<pre>';
+				//echo '$docs en sha es:';
+				//print_r($docs);
+				//echo '</pre>';
+		
+				if(count($docs) > 0) {
+				$res = array();
+			$foo= array();
+			$k=0;
+			for ($i = 0; $i < count($docs);$i++){
+			    foreach($docs[$i] as $doc){
+				$foo[$k]=$doc;
+				$k++;
+				}
+			}
+			$foo=array_unique($foo);
+				 //echo '<pre>';
+				 //echo '$foo es:';
+				 //print_r($foo);
+				 //echo '</pre>';
+				$foo=array_values($foo);
+				$documents_controller->Session->write("sim_files_sha", $foo);
+				 //echo '<pre>';
+				 //echo 'sim_files_sha en Session es:';
+				 //print_r($documents_controller->Session->read("sim_files_sha"));
+				 //echo '</pre>';
+
+		}
+		
+		return count($docs);
+	}
 	function fallar(){
 		print("fail");
+	}
+	function test_sha(){
+	return 8;
 	}
 	
 }
