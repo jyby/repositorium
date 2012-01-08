@@ -38,6 +38,20 @@
 			<li><span class="gray">Quality criteria:</span> <?php echo $criterias; ?></li>
 			<li><span class="gray">Different tags:</span> <?php echo $tags; ?></li>			
 		</ul>
-	</div>
+	</div>	
+	<script src="http://<?php echo $_SERVER['HTTP_HOST']; ?>/js/swfobject.js" type="text/javascript"></script>
+	<div id="tagCloudId" style="text-align: center;">Your browser does not support Flash or Javascript!</div>
+	<p>
+	<script type="text/javascript">
+		var so = new SWFObject("http://<?php echo $_SERVER['HTTP_HOST']; ?>/swf/tagcloud.swf", "tagcloud", "750", "400", "9", "#ffffff");
+		so.addVariable("mode", "tags");
+		so.addVariable("tcolor", "0x333333");
+		so.addVariable("tcolor2", "0x009900");
+		so.addVariable("hicolor", "0xff0000");
+		so.addVariable("tspeed", "100");
+		so.addVariable("distr", "true");
+		so.addVariable("tagcloud", "<?php echo $cloud_data; ?>");
+		so.write("tagCloudId");
+	</script>
+	</p>
 </div>
-
