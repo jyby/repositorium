@@ -81,11 +81,8 @@
 	} else {
 		if(strcmp($current,'all') == 0)
 			$title = 'All documents';
-		else{
-			if(strcmp($current,'validados') == 0)
-				$title = 'Validated Documents';
-				else{$title = 'Warned Documents';}
-			}
+		else
+			$title = 'Validated Documents';
 	}
 	if(!$en_valid)
 		$rest = 'no_validado';

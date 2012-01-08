@@ -69,17 +69,18 @@
  * encoding =>
  * For MySQL, MySQLi, Postgres and DB2, specifies the character encoding to use when connecting to the
  * database.  Uses database default.
- *
+ *'database' => 'repodelfin',
  */
+ //	'database' => 'repositorio',
 class DATABASE_CONFIG {
 
 	var $default = array(
 		'driver' => 'mysql',
 		'persistent' => false,
-		'host' => '<HOST>',
-		'login' => '<USER>',
-		'password' => '<PASSWORD>',
-		'database' => '<DBNAME>',
+		'host' => 'localhost',
+		'login' => 'root',
+		'password' => '',
+		'database' => 'repositorium',
 		'prefix' => '',
 	);
 

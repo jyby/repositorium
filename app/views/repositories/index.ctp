@@ -38,7 +38,8 @@
 			<li><span class="gray">Quality criteria:</span> <?php echo $criterias; ?></li>
 			<li><span class="gray">Different tags:</span> <?php echo $tags; ?></li>			
 		</ul>
-	</div>	
+	</div>
+<!-- rmeruane-->
 	<script src="http://<?php echo $_SERVER['HTTP_HOST']; ?>/js/swfobject.js" type="text/javascript"></script>
 	<div id="tagCloudId" style="text-align: center;">Your browser does not support Flash or Javascript!</div>
 	<p>
@@ -54,4 +55,6 @@
 		so.write("tagCloudId");
 	</script>
 	</p>
+
 </div>
+

@@ -9,6 +9,7 @@ $this->viewVars['title_for_layout'] = $title;
 
 <?php echo $this->Form->create('Tag', array('action' => 'process')); ?>
 
+/*@rmeruane*/
 <?php
 $checked = "";
 $inputs = array('label' => false);
@@ -20,15 +21,15 @@ if(isset($this->params['url']['tag_value'])){
 
 <?php echo $this->Form->input('search', $inputs);?>
 
+
 <div class="input select">
 	<div class="checkbox">
 		<input type="checkbox" name="data[Option][id][]" value="title" id="OptionId1"><label class="search-option" for="OptionId1">Title</label>
 		<input type="checkbox" name="data[Option][id][]" value="content" id="OptionId2"><label class="search-option" for="OptionId2">Content</label>
 		<?php if(in_array("attachFile",$constituents)) echo "<input type=\"checkbox\" name=\"data[Option][id][]\" value=\"filename\" id=\"OptionId3\"><label class=\"search-option\" for=\"OptionId3\">Files</label>";?>
-		<input type="checkbox" name="data[Option][id][]" value="tags" id="OptionId4" <?php echo $checked; ?>><label class="search-option" for="OptionId4">Tags</label>
+		<input type="checkbox" name="data[Option][id][]" value="tags" id="OptionId4"<?php echo $checked; ?>><label class="search-option" for="OptionId4">Tags</label>
 	</div>
 </div>
-
 <?php if(!empty($criterias)): ?>
 <div class="input select">
 	<label for="CriteriaId">Choose quality criteria which will be used to determine the quality of the documents searched (Optional):</label>

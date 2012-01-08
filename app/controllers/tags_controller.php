@@ -12,7 +12,7 @@
 class TagsController extends AppController {
 
 	var $helpers = array('Js' => array('Jquery'));
-	var $uses = array('Criteria', 'Tag');
+	var $uses = array('Criteria', 'Tag', 'Document', 'Attachfile', 'ConstituentsKit');
 	
 	/**
 	 * Criteria Model
@@ -31,7 +31,22 @@ class TagsController extends AppController {
 		)
 	);
 	
-	$this->set(compact('criterias'));	
+	$constituents = $this->ConstituentsKit->find('list', array(
+					'conditions' => array('ConstituentsKit.kit_id' => $repo['Repository']['kit_id'], 'ConstituentsKit.constituent_id' != '0'), 
+					'recursive' => 1,
+					'fields'=>array('Constituent.sysname')));
+	
+	$this->set(compact('criterias','constituents'));	
+  }
+  
+  //función auxiliar hecha para evitar elementos repetidos dentro del arreglo (emular un conjunto)
+  function addContent($conjunto_base, $nuevo_conjunto){
+	foreach ($nuevo_conjunto as $elemento) {
+		if(!in_array($elemento,$conjunto_base)){
+			$conjunto_base[] = $elemento;
+		}
+	}
+	return($conjunto_base);
   }
 
   function process() {
@@ -39,12 +54,34 @@ class TagsController extends AppController {
 		$this->Session->setFlash('Please, enter a search term');
 		$this->redirect(array('controller' => 'tags', 'action' => 'index'));
 	}
+	if (empty($this->data['Option']['id']) or count($this->data['Option']['id']) == 0) {
+		$this->Session->setFlash('Please select a search option');
+		$this->redirect(array('controller' => 'tags', 'action' => 'index'));
+	}
 	
 	$repo = $this->requireRepository();
 	
-	$tags = explode(' ', trim($this->data['Tag']['search']));
+	$words = explode(',', trim($this->data['Tag']['search'])); //fix: el separador es coma, no espacio
 	
-	$documents = $this->Tag->findDocumentsByTags($repo['Repository']['id'], $tags);
+	$documents = array();
+
+	if(in_array("title",$this->data['Option']['id'])){
+		$documents_aux = $this->Document->findDocumentsByTitle($repo['Repository']['id'], $words);
+		$documents = $this->addContent($documents,$documents_aux); //agregar documentos al conjunto
+	}
+	if(in_array("content",$this->data['Option']['id'])){
+		$documents_aux = $this->Document->findDocumentsByContent($repo['Repository']['id'], $words);
+		$documents = $this->addContent($documents,$documents_aux); //agregar documentos al conjunto
+	}
+	if(in_array("filename",$this->data['Option']['id'])){
+		$documents_aux = $this->Attachfile->findDocumentsByFilename($repo['Repository']['id'], $words);
+		$documents = $this->addContent($documents,$documents_aux); //agregar documentos al conjunto
+	}
+	if(in_array("tags",$this->data['Option']['id'])){
+		$documents_aux = $this->Tag->findDocumentsByTags($repo['Repository']['id'], $words);
+		$documents = $this->addContent($documents,$documents_aux); //agregar documentos al conjunto
+	}
+	
 	$documents = $this->Criteria->filterDocuments($documents, $this->data['Criteria']['id']);
 	
 	$c = count($documents);	
