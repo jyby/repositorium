@@ -18,7 +18,7 @@ class CheckContentsController extends AppController {
 		$result= $this->Document->find('count', array('conditions' =>array('Document.content' => trim($q),'Document.repository_id' => $id )));
 		
 		if($result!=0){
-		 	echo '<p class=error><strong>There is already a document with similar text</strong></p>';
+		 	echo '<p class=error><strong>A document with a similar text already exists</strong></p>';
 			die();
 			}
 		else {
