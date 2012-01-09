@@ -67,9 +67,6 @@ class DocumentsController extends AppController {
 		//echo $this->data['Document']['tags'];
 		//print_r ($this->Document);
 		//echo '</pre>';
-		//$this->data['Document']['title']
-		//$similar_tags= $this-> 
-		//$result= $this->Document->find('count', array('conditions' =>array('Document.title' => $q,'Document.repository_id' => $id)));
 		//En la siguiente linea se guardan los documentos
 		$this->save($this->data);
 				
@@ -166,6 +163,68 @@ class DocumentsController extends AppController {
   	}
   	$this->set(compact('premio', 'doc_objs'));
   }
+  function checkcontents() {
+	$this->autoRender = false;
+	//$this->redirect('/');
+	//$this->redirect('/repositorium/upload');
+	//echo '<pre>';
+	//print_r($_GET);
+	//echo '</pre>';
+	$q=$_GET["q"];
+	$this->redirect('/checkcontents?q='.$q);
+	die();
+	//return false;
+  }
+  function checktitles() {
+	$this->autoRender = false;
+	//$this->redirect('/');
+	//$this->redirect('/repositorium/upload');
+	//echo '<pre>';
+	//print_r($_GET);
+	//echo '</pre>';
+	$q=$_GET["q"];
+	$this->redirect('/checktitles/check_title?q='.$q);
+	die();
+	//return false;
+  }
+  function checktags() {
+	$this->autoRender = false;
+	//$this->redirect('/');
+	//$this->redirect('/repositorium/upload');
+	//echo '<pre>';
+	//print_r($_GET);
+	//echo '</pre>';
+	$q=$_GET["q"];
+	$this->redirect('/checktags/check_tag?q='.$q);
+	die();
+	//return false;
+  }
+  function getWarnedDocuments($sim_titles,$sim_texts,$sim_files,$sim_files_sha){
+  $result=array();
+  $i=0;
+  foreach($sim_titles as $doc){
+	$result[$i]=$doc;
+	$i++;
+  }
+    foreach($sim_texts as $doc){
+	$result[$i]=$doc;
+	$i++;
+  }
+  if($sim_files!=""){
+    foreach($sim_files as $doc){
+	$result[$i]=$doc;
+	$i++;
+	}
+    foreach($sim_files_sha as $doc){
+	$result[$i]=$doc;
+	$i++;
+	}
+  }
+  $result=array_unique($result);
+  $result=array_values($result);
+  $string_result=implode(",",$result);
+  return $string_result;
+  }
   function set_warned(&$data){
   $repo = $this->requireRepository();
   	$max_sim=100;
@@ -176,39 +235,65 @@ class DocumentsController extends AppController {
 	$tags_val=0;
 	$all_tags=0;
 	$files_val=0;
+	$files_sha_val=0;
 	$id= $repo['Repository']['id'];
 	$tags = explode(',', $data['Document']['tags']);
 	$tags = array_map("trim", $tags);
 	$files=array();
-	$aux_var=1;
-	//if((count($this->data['files'])) >= 3 ){$aux_var=0;}
-	//for ($i = 0; $i < (count($this->data['files']))-$aux_var; $i++) {
+	$files_tmp=array();
 	if(isset($data['files'])) {
+				//echo '<pre>';
+				//echo '$data[files] tiene:';
+				//print_r($data['files']);
+				//echo '</pre>';
 	for ($i = 0; $i < count($this->data['files']); $i++) {
 				if($this->data['files'][$i]['error']!= 4){
 				$files[$i] = $this->data['files'][$i]['name'];
+				$files_tmp[$i]=sha1_file($this->data['files'][$i]['tmp_name']);
 				}
 			}
-		$files_val=$this->Attachfile->findFilesCount($id,$files);	//kaka
+		$files_val=$this->Attachfile->findFilesCount($id,$files,$this);
+		$files_sha_val=$this->Attachfile->findFilesShaCount($id,$files_tmp,$this);
+		
+		//$aux=$this->Session->read("sha_files");
+		
+		/*
+				 echo '<pre>';
+				 echo 'sha_files en el documents_controller:';
+				 print_r($aux);
+				 echo 'sim_files en el documents_controller:';
+				 print_r($this->Session->read("sim_files"));
+				 echo '</pre>';
+				 */
 		}
 	//$files=$this->data['files'];
 	//echo 'El titulo del file en 1, es :';
 	//echo $this->data['files'][1]['name'];
-	//echo '<pre>';	//kaka
+	//echo '<pre>';
 	//print_r ($tags);	
 	//print_r ($this->data);
 	//print_r($files);
 	//print_r ($this->Document);
-	//echo '</pre>';	//kaka
-	//$documents = $this->Tag->findTagsCount($id, $tags);
-	//print_r($this->Tag->findTagsCount($id, $tags));
+	//echo '</pre>';
 	$tags_val=$this->Tag->findTagsCount($id, $tags);
 	//echo $files_val;
 	//echo $tags_val;
 	//$this->Tag->findTagsCount($id, $tags);
 	//echo '</pre>';
 	$result_title= $this->Document->find('count', array('conditions' =>array('Document.title' => $aux_title,'Document.repository_id' => $id)));
+	$title_array=$this->Document->find('list', array('conditions' =>array('Document.title' => $aux_title,'Document.repository_id' => $id)));
+	// echo '<pre>';
+	// print_r ($title_array);	
+	// echo '</pre>';
+	$title_keys=array_keys($title_array);
+	$this->Session->write("sim_titles", $title_keys);
+	// echo '<pre>';
+	// print_r ($title_keys);	
+	// echo '</pre>';
 	$result_text= $this->Document->find('count', array('conditions' =>array('Document.content' => $aux_text,'Document.repository_id' => $id )));
+	$text_array=$this->Document->find('list', array('conditions' =>array('Document.content' => $aux_text,'Document.repository_id' => $id )));
+	$text_keys=array_keys($text_array);
+	$this->Session->write("sim_texts", $text_keys);
 	if($result_title!=0){$title_val=1;}
 	if($result_text!=0){$text_val=1;}
 	if($tags_val > 0){$all_tags=1;}
@@ -216,10 +301,26 @@ class DocumentsController extends AppController {
 	$text_pdr = $repo['Repository']['pdr_text'];
 	$tags_pdr = $repo['Repository']['pdr_tags'];
 	$files_pdr = $repo['Repository']['pdr_files'];
-	$total_pdr=($title_pdr*$title_val)+($text_pdr*$text_val)+($tags_pdr*$all_tags)+($files_pdr*$files_val);
+	//$total_pdr=($title_pdr*$title_val)+($text_pdr*$text_val)+($tags_pdr*$all_tags)+($files_pdr*$files_val)+($files_pdr*$files_sha_val);	//old total_pdr
+	$total_pdr=($title_pdr*$title_val)+($text_pdr*$text_val)+($tags_pdr*$all_tags)+($files_pdr*$files_val)+($files_pdr*$files_sha_val);
+	$results_not_used= array("result_title" => $result_title,"result_text" => $result_text,"tags_val" => $tags_val);
+	$pdr_val_debug= array("title_pdr" => $title_pdr,"title_val" => $title_val,"text_pdr" => $text_pdr, "text_val" => $text_val,"tags_pdr" => $tags_pdr,"all_tags" => $all_tags,"files_pdr" => $files_pdr,"files_val" => $files_val,"files_sha_val" => $files_sha_val,"total_pdr" => $total_pdr);
+	$this->Session->write("sha_files_count", $files_sha_val);
+	//echo '<pre>';
+	//print_r($results_not_used);
+	//print_r($pdr_val_debug);
+	//echo '</pre>';
 	if($total_pdr>$max_sim){
-		$this->data['Document']['warned'] = 1;}
-		else{$this->data['Document']['warned']=0;}
+		$this->data['Document']['warned'] = 1;
+		if(isset($data['files'])) {
+		$this->data['Document']['warned_documents'] =$this->getWarnedDocuments($this->Session->read("sim_titles"),$this->Session->read("sim_texts"),$this->Session->read("sim_files"),$this->Session->read("sim_files_sha"));
+		}
+		else{$this->data['Document']['warned_documents'] =$this->getWarnedDocuments($this->Session->read("sim_titles"),$this->Session->read("sim_texts"),"");}
+		}
+		else{
+		$this->data['Document']['warned']=0;
+		$this->data['Document']['warned_documents']="";
+		}
 		$this->data['Document']['warned_score']=$total_pdr;
   }
   function save(&$data){
@@ -244,14 +345,16 @@ class DocumentsController extends AppController {
   	} else if(!$this->Document->saveWithTags($this->data)) {
   		$this->Session->setFlash('There was an error trying to save the document. Please try again later');
   	} else {
-		//echo '<pre>';
-		//print_r ($this->data);
-		//echo $this->data['Document']['tags'];
-		//print_r ($this->Document);
-		//echo '</pre>';
-		//echo $this->data['Document']['title'];
 		if($this->data['Document']['warned'] == 1){
-		$this->Session->setFlash('Document saved but its gonna be reviewed by an admin because it may be duplicated');
+		$str_dup='Document saved but its gonna be reviewed by an admin because it may be duplicated';
+		//$this->Session->setFlash('Document saved but its gonna be reviewed by an admin because it may be duplicated');
+		//$this->Session->setFlash($str_dup);
+		if($this->Session->read("sha_files_count")>0){
+		//$this->Session->setFlash('Warned by sha');
+		$str_sha= "There are " .$this->Session->read("sha_files_count"). " documents with the same content of one (or more) of your uploaded files";
+		$this->Session->setFlash(nl2br($str_dup."\n".$str_sha));
+		}
+		else{$this->Session->setFlash($str_dup);}
 		}
 		//if(false){}
 		else{

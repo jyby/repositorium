@@ -10,17 +10,18 @@ class CheckFilesController extends AppController {
 		echo 'Entro al check_file';
 		//$this->redirect(array('controller' => 'documents', 'action' => 'download'));
 		$q=$_GET["q"];
+		echo $q;
 		$repo = $this->requireRepository();
 		$id= $repo['Repository']['id'];
 		
 		$result= $this->Document->find('count', array('conditions' =>array('Document.title' => $q,'Document.repository_id' => $id)));
 		
 		if($result!=0){
-		 	echo '<strong>There is already a document with similar title</strong>';
+		 	echo '<strong>There is already a document with similar file</strong>';
 			die();
 			}
 		else{
-			 echo'';
+			 echo'Llego al else de check file algo esta como el ......';
 			 die();
 			}
 			die();

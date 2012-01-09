@@ -30,6 +30,20 @@ class RepositoriesController extends AppController {
 	
 	var $uses = array('Repository', 'RepositoriesUser', 'User', 'Document', 'Tag', 'Criteria','Constituent', 'Restriction', 'Kit', 'ConstituentsKit', 'KitsRestriction');
 	
+	/*@rmeruane*/
+	private function make_seed()
+	{
+	  list($usec, $sec) = explode(' ', microtime());
+	  return (float) $sec + ((float) $usec * 100000);
+	}
+	private function color_aleatorio(){
+		mt_srand($this->make_seed());
+		$retorno = '';
+		for($i=0; $i<3; $i++)
+			$retorno .= sprintf("%02X", mt_rand(100, 180));
+		return $retorno;
+	}
+	
 	function index($repo_url = null) {	
 		if(is_null($repo_url)) {
 			$this->redirect('/');
@@ -68,7 +82,29 @@ class RepositoriesController extends AppController {
 				),
 				'recursive' => -1,
 			));
+			/*@rmeruane*/
+			$tags_name_count = $this->Tag->find('all', array(
+				'conditions' => array(
+					'Document.repository_id' => $repository['Repository']['id']
+				),
+				'fields' => array(
+					'Tag.tag',
+					'COUNT(tag) AS cantidad'
+				),
+				'group' => 'tag'
+			));
 			
+			$cloud_data = "<tags>";
+			$tag_factor_crecimiento = 1.5;
+			$tag_min_size = 10; //tamano minimo
+			$tag_max_size = 40; //tamano maximo
+			foreach($tags_name_count as $tag_info){
+				$tag_size = round($tag_factor_crecimiento*$tag_info[0]['cantidad']+$tag_min_size);
+				if($tag_size>$tag_max_size) $tag_size = $tag_max_size;
+				$cloud_data .= "<a href='".Router::url(array('controller' => 'tags', 'action' => 'index'), true)."/?tag_value=".$tag_info['Tag']['tag']."' style='".$tag_size."' color='0x".$this->color_aleatorio()."' hicolor='0x".$this->color_aleatorio()."'>".$tag_info['Tag']['tag']."</a>";
+			}
+			$cloud_data .= "</tags>";
+
 			$tags = $this->Tag->find('count', array(
 				'conditions' => array(
 					'Document.repository_id' => $repository['Repository']['id']
@@ -83,7 +119,7 @@ class RepositoriesController extends AppController {
 				'recursive' => -1
 			));
 			
-			$this->set(compact('repository', 'watching', 'creator', 'documents', 'tags', 'criterias'));
+			$this->set(compact('repository', 'watching', 'creator', 'documents', 'tags', 'criterias', 'cloud_data'));
 		} else {
 			$this->e404();
 		}		

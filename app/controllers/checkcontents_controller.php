@@ -10,20 +10,21 @@ class CheckContentsController extends AppController {
 		
 	}
 	function index(){
-		 $q=$_GET["q"];
-		 $repo = $this->requireRepository();
-		 $id= $repo['Repository']['id'];
+		//echo 'Entro al check_text(index todavia)';
+		$q=$_GET["q"];
+		$repo = $this->requireRepository();
+		$id= $repo['Repository']['id'];
 
-		 $result= $this->Document->find('count', array('conditions' =>array('Document.content' => $q,'Document.repository_id' => $id )));
+		$result= $this->Document->find('count', array('conditions' =>array('Document.content' => trim($q),'Document.repository_id' => $id )));
 		
-		 if($result!=0){
+		if($result!=0){
 		 	echo '<p class=error><strong>There is already a document with similar text</strong></p>';
 			die();
 			}
-		 else {
+		else {
 			 echo'';
 			 die();
-		 }
+		}
 		 mysql_close($con);
 		}
 }
