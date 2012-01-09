@@ -26,7 +26,7 @@ class CheckTextsController extends AppController {
 		 $result= mysql_result($query,0);
 
 		 if($result!=0){
-		 	echo '<strong>There is already a document with similar text</strong>';
+		 	echo '<strong>A document with a similar content already exists</strong>';
 			die();
 			}
 		 else {

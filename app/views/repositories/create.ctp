@@ -44,11 +44,11 @@ $this->Html->addCrumb($title);
 <br /><br />
 <div name="ponderation_div" class="yui-u padded"> 
 <label for="ponderation_div"> <strong>Duplicate Data Control</strong> </label>
-<label for="ponderation_elements">Score given to each new document if there is already a similar entry in this Repositorium. Upon reaching a score of 100 the document is considered to be a duplicate and labeled as such.</label>
-<?php echo $this->Form->input('pdr_tittle', array('label' => 'Points added if title is similar')); ?>
-<?php echo $this->Form->input('pdr_tags', array('label' => 'Points added when is identical tags')); ?>
-<?php echo $this->Form->input('pdr_text', array('label' => 'Points added when text is similar')); ?>
-<?php echo $this->Form->input('pdr_files', array('label' => 'Points added for each file already on the repository')); ?>
+<label for="ponderation_elements">Score given for each new document if a similar entry already exists in this Repositorium. The document is considered to be a duplicated and labeled as such upon reaching a score of 100.
+<?php echo $this->Form->input('pdr_tittle', array('label' => 'Points added if similar title exists')); ?>
+<?php echo $this->Form->input('pdr_tags', array('label' => 'Points added for identical tags')); ?>
+<?php echo $this->Form->input('pdr_text', array('label' => 'Points added if similar content exists')); ?>
+<?php echo $this->Form->input('pdr_files', array('label' => 'Points added for each file already in repository')); ?>
 </div>
 <br />
 <?php echo $this->Form->end('Done'); ?>

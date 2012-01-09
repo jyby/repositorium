@@ -32,7 +32,7 @@ class CheckTagsController extends AppController {
 		///$result= $this->Document->find('count', array('conditions' =>array('Document.title' => $q,'Document.repository_id' => $id)));
 		
 		if($tags_val > 0){
-		 	echo '<strong>There is already '.$tags_val.' document(s) with the same tags</strong>';
+		 	echo '<strong>There are already '.$tags_val.' document(s) with the same tags</strong>';
 			die();
 			}
 		else{
