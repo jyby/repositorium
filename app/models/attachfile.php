@@ -23,6 +23,7 @@ class Attachfile extends AppModel {
 		//print_r($files);
 		//echo '</pre>';
 				$docs = array();
+
 		foreach ($files as $file) {
 			//comparar content
 			$tmp = $this->find('all', array(
@@ -30,25 +31,26 @@ class Attachfile extends AppModel {
 						'Attachfile.filename' => $file,
 						'Document.repository_id' => $repo_id
 					),
-			  		'fields' => array('Attachfile.document_id')
+			  		'fields' => array('DISTINCT Attachfile.document_id')
 				)
 			);
 			//echo '<pre>';
-			//echo 'tmp tiene lo siguiente:';
+			//echo 'tmp en findFilesCount tiene lo siguiente:';
 			//print_r($tmp);
 			//echo '</pre>';
 			$hola = array();
 			foreach($tmp as $t) {
 				$hola[] = $t['Attachfile']['document_id'];
 			}
-			$docs[] = $hola;
+			if(count($tmp)==0){return 0;}
+			else{$docs[] = $hola;}
 		}
 				if(count($docs) > 0) {
 				//echo 'Entro al if de count>0';
-				 //echo '<pre>';
-				 //echo '$docs es:';
-				 //print_r($docs);
-				 //echo '</pre>';
+				//echo '<pre>';
+				//echo '$docs es:';
+				//print_r($docs);
+				//echo '</pre>';
 				$res = array();
 			// for ($i = 0; $i+1 < count($docs); $i++) {
 				// $res = array_intersect($docs[$i], $docs[$i+1]);
@@ -62,10 +64,10 @@ class Attachfile extends AppModel {
 				}
 			}
 			$foo=array_unique($foo);
-				 //echo '<pre>';
-				 //echo '$foo es:';
-				 //print_r($foo);
-				 //echo '</pre>';
+				//echo '<pre>';
+				//echo '$foo en files es:';
+				//print_r($foo);
+				//echo '</pre>';
 				$foo=array_values($foo);
 				$documents_controller->Session->write("sim_files", $foo);
 				// echo '<pre>';
@@ -125,7 +127,8 @@ class Attachfile extends AppModel {
 			foreach($tmp as $t) {
 				$hola[] = $t['Attachfile']['document_id'];
 			}
-			$docs[] = $hola;
+			if(count($tmp)==0){return 0;}
+			else{$docs[] = $hola;}
 		}
 				//echo '<pre>';
 				//echo '$docs en sha es:';
@@ -143,10 +146,10 @@ class Attachfile extends AppModel {
 				}
 			}
 			$foo=array_unique($foo);
-				 //echo '<pre>';
-				 //echo '$foo es:';
-				 //print_r($foo);
-				 //echo '</pre>';
+				//echo '<pre>';
+				//echo '$foo en sha es:';
+				//print_r($foo);
+				//echo '</pre>';
 				$foo=array_values($foo);
 				$documents_controller->Session->write("sim_files_sha", $foo);
 				 //echo '<pre>';
