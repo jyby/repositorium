@@ -242,10 +242,10 @@ class DocumentsController extends AppController {
 	$files=array();
 	$files_tmp=array();
 	if(isset($data['files'])) {
-				//echo '<pre>';
-				//echo '$data[files] tiene:';
-				//print_r($data['files']);
-				//echo '</pre>';
+				echo '<pre>';
+				echo '$data[files] tiene:';
+				print_r($data['files']);
+				echo '</pre>';
 	for ($i = 0; $i < count($this->data['files']); $i++) {
 				if($this->data['files'][$i]['error']!= 4){
 				$files[$i] = $this->data['files'][$i]['name'];
@@ -254,7 +254,11 @@ class DocumentsController extends AppController {
 			}
 		$files_val=$this->Attachfile->findFilesCount($id,$files,$this);
 		$files_sha_val=$this->Attachfile->findFilesShaCount($id,$files_tmp,$this);
-		
+				//echo '<pre>';
+				//echo 'KAKAKAKAKAKAKAKA:';
+				//echo $files_val.'</br>';
+				//echo $files_sha_val;
+				//echo '</pre>';
 		//$aux=$this->Session->read("sha_files");
 		
 		/*
@@ -306,10 +310,10 @@ class DocumentsController extends AppController {
 	$results_not_used= array("result_title" => $result_title,"result_text" => $result_text,"tags_val" => $tags_val);
 	$pdr_val_debug= array("title_pdr" => $title_pdr,"title_val" => $title_val,"text_pdr" => $text_pdr, "text_val" => $text_val,"tags_pdr" => $tags_pdr,"all_tags" => $all_tags,"files_pdr" => $files_pdr,"files_val" => $files_val,"files_sha_val" => $files_sha_val,"total_pdr" => $total_pdr);
 	$this->Session->write("sha_files_count", $files_sha_val);
-	//echo '<pre>';
-	//print_r($results_not_used);
-	//print_r($pdr_val_debug);
-	//echo '</pre>';
+	echo '<pre>';
+	print_r($results_not_used);
+	print_r($pdr_val_debug);
+	echo '</pre>';
 	if($total_pdr>$max_sim){
 		$this->data['Document']['warned'] = 1;
 		if(isset($data['files'])) {
@@ -346,7 +350,7 @@ class DocumentsController extends AppController {
   		$this->Session->setFlash('There was an error trying to save the document. Please try again later');
   	} else {
 		if($this->data['Document']['warned'] == 1){
-		$str_dup='Document saved and will be reviewed by an admin to check for duplication';
+		$str_dup='Document saved but its gonna be reviewed by an admin because it may be duplicated';
 		//$this->Session->setFlash('Document saved but its gonna be reviewed by an admin because it may be duplicated');
 		//$this->Session->setFlash($str_dup);
 		if($this->Session->read("sha_files_count")>0){

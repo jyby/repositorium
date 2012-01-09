@@ -112,6 +112,13 @@ class AdminDocumentosController extends AppController {
 	return compact('criterio_list', 'criterio_n', 'data');
   }
   
+  function set_warned_table($document_id){
+  $repo = $this->getCurrentRepository();
+  $id= $repo['Repository']['id'];
+  $data_result=$this->Document->find('all', array('conditions' =>array('Document.id' => $document_id,'Document.repository_id' => $id)));
+  return $document_id;
+  //return $data_result;
+  }
   function validados() {
   	$d = $this->_beforeList(1);
 	$current = 'validados';
@@ -156,17 +163,31 @@ class AdminDocumentosController extends AppController {
 	$filter = $this->Session->read('CriteriasDocument.filter') ? $this->Session->read('CriteriasDocument.filter') : 'all';
 	$repo = $this->getCurrentRepository();
 	$id= $repo['Repository']['id'];
-	$data=$this->Document->find('all', array('conditions' =>array('Document.warned' => 1,'Document.repository_id' => $id)));
+	$data=$this->Document->find('all', array('conditions' =>array('Document.warned' => 1,'Document.repository_id' => $id),'recursive' => -1));
 	$i=0;
 	$aux=array();
 	foreach($data as $d){
-	$aux[$i]=$d['Document']['warned_documents'];
+	$aux[$d['Document']['id']]=$d['Document']['warned_documents'];
+	//$aux[$i]=$d['Document']['warned_documents'];
 	$i++;
 	//$data_warneds=$this->Dcoment->find('all',array('conditions' =>array('')
 	}
+	$data_table_right=array();
+	foreach($aux as $key => $warned_list){
+	if($warned_list!=""){
+	$tmp=array();
+	$tmp_warned_ids=explode(',',$warned_list);
+	foreach ($tmp_warned_ids as $id_d){
+	$tmp2=$this->Document->find('all', array('conditions' =>array('Document.id' => $id_d,'Document.repository_id' => $id),'recursive' => -1)) ;
+	$tmp[]=$tmp2[0];
+	//$tmp[]=$this->Document->find('all', array('conditions' =>array('Document.id' => $id_d,'Document.repository_id' => $id),'recursive' => -1)) ;
+	}
+	$data_table_right[$key]=$tmp;
+	}
+	}
 	$menu = 'menu_expert';
 	
-	$this->set(compact('criterio_n', 'criterio_list','aux', 'data', 'current', 'limit', 'ordering', 'filter', 'repo', 'menu'));
+	$this->set(compact('criterio_n', 'criterio_list','aux','data_table_right', 'data', 'current', 'limit', 'ordering', 'filter', 'repo', 'menu'));
 	$this->render('listar_warneds');
   }	
   
@@ -192,6 +213,11 @@ class AdminDocumentosController extends AppController {
   }
   
   function edit($id = null, $criterio = null,$warned) {
+  //echo '<pre>';
+  //echo $id;
+  //echo $criterio;
+  //echo $warned;
+  //echo '</pre>';
   	if(is_null($criterio)) {
 		$this->redirect('index');  		
   	}

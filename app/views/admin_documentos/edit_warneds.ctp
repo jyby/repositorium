@@ -81,16 +81,16 @@ echo $this->Form->end();
 <div id="expert-tools" style="float: right; height: 29px; width: 100%">		
 	<!-- mass edit -->
 	<div class="adm-mass">	
-		<span class="adm-opt">Instant actions: </span>
+		<!--<span class="adm-opt">Instant actions: </span>-->
 		<?php			
 			echo "&nbsp;&nbsp;&nbsp;";
-			echo $this->Form->button('Save and return', array('class' => 'adm-save'));
+			//echo $this->Form->button('Save and return', array('class' => 'adm-save'));
 			echo '&nbsp;&nbsp;&nbsp;';
 			//echo $this->Form->button('Reset stats', array('id' => 'adm-mass-reset'));
 			//echo '&nbsp;&nbsp;&nbsp;';
-			echo $this->Form->button(($en_valid ? 'Inv' : 'V' ). 'alidate', array('class' => 'adm-validate'));
+			//echo $this->Form->button(($en_valid ? 'Inv' : 'V' ). 'alidate', array('class' => 'adm-validate'));
 			echo '&nbsp;&nbsp;&nbsp;';
-			echo $this->Form->button('Delete document', array('class' => 'adm-delete'));
+			//echo $this->Form->button('Delete document', array('class' => 'adm-delete'));
 		?>
 	</div>
 	<!-- end mass edit-->	

@@ -1,5 +1,7 @@
 <?php App::import('Sanitize'); ?>
-<script type="text/javascript">	
+<script type="text/javascript">
+var document1="";		//id Selected document that may be duplicated (left table)
+var document2="";		//id Selected document that triggered duplicate warning (right table)
 	$(document).ready(function() {		
 		$("#select-all").click(function() {
 			var checked = this.checked;
@@ -60,6 +62,86 @@
 			item.parent().parent().parent().addClass('table-hover-checked');
 		else
 			item.parent().parent().parent().removeClass('table-hover-checked');
+	}
+	/*
+			<?php
+		echo'function update_warned_table(document_id){';
+		echo "\n";
+		//echo '<br/>' . "\n";
+		echo 'var right_table = document.getElementById("tabla_documentos_2_body").value;';
+		echo "\n";
+		//echo 'var select_comuna = document.getElementById("Comuna");';
+		echo "\n";
+		$sql= "SELECT * FROM region";		
+	  	$result=pg_query($db, $sql);
+		
+  				if  (!$result) {
+   				echo "query 1 did not execute";
+  				}		
+				while ($row = pg_fetch_assoc($result)) {
+					$id_region=$row['id'];
+					$nombre_region=$row['nombre'];
+					echo "if(region == \"$id_region\") {";
+					echo "\n";
+			$sql2= "SELECT comuna.nombre , comuna.id
+				FROM comuna
+				WHERE comuna.region='$id_region';
+ 				";
+				$result2=pg_query($db,$sql2);
+				$i=0;
+				echo'select_comuna.options.length = 1;';
+				while($row2 = pg_fetch_assoc($result2)){
+					//new Option('$row2['nombre']', '$row2['nombre']');";
+					echo "\n";
+					echo "select_comuna.options[$i] = "; 
+					$nombre_comuna=$row2['nombre'];
+					$id_comuna=$row2['id'];
+					echo "new Option(\"$nombre_comuna\"";
+					echo ",\"$id_comuna\"); ";
+					$i++;
+					}
+					echo'}';
+					echo "\n";
+}
+		echo'}';
+		?>
+		*/
+	function update_right_table(){
+	if(document1!=""){
+	document.getElementById("tabla_documentos_2_body").innerHTML='<tr><td>'+document1+'</td></tr>';
+	}
+	else{document.getElementById("tabla_documentos_2_body").innerHTML='';}
+	}
+	function select(tr,document_id){
+	if(document1!=document_id){
+	if(document1!=""){
+	//tr-table-left
+	document.getElementById("created-by-"+document1).setAttribute("class", "created-by");
+	document.getElementById("tr-table-left-"+document1).setAttribute("class", "");
+	update_right_table();
+	}
+	document1=document_id;
+	tr.setAttribute("class", "warned-doc");
+	document.getElementById("created-by-"+document_id).setAttribute("class", "created-by-selected");
+	update_right_table();
+	/*
+	<?php $warneds= $this->requestAction('/admin_documentos/set_warned_table/document_id');
+	//echo '<pre>';
+	echo 'alert('.$warneds.');';
+	//echo '</pre>';
+	?>
+	*/
+	//alert(<?php echo $this->requestAction('/admin_documentos/set_warned_table/document_id');?> );
+	}
+	else{
+	document1="";
+	tr.setAttribute("class", "");
+	document.getElementById("created-by-"+document_id).setAttribute("class", "created-by");
+	update_right_table();
+	}
+	//tr.setAttribute("class", "warned-doc");
+	//alert(document_id);
+	
 	}
 </script>
 <?php
@@ -198,10 +280,14 @@
 <!-- end expert tools -->
 <?php
 	echo '<pre>';
+	echo print_r($aux);
+	echo 'El data_table_right es:</br>';
+	echo print_r($data_table_right);
+	echo 'La variable $data tiene:</br>';
+	echo print_r($data);
 	foreach($data as $d):
 	echo print_r($d['Document']);
 	//echo print_r($data['Document']);
-	//echo print_r($aux);
 	endforeach;
 	echo '</pre>'
 	
@@ -220,9 +306,10 @@
   <?php 
   	$i = 0;
   	foreach($data as $d):
-  		$id = $d['Document']['id'];  	
+  		$id = $d['Document']['id'];
+//		class="warned-doc"
   ?>
-	<tr>
+	<tr class="" id="tr-table-left-<?php echo $id;?>" onclick="select((this),<?php echo $id;?>)">
 
 		<td>
 			<!-- doc -->
@@ -244,7 +331,10 @@
 						//if($d['Document']['warned_documents']==''){echo 'BLAAAAA';}
 				?>				
 			</div>
-			<div class="created-by">
+			<!-- <div class="created-by"> 
+			<div class="created-by-selected">
+			-->
+			<div class="created-by" id="created-by-<?php echo $id;?>"> 
 				Created on <?php echo $d['Document']['created']; ?> by <?php echo $d['Document']['nombre_autor']; ?>. 
 			</div>
 		</td>
@@ -265,10 +355,17 @@
   </tbody>
 </table>
 <!-- end core table -->
-<?php echo $this->Html->link('Edit both documents', array('action' => 'edit', $id, $criterio_n,1)); ?>
-
-<input type="button" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" 
-id="Compare_documents" name="Compare_documents" value="Compare selected documents"  OnClick="" />
+<?php 
+//echo $this->Html->link('Edit both documents', array('action' => 'edit', $id, $criterio_n,1)); 
+$one=1;
+echo $this->Form->create(null, array('url' => '/admin_documentos/edit/'.$id.'/'.$criterio_n.'/'.$one,'name' => 'Compare'));
+//echo $this->Form->create(null, array('url' => '/admin_documentos/'.$current, 'name' => 'ordering'));         
+//echo $this->Form->end('Compare selected documentsFORM');
+echo $this->Form->end();
+//echo $this->Form->create(null, array('url' => '/admin_documentos/edit_select_criteria/'.$id, 'id' => 'adm-form-criteria'));
+?>
+<form id="sadasdasd" method="post" action="/admin_documentos/edit/<?php echo $id;?>/<?php echo $criterio_n;?>/1" accept-charset="utf-8">	
+<button type="submit" id="blabla" class="ui-button ui-widget ui-state-default ui-corner-all ui-button-text-only" role="button"><span class="ui-button-text">DeleteBLABLA</span></button></form>
 
 <table id="tabla_documentos_2" class="ui-widget ui-widget-content tabla" style="width: 40% ;float:right">
   <thead>
@@ -277,10 +374,11 @@ id="Compare_documents" name="Compare_documents" value="Compare selected document
 	  <th width="15%">Options</th>
 	</tr>
   </thead>
-  <tbody>
+  <tbody id="tabla_documentos_2_body">
   <?php 
   	$i = 0;
-  	foreach($data as $d):
+  	foreach($data_table_right[90] as $d):
+	//$id = $d[0]['Document']['id'];
   		$id = $d['Document']['id'];  	
   ?>
 	<tr>
@@ -320,6 +418,10 @@ id="Compare_documents" name="Compare_documents" value="Compare selected document
   	$i += 1;
   	endforeach; 
   ?>
+  
+
+  
+  
   </tbody>
 </table>
 </div>
