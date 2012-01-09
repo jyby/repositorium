@@ -143,6 +143,32 @@ class AdminDocumentosController extends AppController {
 	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter', 'repo', 'menu'));
 	$this->render('listar');
   }	
+  //Cambios
+    function warneds() {	
+	$d = $this->_beforeList(0);
+	$current = 'warned';
+	$criterio_n = $this->Session->read('CriteriasDocument.criterio') ? $this->Session->read('CriteriasDocument.criterio') : $d['criterio_n'];
+	$criterio_list = $d['criterio_list'];
+	//$title_array=$this->Document->find('list', array('conditions' =>array('Document.title' => $aux_title,'Document.repository_id' => $id)));
+	//$data = $d['data'];
+	$limit = $this->Session->read('CriteriasDocument.limit') ? $this->Session->read('CriteriasDocument.limit') : $this->paginate['CriteriasDocument']['limit'];
+	$ordering = $this->Session->read('CriteriasDocument.order') ? $this->Session->read('CriteriasDocument.order') : $this->_arrayToStr($this->paginate['CriteriasDocument']['order']);
+	$filter = $this->Session->read('CriteriasDocument.filter') ? $this->Session->read('CriteriasDocument.filter') : 'all';
+	$repo = $this->getCurrentRepository();
+	$id= $repo['Repository']['id'];
+	$data=$this->Document->find('all', array('conditions' =>array('Document.warned' => 1,'Document.repository_id' => $id)));
+	$i=0;
+	$aux=array();
+	foreach($data as $d){
+	$aux[$i]=$d['Document']['warned_documents'];
+	$i++;
+	//$data_warneds=$this->Dcoment->find('all',array('conditions' =>array('')
+	}
+	$menu = 'menu_expert';
+	
+	$this->set(compact('criterio_n', 'criterio_list','aux', 'data', 'current', 'limit', 'ordering', 'filter', 'repo', 'menu'));
+	$this->render('listar_warneds');
+  }	
   
   function all() {
   	$d = $this->_beforeList(null, true);
@@ -165,7 +191,7 @@ class AdminDocumentosController extends AppController {
 	$this->redirect(array('controller' => 'documents', 'action' => 'upload'));
   }
   
-  function edit($id = null, $criterio = null) {
+  function edit($id = null, $criterio = null,$warned) {
   	if(is_null($criterio)) {
 		$this->redirect('index');  		
   	}
@@ -214,7 +240,10 @@ class AdminDocumentosController extends AppController {
 	  $folios = $this->Attachfile->find('all' , array('conditions' => array('Attachfile.document_id' => $this->data['Document']['id']), 'recursive' => -1, 'fields' => array("Attachfile.id","Attachfile.filename","Attachfile.type")));
 	  
 	  $this->set('data',$this->data);
-	  $this->set(compact('criterios_list', 'criterios_n', 'repo', 'menu', 'folios','constituents'));	  
+	  $this->set(compact('criterios_list', 'criterios_n', 'repo', 'menu', 'folios','constituents'));
+	  if($warned > 0){
+	  $this->render('edit_warneds');
+	  }	  
 	} else {
 	  // save stats info
 	  if($this->CriteriasDocument->save($this->data))
@@ -225,7 +254,9 @@ class AdminDocumentosController extends AppController {
 	  if ($this->Document->saveWithTags($this->data)) {
 		$this->Session->setFlash('Document "'. $this->data['Document']['title'] .'" edited successfully');
 		CakeLog::write('activity', 'Document '.$id.'\'s content modified');
-		$this->redirect($this->data['Action']['current']);
+		  if($warned > 0){$this->render('edit_warneds');}
+		  else{
+		$this->redirect($this->data['Action']['current']);}
 	  }
 	  
 	}

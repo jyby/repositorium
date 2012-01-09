@@ -9,7 +9,7 @@ $this->viewVars['title_for_layout'] = $title;
 
 <?php echo $this->Form->create('Tag', array('action' => 'process')); ?>
 
-/*@rmeruane*/
+
 <?php
 $checked = "";
 $inputs = array('label' => false);
