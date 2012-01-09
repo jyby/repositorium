@@ -16,16 +16,14 @@ class Attachfile extends AppModel {
 		//y asigna en session los documentos que tienen al menos un archivo igual
 	function findFilesCount($repo_id = null, $files = array(),$documents_controller) {
 			if(is_null($repo_id)) {
-			echo 'El findFilesCount esta retornando null';
 			return null;
 		}
-		echo '<pre>';
-		echo 'El files que le llego a findFilesCount es el siguiente';
-		print_r($files);
-		echo '</pre>';
+		//echo '<pre>';
+		//echo 'El files que le llego a findFilesCount es el siguiente';
+		//print_r($files);
+		//echo '</pre>';
 				$docs = array();
-				echo 'docs  recien creado en findFilesCount tiene tamano: ';
-				print_r(count($docs));
+
 		foreach ($files as $file) {
 			//comparar content
 			$tmp = $this->find('all', array(
@@ -36,27 +34,23 @@ class Attachfile extends AppModel {
 			  		'fields' => array('DISTINCT Attachfile.document_id')
 				)
 			);
-			echo '<pre>';
-			echo 'tmp en findFilesCount tiene lo siguiente:';
-			print_r($tmp);
-			echo '</pre>';
+			//echo '<pre>';
+			//echo 'tmp en findFilesCount tiene lo siguiente:';
+			//print_r($tmp);
+			//echo '</pre>';
 			$hola = array();
 			foreach($tmp as $t) {
 				$hola[] = $t['Attachfile']['document_id'];
-			}
-			if(count($tmp) == 0){echo 'count de tmp es: '.count($tmp);}
-			if(count($hola) == 0){
-			echo 'count $hola es '. count($hola);
 			}
 			if(count($tmp)==0){return 0;}
 			else{$docs[] = $hola;}
 		}
 				if(count($docs) > 0) {
 				//echo 'Entro al if de count>0';
-				 echo '<pre>';
-				 echo '$docs es:';
-				 print_r($docs);
-				 echo '</pre>';
+				//echo '<pre>';
+				//echo '$docs es:';
+				//print_r($docs);
+				//echo '</pre>';
 				$res = array();
 			// for ($i = 0; $i+1 < count($docs); $i++) {
 				// $res = array_intersect($docs[$i], $docs[$i+1]);
@@ -70,10 +64,10 @@ class Attachfile extends AppModel {
 				}
 			}
 			$foo=array_unique($foo);
-				 echo '<pre>';
-				 echo '$foo en files es:';
-				 print_r($foo);
-				 echo '</pre>';
+				//echo '<pre>';
+				//echo '$foo en files es:';
+				//print_r($foo);
+				//echo '</pre>';
 				$foo=array_values($foo);
 				$documents_controller->Session->write("sim_files", $foo);
 				// echo '<pre>';
@@ -91,11 +85,11 @@ class Attachfile extends AppModel {
 			if(is_null($repo_id)) {
 			return null;
 		}
-		echo '<pre>';
-		echo 'El files_tmp que le llego a findFilesSha es el siguiente';
-		print_r($files);
+		//echo '<pre>';
+		//echo 'El files_tmp que le llego a findFilesSha es el siguiente';
+		//print_r($files);
 		//print_r($this->test_sha());
-		echo '</pre>';
+		//echo '</pre>';
 		
 				$docs = array();
 			//echo '<pre>';
@@ -136,10 +130,10 @@ class Attachfile extends AppModel {
 			if(count($tmp)==0){return 0;}
 			else{$docs[] = $hola;}
 		}
-				echo '<pre>';
-				echo '$docs en sha es:';
-				print_r($docs);
-				echo '</pre>';
+				//echo '<pre>';
+				//echo '$docs en sha es:';
+				//print_r($docs);
+				//echo '</pre>';
 		
 				if(count($docs) > 0) {
 				$res = array();
@@ -152,10 +146,10 @@ class Attachfile extends AppModel {
 				}
 			}
 			$foo=array_unique($foo);
-				 echo '<pre>';
-				 echo '$foo en sha es:';
-				 print_r($foo);
-				 echo '</pre>';
+				//echo '<pre>';
+				//echo '$foo en sha es:';
+				//print_r($foo);
+				//echo '</pre>';
 				$foo=array_values($foo);
 				$documents_controller->Session->write("sim_files_sha", $foo);
 				 //echo '<pre>';

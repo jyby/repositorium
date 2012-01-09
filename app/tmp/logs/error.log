@@ -217,3 +217,4 @@
 2012-01-09 14:40:29 Warning: Warning (2): pg_fetch_assoc() expects parameter 1 to be resource, null given in [C:\xampp\repositorium\app\views\admin_documentos\listar_warneds.ctp, line 81]
 2012-01-09 14:40:31 Warning: Warning (2): pg_query() expects parameter 1 to be resource, null given in [C:\xampp\repositorium\app\views\admin_documentos\listar_warneds.ctp, line 76]
 2012-01-09 14:40:31 Warning: Warning (2): pg_fetch_assoc() expects parameter 1 to be resource, null given in [C:\xampp\repositorium\app\views\admin_documentos\listar_warneds.ctp, line 81]
+2012-01-09 14:50:12 Warning: Warning (2): Cannot modify header information - headers already sent by (output started at C:\xampp\repositorium\app\controllers\documents_controller.php:245) in [C:\xampp\repositorium\cake\libs\controller\controller.php, line 742]
