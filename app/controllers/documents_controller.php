@@ -306,7 +306,7 @@ class DocumentsController extends AppController {
 	$tags_pdr = $repo['Repository']['pdr_tags'];
 	$files_pdr = $repo['Repository']['pdr_files'];
 	//$total_pdr=($title_pdr*$title_val)+($text_pdr*$text_val)+($tags_pdr*$all_tags)+($files_pdr*$files_val)+($files_pdr*$files_sha_val);	//old total_pdr
-	$total_pdr=($title_pdr*$title_val)+($text_pdr*$text_val)+($tags_pdr*$all_tags)+($files_pdr*$files_val)+($files_pdr*$files_sha_val);
+	$total_pdr=($title_pdr*$result_title)+($text_pdr*$result_text)+($tags_pdr*$tags_val)+($files_pdr*$files_val)+($files_pdr*$files_sha_val);	//pdr nuevo
 	$results_not_used= array("result_title" => $result_title,"result_text" => $result_text,"tags_val" => $tags_val);
 	$pdr_val_debug= array("title_pdr" => $title_pdr,"title_val" => $title_val,"text_pdr" => $text_pdr, "text_val" => $text_val,"tags_pdr" => $tags_pdr,"all_tags" => $all_tags,"files_pdr" => $files_pdr,"files_val" => $files_val,"files_sha_val" => $files_sha_val,"total_pdr" => $total_pdr);
 	$this->Session->write("sha_files_count", $files_sha_val);
@@ -319,13 +319,18 @@ class DocumentsController extends AppController {
 		if(isset($data['files'])) {
 		$this->data['Document']['warned_documents'] =$this->getWarnedDocuments($this->Session->read("sim_titles"),$this->Session->read("sim_texts"),$this->Session->read("sim_files"),$this->Session->read("sim_files_sha"));
 		}
-		else{$this->data['Document']['warned_documents'] =$this->getWarnedDocuments($this->Session->read("sim_titles"),$this->Session->read("sim_texts"),"");}
+		else{$this->data['Document']['warned_documents'] =$this->getWarnedDocuments($this->Session->read("sim_titles"),$this->Session->read("sim_texts"),"","");}
 		}
 		else{
 		$this->data['Document']['warned']=0;
 		$this->data['Document']['warned_documents']="";
 		}
 		$this->data['Document']['warned_score']=$total_pdr;
+		$this->data['Document']['warned_score_title']=$title_pdr*$result_title;
+		$this->data['Document']['warned_score_text']=$text_pdr*$result_text;
+		$this->data['Document']['warned_score_tags']=$tags_pdr*$tags_val;
+		$this->data['Document']['warned_score_files']=$files_pdr*$files_val;
+		$this->data['Document']['warned_score_files_sha']=$files_pdr*$files_sha_val;
   }
   function save(&$data){
   	
@@ -350,7 +355,7 @@ class DocumentsController extends AppController {
   		$this->Session->setFlash('There was an error trying to save the document. Please try again later');
   	} else {
 		if($this->data['Document']['warned'] == 1){
-		$str_dup='Document saved but its gonna be reviewed by an admin because it may be duplicated';
+		$str_dup='Document saved and will be reviewed by an admin because it may be duplicated';
 		//$this->Session->setFlash('Document saved but its gonna be reviewed by an admin because it may be duplicated');
 		//$this->Session->setFlash($str_dup);
 		if($this->Session->read("sha_files_count")>0){
