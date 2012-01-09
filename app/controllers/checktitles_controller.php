@@ -7,6 +7,7 @@ class CheckTitlesController extends AppController {
 	var $uses = array('Document', 'Repository');
 
 	function check_title(){
+		//$this->autoRender = false;
 		echo 'Entro al check_tittle';
 		//$this->redirect(array('controller' => 'documents', 'action' => 'download'));
 		$q=$_GET["q"];
