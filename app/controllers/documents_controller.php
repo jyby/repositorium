@@ -355,7 +355,7 @@ class DocumentsController extends AppController {
   		$this->Session->setFlash('There was an error trying to save the document. Please try again later');
   	} else {
 		if($this->data['Document']['warned'] == 1){
-		$str_dup='Document saved but its gonna be reviewed by an admin because it may be duplicated';
+		$str_dup='Document saved and will be reviewed by an admin because it may be duplicated';
 		//$this->Session->setFlash('Document saved but its gonna be reviewed by an admin because it may be duplicated');
 		//$this->Session->setFlash($str_dup);
 		if($this->Session->read("sha_files_count")>0){
