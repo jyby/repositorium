@@ -199,7 +199,7 @@ class DocumentsController extends AppController {
 	die();
 	//return false;
   }
-  function getWarnedDocuments($sim_titles,$sim_texts,$sim_files,$sim_files_sha){
+  function getWarnedDocuments($sim_titles,$sim_texts,$sim_tags,$sim_files,$sim_files_sha){
   $result=array();
   $i=0;
   foreach($sim_titles as $doc){
@@ -210,6 +210,12 @@ class DocumentsController extends AppController {
 	$result[$i]=$doc;
 	$i++;
   }
+   if($sim_tags!=""){
+  foreach($sim_tags as $doc){
+	$result[$i]=$doc;
+	$i++;
+  }
+	}
   if($sim_files!=""){
     foreach($sim_files as $doc){
 	$result[$i]=$doc;
@@ -279,7 +285,7 @@ class DocumentsController extends AppController {
 	//print_r($files);
 	//print_r ($this->Document);
 	//echo '</pre>';
-	$tags_val=$this->Tag->findTagsCount($id, $tags);
+	$tags_val=$this->Tag->findTagsCount($id, $tags,$this);
 	//echo $files_val;
 	//echo $tags_val;
 	//$this->Tag->findTagsCount($id, $tags);
@@ -317,9 +323,9 @@ class DocumentsController extends AppController {
 	if($total_pdr>$max_sim){
 		$this->data['Document']['warned'] = 1;
 		if(isset($data['files'])) {
-		$this->data['Document']['warned_documents'] =$this->getWarnedDocuments($this->Session->read("sim_titles"),$this->Session->read("sim_texts"),$this->Session->read("sim_files"),$this->Session->read("sim_files_sha"));
+		$this->data['Document']['warned_documents'] =$this->getWarnedDocuments($this->Session->read("sim_titles"),$this->Session->read("sim_texts"),$this->Session->read("sim_tags"),$this->Session->read("sim_files"),$this->Session->read("sim_files_sha"));
 		}
-		else{$this->data['Document']['warned_documents'] =$this->getWarnedDocuments($this->Session->read("sim_titles"),$this->Session->read("sim_texts"),"","");}
+		else{$this->data['Document']['warned_documents'] =$this->getWarnedDocuments($this->Session->read("sim_titles"),$this->Session->read("sim_texts"),$this->Session->read("sim_tags"),"","");}
 		}
 		else{
 		$this->data['Document']['warned']=0;
