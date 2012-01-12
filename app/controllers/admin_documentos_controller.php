@@ -212,7 +212,8 @@ class AdminDocumentosController extends AppController {
 	$this->redirect(array('controller' => 'documents', 'action' => 'upload'));
   }
   
-  function edit($id = null, $criterio = null,$warned) {
+  //id_wdoc1 and id_wdoc2 are optional arguments used to edit warned documents
+  function edit($id = null, $criterio = null,$warned = null, $id_wdoc1 = null, $id_wdoc2 = null) {
   //echo '<pre>';
   //echo $id;
   //echo $criterio;
@@ -239,17 +240,32 @@ class AdminDocumentosController extends AppController {
 	  if(empty($this->data)) {
 	  	$this->redirect('index');
 	  }
-	  
+	  if($warned >0){
+	  $id_repo= $repo['Repository']['id'];
+	  $doc2= $this->Document->find('first', array('conditions' =>array('Document.id' => $id_wdoc2,'Document.repository_id' => $id_repo)));
+	  $this->data['Document2']=$doc2['Document'];
+	  }
 	  // tags
 	  $raw_tags = $this->Tag->find('all', array('conditions' => array('Tag.document_id' => $id), 'recursive' => -1));
 	  $tags = array();	  
 	  foreach($raw_tags as $t)
 		$tags[] = $t['Tag']['tag'];	  
 	  $this->data['Document']['tags'] = implode($tags,', ');
+	  if($warned >0){
+	  $raw_tags = $this->Tag->find('all', array('conditions' => array('Tag.document_id' => $id_wdoc2), 'recursive' => -1));
+	  $tags = array();	  
+	  foreach($raw_tags as $t)
+	  $tags[] = $t['Tag']['tag'];	  
+	  $this->data['Document2']['tags'] = implode($tags,', ');
+	   }
 	  
 	  // user
 	  $raw_user = $this->User->find('first', array('conditions' => array('User.id' => $this->data['Document']['user_id']), 'recursive' => -1));
 	  $this->data['User']['autor'] = $raw_user['User']['first_name'] . ' '. $raw_user['User']['last_name'] . ' ('.$raw_user['User']['email'].')';
+	  if($warned >0){
+	  $raw_user = $this->User->find('first', array('conditions' => array('User.id' => $this->data['Document2']['user_id']), 'recursive' => -1));
+	  $this->data['User']['autor2'] = $raw_user['User']['first_name'] . ' '. $raw_user['User']['last_name'] . ' ('.$raw_user['User']['email'].')';
+	  }
 	  
 	  // criteria
 	  $criterios_list = $this->Criteria->find('list', array('conditions' => array('Criteria.repository_id' => $repo['Repository']['id'])));
@@ -268,6 +284,8 @@ class AdminDocumentosController extends AppController {
 	  $this->set('data',$this->data);
 	  $this->set(compact('criterios_list', 'criterios_n', 'repo', 'menu', 'folios','constituents'));
 	  if($warned > 0){
+	  $this->set('id_wdoc1',$id_wdoc1);
+	  $this->set('id_wdoc2',$id_wdoc2);
 	  $this->render('edit_warneds');
 	  }	  
 	} else {
@@ -277,10 +295,19 @@ class AdminDocumentosController extends AppController {
 	  // save tags and basics
 	  $this->Tag->deleteAll(array('Tag.document_id' => $id));
 	  $this->data['Document']['id'] = $id;
+	  if(warned > 0){
+	  $this->Tag->deleteAll(array('Tag.document_id' => $id_wdoc2));
+	  $this->data['Document2']['id'] = $id_wdoc2;
+	  }
 	  if ($this->Document->saveWithTags($this->data)) {
 		$this->Session->setFlash('Document "'. $this->data['Document']['title'] .'" edited successfully');
+		
+		//$this->Session->setFlash(nl2br($str_dup."\n".$str_sha));
 		CakeLog::write('activity', 'Document '.$id.'\'s content modified');
-		  if($warned > 0){$this->render('edit_warneds');}
+		  if($warned > 0){
+		  $this->set('id_wdoc1',id_wdoc1);
+		  $this->set('id_wdoc2',id_wdoc2);
+		  $this->render('edit_warneds');}
 		  else{
 		$this->redirect($this->data['Action']['current']);}
 	  }
