@@ -266,7 +266,7 @@ CREATE  TABLE IF NOT EXISTS `attachfiles` (
   `content` LONGBLOB NOT NULL ,
   `document_id` INT(255) NOT NULL ,
   PRIMARY KEY (`id`) ,
-  INDEX `fk_folios_documents1` (`documents_id` ASC))
+  INDEX `fk_folios_documents1` (`document_id` ASC))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 

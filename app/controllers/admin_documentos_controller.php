@@ -108,7 +108,6 @@ class AdminDocumentosController extends AppController {
 		  $cond
 		));  		
   	}
-  	
 	return compact('criterio_list', 'criterio_n', 'data');
   }
   
@@ -241,6 +240,7 @@ class AdminDocumentosController extends AppController {
   function remove($id = null, $redirect = true, $flash = true) {
 	if (!is_null($id)) {
 	  if($this->Document->delete($id)) {
+	  	$this->CriteriasDocument->deleteRecord($id);
 		if($flash) $this->Session->setFlash('Document no. '.$id.' removed');
 		CakeLog::write('activity', 'Document '.$id.' deleted');	
 	  } else {

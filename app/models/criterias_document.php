@@ -270,5 +270,20 @@ class CriteriasDocument extends AppModel {
 			}
 		}
 	}
+	
+	//cgajardo: this function will delete any record realted to an already removed documents
+	// this hopefully will resolve issue #57
+	function deleteRecord($docId){
+		$ids = $this->find('all', array(
+						'recursive' => -1,
+			 			'fields' => array('id'),
+						'conditions' => array(
+							'CriteriasDocument.document_id' => $docId
+						)
+				));
+		foreach($ids as $id ){
+			$this->delete($id['CriteriasDocument']['id']);
+		}
+	}
 }
 ?>
