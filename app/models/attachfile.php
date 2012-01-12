@@ -18,10 +18,6 @@ class Attachfile extends AppModel {
 			if(is_null($repo_id)) {
 			return null;
 		}
-		//echo '<pre>';
-		//echo 'El files que le llego a findFilesCount es el siguiente';
-		//print_r($files);
-		//echo '</pre>';
 				$docs = array();
 
 		foreach ($files as $file) {
@@ -34,10 +30,6 @@ class Attachfile extends AppModel {
 			  		'fields' => array('DISTINCT Attachfile.document_id')
 				)
 			);
-			//echo '<pre>';
-			//echo 'tmp en findFilesCount tiene lo siguiente:';
-			//print_r($tmp);
-			//echo '</pre>';
 			$hola = array();
 			foreach($tmp as $t) {
 				$hola[] = $t['Attachfile']['document_id'];
@@ -46,11 +38,6 @@ class Attachfile extends AppModel {
 			else{$docs[] = $hola;}
 		}
 				if(count($docs) > 0) {
-				//echo 'Entro al if de count>0';
-				//echo '<pre>';
-				//echo '$docs es:';
-				//print_r($docs);
-				//echo '</pre>';
 				$res = array();
 			// for ($i = 0; $i+1 < count($docs); $i++) {
 				// $res = array_intersect($docs[$i], $docs[$i+1]);
@@ -92,23 +79,6 @@ class Attachfile extends AppModel {
 		//echo '</pre>';
 		
 				$docs = array();
-			//echo '<pre>';
-			//echo 'tmp de filesSha tiene lo siguiente:';
-			//print_r($tmp);
-			//echo 'Content del attachfile ($this->content)es:';
-			//print_r($this->content);
-			//echo $this->content;
-			
-			//WARNING $this   es gigante
-			//echo 'this es';
-			//print_r($this);
-			
-			//echo '$Attachfile es';
-			//print_r($Attachfile);  //Vacio o null
-			//echo 'El file_tmp contra el que se comparo es:';
-			//echo $file;	//no esta definido aqui
-			//print_r($file);
-			//echo '</pre>';
 		foreach ($files as $file) {
 			//comparar content
 			$tmp = $this->find('all', array(

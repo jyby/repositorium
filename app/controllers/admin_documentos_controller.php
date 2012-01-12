@@ -295,18 +295,27 @@ class AdminDocumentosController extends AppController {
 	  // save tags and basics
 	  $this->Tag->deleteAll(array('Tag.document_id' => $id));
 	  $this->data['Document']['id'] = $id;
-	  if(warned > 0){
+	  
+	  if($warned > 0){
 	  $this->Tag->deleteAll(array('Tag.document_id' => $id_wdoc2));
 	  $this->data['Document2']['id'] = $id_wdoc2;
 	  }
+
 	  if ($this->Document->saveWithTags($this->data)) {
+		//$this->Session->setFlash('Document "'. $this->data['Document']['title'] .'" edited successfully');
+		$str_doc1= "Document " .$this->data['Document']['title']. " edited successfully";
+		$str_doc2="";
+		if($warned > 0){
+		$str_doc2= "Document " .$this->data['Document2']['title']. " edited successfully";
+		$this->Session->setFlash(nl2br($str_doc1."\n".$str_doc2));
+		CakeLog::write('activity', 'Document '.$id_wdoc2.'\'s content modified');
+		}else{
 		$this->Session->setFlash('Document "'. $this->data['Document']['title'] .'" edited successfully');
-		
-		//$this->Session->setFlash(nl2br($str_dup."\n".$str_sha));
+		}
 		CakeLog::write('activity', 'Document '.$id.'\'s content modified');
 		  if($warned > 0){
-		  $this->set('id_wdoc1',id_wdoc1);
-		  $this->set('id_wdoc2',id_wdoc2);
+		  $this->set('id_wdoc1',$id_wdoc1);
+		  $this->set('id_wdoc2',$id_wdoc2);
 		  $this->render('edit_warneds');}
 		  else{
 		$this->redirect($this->data['Action']['current']);}
