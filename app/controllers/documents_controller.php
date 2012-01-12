@@ -61,12 +61,6 @@ class DocumentsController extends AppController {
   			$this->Document->Behaviors->attach($constituent, $configArray);
 		}
   		
-		
-		//echo '<pre>';
-		//print_r ($this->data);
-		//echo $this->data['Document']['tags'];
-		//print_r ($this->Document);
-		//echo '</pre>';
 		//En la siguiente linea se guardan los documentos
 		$this->save($this->data);
 				
@@ -165,11 +159,6 @@ class DocumentsController extends AppController {
   }
   function checkcontents() {
 	$this->autoRender = false;
-	//$this->redirect('/');
-	//$this->redirect('/repositorium/upload');
-	//echo '<pre>';
-	//print_r($_GET);
-	//echo '</pre>';
 	$q=$_GET["q"];
 	$this->redirect('/checkcontents?q='.$q);
 	die();
@@ -177,11 +166,6 @@ class DocumentsController extends AppController {
   }
   function checktitles() {
 	$this->autoRender = false;
-	//$this->redirect('/');
-	//$this->redirect('/repositorium/upload');
-	//echo '<pre>';
-	//print_r($_GET);
-	//echo '</pre>';
 	$q=$_GET["q"];
 	$this->redirect('/checktitles/check_title?q='.$q);
 	die();
@@ -189,17 +173,12 @@ class DocumentsController extends AppController {
   }
   function checktags() {
 	$this->autoRender = false;
-	//$this->redirect('/');
-	//$this->redirect('/repositorium/upload');
-	//echo '<pre>';
-	//print_r($_GET);
-	//echo '</pre>';
 	$q=$_GET["q"];
 	$this->redirect('/checktags/check_tag?q='.$q);
 	die();
 	//return false;
   }
-  function getWarnedDocuments($sim_titles,$sim_texts,$sim_files,$sim_files_sha){
+  function getWarnedDocuments($sim_titles,$sim_texts,$sim_tags,$sim_files,$sim_files_sha){
   $result=array();
   $i=0;
   foreach($sim_titles as $doc){
@@ -210,6 +189,12 @@ class DocumentsController extends AppController {
 	$result[$i]=$doc;
 	$i++;
   }
+   if($sim_tags!=""){
+  foreach($sim_tags as $doc){
+	$result[$i]=$doc;
+	$i++;
+  }
+	}
   if($sim_files!=""){
     foreach($sim_files as $doc){
 	$result[$i]=$doc;
@@ -242,10 +227,6 @@ class DocumentsController extends AppController {
 	$files=array();
 	$files_tmp=array();
 	if(isset($data['files'])) {
-				//echo '<pre>';
-				//echo '$data[files] tiene:';
-				//print_r($data['files']);
-				//echo '</pre>';
 	for ($i = 0; $i < count($this->data['files']); $i++) {
 				if($this->data['files'][$i]['error']!= 4){
 				$files[$i] = $this->data['files'][$i]['name'];
@@ -254,46 +235,14 @@ class DocumentsController extends AppController {
 			}
 		$files_val=$this->Attachfile->findFilesCount($id,$files,$this);
 		$files_sha_val=$this->Attachfile->findFilesShaCount($id,$files_tmp,$this);
-				//echo '<pre>';
-				//echo 'KAKAKAKAKAKAKAKA:';
-				//echo $files_val.'</br>';
-				//echo $files_sha_val;
-				//echo '</pre>';
-		//$aux=$this->Session->read("sha_files");
 		
-		/*
-				 echo '<pre>';
-				 echo 'sha_files en el documents_controller:';
-				 print_r($aux);
-				 echo 'sim_files en el documents_controller:';
-				 print_r($this->Session->read("sim_files"));
-				 echo '</pre>';
-				 */
 		}
-	//$files=$this->data['files'];
-	//echo 'El titulo del file en 1, es :';
-	//echo $this->data['files'][1]['name'];
-	//echo '<pre>';
-	//print_r ($tags);	
-	//print_r ($this->data);
-	//print_r($files);
-	//print_r ($this->Document);
-	//echo '</pre>';
-	$tags_val=$this->Tag->findTagsCount($id, $tags);
-	//echo $files_val;
-	//echo $tags_val;
-	//$this->Tag->findTagsCount($id, $tags);
-	//echo '</pre>';
+
+	$tags_val=$this->Tag->findTagsCount($id, $tags,$this);
 	$result_title= $this->Document->find('count', array('conditions' =>array('Document.title' => $aux_title,'Document.repository_id' => $id)));
 	$title_array=$this->Document->find('list', array('conditions' =>array('Document.title' => $aux_title,'Document.repository_id' => $id)));
-	// echo '<pre>';
-	// print_r ($title_array);	
-	// echo '</pre>';
 	$title_keys=array_keys($title_array);
 	$this->Session->write("sim_titles", $title_keys);
-	// echo '<pre>';
-	// print_r ($title_keys);	
-	// echo '</pre>';
 	$result_text= $this->Document->find('count', array('conditions' =>array('Document.content' => $aux_text,'Document.repository_id' => $id )));
 	$text_array=$this->Document->find('list', array('conditions' =>array('Document.content' => $aux_text,'Document.repository_id' => $id )));
 	$text_keys=array_keys($text_array);
@@ -310,16 +259,12 @@ class DocumentsController extends AppController {
 	$results_not_used= array("result_title" => $result_title,"result_text" => $result_text,"tags_val" => $tags_val);
 	$pdr_val_debug= array("title_pdr" => $title_pdr,"title_val" => $title_val,"text_pdr" => $text_pdr, "text_val" => $text_val,"tags_pdr" => $tags_pdr,"all_tags" => $all_tags,"files_pdr" => $files_pdr,"files_val" => $files_val,"files_sha_val" => $files_sha_val,"total_pdr" => $total_pdr);
 	$this->Session->write("sha_files_count", $files_sha_val);
-	//echo '<pre>';
-	//print_r($results_not_used);
-	//print_r($pdr_val_debug);
-	//echo '</pre>';
 	if($total_pdr>$max_sim){
 		$this->data['Document']['warned'] = 1;
 		if(isset($data['files'])) {
-		$this->data['Document']['warned_documents'] =$this->getWarnedDocuments($this->Session->read("sim_titles"),$this->Session->read("sim_texts"),$this->Session->read("sim_files"),$this->Session->read("sim_files_sha"));
+		$this->data['Document']['warned_documents'] =$this->getWarnedDocuments($this->Session->read("sim_titles"),$this->Session->read("sim_texts"),$this->Session->read("sim_tags"),$this->Session->read("sim_files"),$this->Session->read("sim_files_sha"));
 		}
-		else{$this->data['Document']['warned_documents'] =$this->getWarnedDocuments($this->Session->read("sim_titles"),$this->Session->read("sim_texts"),"","");}
+		else{$this->data['Document']['warned_documents'] =$this->getWarnedDocuments($this->Session->read("sim_titles"),$this->Session->read("sim_texts"),$this->Session->read("sim_tags"),"","");}
 		}
 		else{
 		$this->data['Document']['warned']=0;
@@ -340,9 +285,6 @@ class DocumentsController extends AppController {
   	$this->data['Document']['user_id'] = $user['User']['id'];
   	$this->data['Document']['kit_id'] = $repo['Repository']['kit_id'];
 	$this->set_warned($this->data);
-	//echo '<pre>';
-	//print_r ($this->data);
-	//echo '</pre>';
   	$this->Document->set($this->data);
   	 
   	// errors

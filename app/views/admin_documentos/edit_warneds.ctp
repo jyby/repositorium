@@ -8,10 +8,18 @@ function porcentaje($q,$tot) {
 	echo $this->Html->script('https://www.google.com/jsapi');
 	echo $this->Html->script('piecharts');	
 	//pr($this->data);
+	//data tiene a Document.
+	//echo '<pre>';
+	//echo $this->id_wdoc1;
+	//echo $this->id_wdoc2;
+	//echo $id_wdoc1;
+	//echo $id_wdoc2;
+	//echo '</pre>';
 	$id = $this->data['Document']['id'];
-	$en_valid = ($this->data['CriteriasDocument']['validated'] == 1) ? true : false;
+	$en_valid=true;
+	//$en_valid = ($this->data['CriteriasDocument']['validated'] == 1) ? true : false;
 	$current = 	($en_valid ? 'validados' : 'no_validados');
-	$title = "Edit document WARNEDS!!!! CTM";	
+	$title = "Edit warned documents";	
 	$this->viewVars['title_for_layout'] = $title;
 	$this->Html->addCrumb($repo['Repository']['name'], '/repositories/'.$repo['Repository']['url']);
 	$this->Html->addCrumb('Manage', '/manage/');
@@ -51,12 +59,18 @@ $(document).ready(function() {
 		if(ok)
 			$(window.location).attr('href', '<?php echo $this->Html->url(array('controller' => 'admin_documentos', 'action' => 'remove', $id)); ?>');
 	});
-	
+	//deshabilita el boton de save
+	var cmp_button=document.getElementById("save_button");
+	cmp_button.setAttribute("disabled","disabled");
+	cmp_button.setAttribute("aria-disabled","true");
+	$(cmp_button).addClass("ui-button-disabled ui-state-disabled");
+	/*
 	$('.adm-select-criteria').change(function() {
 		var value = $('.adm-select-criteria option:selected').val();
 		$('#ActionSelect').attr('value', value);
 		$('#adm-form-criteria').submit();
 	});
+	*/
 });
 </script>
 
@@ -97,13 +111,13 @@ echo $this->Form->end();
 </div>
 <!-- end expert tools -->
 
-<?php echo $this->Form->create(null, array('id' => 'edit-form', 'url' => '/admin_documentos/edit/' . $id. '/' . $criterios_n )); ?>
+<?php echo $this->Form->create(null, array('id' => 'edit-form', 'url' => '/admin_documentos/edit/' . $id. '/' . $criterios_n.'/1/'. $id.'/'.$id_wdoc2 )); ?>
 <?php echo $this->Form->hidden('Action.current', array('value' => $current)); ?>
 <div class="yui-g">
 	<div class="yui-u first">
 		<!-- basics -->
 		<div class="adm-edit-doc">
-			<h2>Document's Basics</h2>
+			<h2>Warned document's Basics</h2>
 			<div style="clear: both; height: 10px;"></div>
 			<?php								
 				echo $this->Form->input('Document.title', array(
@@ -154,7 +168,7 @@ echo $this->Form->end();
 			<h2>Document's Basics</h2>
 			<div style="clear: both; height: 10px;"></div>
 			<?php								
-				echo $this->Form->input('Document.title', array(
+				echo $this->Form->input('Document2.title', array(
 				  'label' => 'Document title ',
 				  'class' => 'edit',
 				  'style' => 'width: 90%;',
@@ -162,7 +176,7 @@ echo $this->Form->end();
 				echo '<div style="clear: both; height: 10px;"></div>';
 				
 				echo "<div style='width: 90%'>";
-				echo $this->Form->input('Document.tags', array(
+				echo $this->Form->input('Document2.tags', array(
 				  'label' => 'Tags <span style="font-size: .9em; font-style: italic; color: #777">(Separate tags with commas)</span>',
 				  'class' => 'edit',
 				  'id' => 'DocumentTags2',
@@ -174,7 +188,7 @@ echo $this->Form->end();
 	
 				echo $this->Form->input('Document.content', array(
 				  'label' => 'Content ',
-				  'value' => stripslashes(str_replace('\n',"\n",$this->data['Document']['content'])),
+				  'value' => stripslashes(str_replace('\n',"\n",$this->data['Document2']['content'])),
 				  'style' => 'width: 90%; height: 300px;'
 				  //'rows' => 14,
 				  //'cols' => 60,
@@ -189,7 +203,7 @@ echo $this->Form->end();
 					
 			?>
 				<div class="created-by">
-					<span>Created by <?php echo $this->Text->autoLinkEmails($this->data['User']['autor']); ?> on <?php echo $this->data['Document']['created']; ?></span> 
+					<span>Created by <?php echo $this->Text->autoLinkEmails($this->data['User']['autor2']); ?> on <?php echo $this->data['Document2']['created']; ?></span> 
 				</div>
 			<script type="text/javascript">
 				add_textboxlist("#DocumentTags2");
@@ -213,7 +227,8 @@ echo $this->Form->end();
 	
 	$value = ($en_valid) ? 0 : 1;
 	echo "&nbsp;&nbsp;&nbsp;";
-	echo $this->Form->button('Save and return', array('class' => 'adm-save'));
+	//Boton deshabilitado pq no esta haciendo lo que deberia
+	echo $this->Form->button('Save and return', array('class' => 'adm-save disabled','id'=> 'save_button'));
 	echo "&nbsp;&nbsp;&nbsp;";
 	echo $this->Form->button('Cancel', array('class' => 'adm-cancel'));
 	

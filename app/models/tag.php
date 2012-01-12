@@ -26,7 +26,7 @@ class Tag extends AppModel {
 		)
 	);
 	//devuelve la cantidad de tags del documento nuevo que ya existen
-	function findTagsCount($repo_id = null, $tags = array()) {
+	function findTagsCount($repo_id = null, $tags = array(),$documents_controller) {
 			if(is_null($repo_id)) {
 			return null;
 		}
@@ -70,9 +70,11 @@ class Tag extends AppModel {
 				)
 			);
 		}
-		//echo '<pre>';
+		//echo '<pre> Tags res: </br>';
 		//print_r($res);
 		//echo '</pre>';
+		if($documents_controller!=""){
+		$documents_controller->Session->write("sim_tags", $res);}
 		//$sim_tags=count($res);
 		//echo $sim_tags;
 		return count($res);

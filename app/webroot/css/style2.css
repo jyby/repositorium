@@ -385,7 +385,10 @@ h3 {
 	font-style: italic;
 	color: #777;
 }
-
+.created-by-selected {
+	font-style: italic;
+	color: #FFFFFF;
+}
 
 .stats-table td {
 	padding: 7px 0;
@@ -409,6 +412,10 @@ strong {
 	font-size: 1.3em;
 }
 
+.warned-doc{
+/*background-color: #CC3333;*/
+background-color: #FF6B6B;
+}
 /* Textboxlist */
 .textboxlist-autocomplete-results {
 	border: 1px solid #ccc;

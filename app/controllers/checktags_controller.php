@@ -27,7 +27,7 @@ class CheckTagsController extends AppController {
 		//$tags_val=$this->Tag->findTagsCount($id, $tags);
 		//$tags_val=$this->Document->Tag->findTagsCount($id, $tags);
 		//$tags_val=$Document->Tag->findTagsCount($id, $tags);
-		$tags_val=$this->Tag->findTagsCount($id, $tags);
+		$tags_val=$this->Tag->findTagsCount($id, $tags,'');
 		//echo $tags_val;
 		///$result= $this->Document->find('count', array('conditions' =>array('Document.title' => $q,'Document.repository_id' => $id)));
 		

@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.5
+-- version 3.2.4
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 09-01-2012 a las 03:05:05
--- Versión del servidor: 5.5.16
--- Versión de PHP: 5.3.8
+-- Tiempo de generación: 12-01-2012 a las 14:12:46
+-- Versión del servidor: 5.1.41
+-- Versión de PHP: 5.3.1
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -17,7 +16,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de datos: `repositorium`
+-- Base de datos: `repo2`
 --
 
 -- --------------------------------------------------------
@@ -35,7 +34,7 @@ CREATE TABLE IF NOT EXISTS `attachfiles` (
   `document_id` int(255) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `fk_folios_documents1` (`document_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=60 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=299 ;
 
 -- --------------------------------------------------------
 
@@ -62,7 +61,7 @@ CREATE TABLE IF NOT EXISTS `constituents_kits` (
   `constituent_id` int(255) NOT NULL,
   `kit_id` int(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=6 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=21 ;
 
 -- --------------------------------------------------------
 
@@ -91,7 +90,7 @@ CREATE TABLE IF NOT EXISTS `criterias` (
   `modified` datetime NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
 
 -- --------------------------------------------------------
 
@@ -109,7 +108,7 @@ CREATE TABLE IF NOT EXISTS `criterias_documents` (
   `validated` tinyint(1) NOT NULL,
   `challengeable` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=71 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=170 ;
 
 -- --------------------------------------------------------
 
@@ -123,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `criterias_users` (
   `criteria_id` int(255) NOT NULL,
   `challenge_size` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=7 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=17 ;
 
 -- --------------------------------------------------------
 
@@ -143,8 +142,14 @@ CREATE TABLE IF NOT EXISTS `documents` (
   `kit_id` int(255) NOT NULL DEFAULT '0',
   `warned` tinyint(1) NOT NULL,
   `warned_score` int(11) NOT NULL,
+  `warned_documents` varchar(512) NOT NULL,
+  `warned_score_title` int(11) NOT NULL,
+  `warned_score_text` int(11) NOT NULL,
+  `warned_score_tags` int(11) NOT NULL,
+  `warned_score_files` int(11) NOT NULL,
+  `warned_score_files_sha` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=71 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=219 ;
 
 -- --------------------------------------------------------
 
@@ -160,7 +165,7 @@ CREATE TABLE IF NOT EXISTS `experts` (
   `modified` datetime NOT NULL,
   `active` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 -- --------------------------------------------------------
 
@@ -172,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `kits` (
   `id` int(255) NOT NULL AUTO_INCREMENT,
   `created` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=14 ;
 
 -- --------------------------------------------------------
 
@@ -213,7 +218,7 @@ CREATE TABLE IF NOT EXISTS `repositories` (
   `pdr_text` int(11) NOT NULL,
   `pdr_files` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=13 ;
 
 -- --------------------------------------------------------
 
@@ -228,7 +233,7 @@ CREATE TABLE IF NOT EXISTS `repositories_users` (
   `points` int(255) NOT NULL,
   `watching` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=25 ;
 
 -- --------------------------------------------------------
 
@@ -258,7 +263,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=137 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=372 ;
 
 -- --------------------------------------------------------
 
@@ -283,25 +288,3 @@ CREATE TABLE IF NOT EXISTS `users` (
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-
--- -------------------------------------------------
-
---
--- Volcado de datos para la tabla `users`
---
-
-INSERT INTO `users` (`id`, `email`, `first_name`, `last_name`, `password`, `salt`, `is_administrator`, `created`, `modified`, `active`) VALUES
-(1, 'annonymous', 'annonymous', 'annonymous', '', '', 0, '2011-06-23 15:54:33', '2011-06-23 15:54:33', 1),
-(2, 'admin@example.com', 'admin', 'user', 'fbe82ab72970b9940724512227185348eac9d7fd', '1738993739', 1, '2011-06-23 15:55:17', '2011-06-23 15:55:17', 1);
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
-
---
--- Datos base para contituents base
---
-INSERT INTO `constituents` (id,name,description,sysname) VALUES (0,'Content','Main content of a Document','content');
-INSERT INTO `constituents` (id,name,description,sysname) VALUES (1,'Attach File','Allow users to attach files to Document','attachFile');
