@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 3.4.3.2
+-- version 3.2.4
 -- http://www.phpmyadmin.net
 --
 -- Servidor: localhost
--- Tiempo de generación: 20-08-2011 a las 19:10:41
--- Versión del servidor: 5.5.15
--- Versión de PHP: 5.2.17
+-- Tiempo de generación: 12-01-2012 a las 14:12:46
+-- Versión del servidor: 5.1.41
+-- Versión de PHP: 5.3.1
 
 SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
-SET time_zone = "+00:00";
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -17,7 +16,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Base de datos: `repositorium`
+-- Base de datos: `repo2`
 --
 
 -- --------------------------------------------------------
@@ -310,3 +309,5 @@ INSERT INTO `users` (`id`, `email`, `first_name`, `last_name`, `password`, `salt
 --
 INSERT INTO `constituents` (id,name,description,sysname) VALUES (0,'Content','Main content of a Document','content');
 INSERT INTO `constituents` (id,name,description,sysname) VALUES (1,'Attach File','Allow users to attach files to Document','attachFile');
+
+

@@ -29,6 +29,7 @@ class attachFileBehavior extends Modelbehavior{
 	}
 	
 	function afterSave(&$model, $query){
+		$files_tmp=array();
 		foreach ($this->fileData as $file){
 			if($file['error']==4){
 				continue;

@@ -39,7 +39,8 @@ class TagsController extends AppController {
 	$this->set(compact('criterias','constituents'));	
   }
   
-  //funciÛn auxiliar hecha para evitar elementos repetidos dentro del arreglo (emular un conjunto)
+
+  //función auxiliar hecha para evitar elementos repetidos dentro del arreglo (emular un conjunto)
   function addContent($conjunto_base, $nuevo_conjunto){
 	foreach ($nuevo_conjunto as $elemento) {
 		if(!in_array($elemento,$conjunto_base)){

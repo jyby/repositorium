@@ -139,12 +139,20 @@ This changes’ll avoid keeping the same session at different app clones, and fo
 	Departamento de Ciencias de la Computacion (DCC), University
 	of Chile
       - Staff:
-	1. Jérémy Barbay -jyby@github (course client) 
+	1. Jérémy Barbay -jyby@github (course client)
+	2. César Campos -ccampos@github (project manager) 
+	3. Rodrido Peralta -(analyst) 
+	4. Leonardo Rojas -LeoRojas@github (developer)
+	5. Matias Bensan -(designer)
+	7. Rafael Meruane -(tester)
+
       - Object:
 	- Detection and management of duplicated material
 	  - Main aim to counteract the simplest attack consisting to
             resubmit exact copies or minor variants of documents
             already in the repository.
 	  - DOES NOT aim to implement advanced "plagiarism" detection.
+	- Added tag-cloud.
+	- Search for title and contents.
 
 

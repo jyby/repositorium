@@ -12,6 +12,7 @@ $(document).ready(function() {
 });
 </script>
 
+<?php echo $this->Html->image('add_doc.png',array('class' => 'imgicon')) ; ?><h1 class="h1icon" style="margin-top: 15px;"><?php echo $title;?></h1>
 <div class="clearicon"></div>
 
 <fieldset class="datafields">
@@ -54,6 +55,5 @@ $(document).ready(function() {
 		<p><span class="ui-icon ui-icon-info" style="float: left; margin-right: .3em;"></span>
 		<strong>Hey!</strong> You may add more tags separating them by commas (,)</p>
 	</div>
-</div>
 </div>
 -->
