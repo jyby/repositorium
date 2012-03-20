@@ -108,9 +108,17 @@ class AdminDocumentosController extends AppController {
 		  $cond
 		));  		
   	}
+  	
 	return compact('criterio_list', 'criterio_n', 'data');
   }
   
+  function set_warned_table($document_id){
+  $repo = $this->getCurrentRepository();
+  $id= $repo['Repository']['id'];
+  $data_result=$this->Document->find('all', array('conditions' =>array('Document.id' => $document_id,'Document.repository_id' => $id)));
+  return $document_id;
+  //return $data_result;
+  }
   function validados() {
   	$d = $this->_beforeList(1);
 	$current = 'validados';
@@ -142,6 +150,46 @@ class AdminDocumentosController extends AppController {
 	$this->set(compact('criterio_n', 'criterio_list', 'data', 'current', 'limit', 'ordering', 'filter', 'repo', 'menu'));
 	$this->render('listar');
   }	
+  //Cambios
+    function warneds() {	
+	$d = $this->_beforeList(0);
+	$current = 'warned';
+	$criterio_n = $this->Session->read('CriteriasDocument.criterio') ? $this->Session->read('CriteriasDocument.criterio') : $d['criterio_n'];
+	$criterio_list = $d['criterio_list'];
+	//$title_array=$this->Document->find('list', array('conditions' =>array('Document.title' => $aux_title,'Document.repository_id' => $id)));
+	//$data = $d['data'];
+	$limit = $this->Session->read('CriteriasDocument.limit') ? $this->Session->read('CriteriasDocument.limit') : $this->paginate['CriteriasDocument']['limit'];
+	$ordering = $this->Session->read('CriteriasDocument.order') ? $this->Session->read('CriteriasDocument.order') : $this->_arrayToStr($this->paginate['CriteriasDocument']['order']);
+	$filter = $this->Session->read('CriteriasDocument.filter') ? $this->Session->read('CriteriasDocument.filter') : 'all';
+	$repo = $this->getCurrentRepository();
+	$id= $repo['Repository']['id'];
+	$data=$this->Document->find('all', array('conditions' =>array('Document.warned' => 1,'Document.repository_id' => $id),'recursive' => -1));
+	$i=0;
+	$aux=array();
+	foreach($data as $d){
+	$aux[$d['Document']['id']]=$d['Document']['warned_documents'];
+	//$aux[$i]=$d['Document']['warned_documents'];
+	$i++;
+	//$data_warneds=$this->Dcoment->find('all',array('conditions' =>array('')
+	}
+	$data_table_right=array();
+	foreach($aux as $key => $warned_list){
+	if($warned_list!=""){
+	$tmp=array();
+	$tmp_warned_ids=explode(',',$warned_list);
+	foreach ($tmp_warned_ids as $id_d){
+	$tmp2=$this->Document->find('all', array('conditions' =>array('Document.id' => $id_d,'Document.repository_id' => $id),'recursive' => -1)) ;
+	$tmp[]=$tmp2[0];
+	//$tmp[]=$this->Document->find('all', array('conditions' =>array('Document.id' => $id_d,'Document.repository_id' => $id),'recursive' => -1)) ;
+	}
+	$data_table_right[$key]=$tmp;
+	}
+	}
+	$menu = 'menu_expert';
+	
+	$this->set(compact('criterio_n', 'criterio_list','aux','data_table_right', 'data', 'current', 'limit', 'ordering', 'filter', 'repo', 'menu'));
+	$this->render('listar_warneds');
+  }	
   
   function all() {
   	$d = $this->_beforeList(null, true);
@@ -164,7 +212,13 @@ class AdminDocumentosController extends AppController {
 	$this->redirect(array('controller' => 'documents', 'action' => 'upload'));
   }
   
-  function edit($id = null, $criterio = null) {
+  //id_wdoc1 and id_wdoc2 are optional arguments used to edit warned documents
+  function edit($id = null, $criterio = null,$warned = null, $id_wdoc1 = null, $id_wdoc2 = null) {
+  //echo '<pre>';
+  //echo $id;
+  //echo $criterio;
+  //echo $warned;
+  //echo '</pre>';
   	if(is_null($criterio)) {
 		$this->redirect('index');  		
   	}
@@ -186,17 +240,32 @@ class AdminDocumentosController extends AppController {
 	  if(empty($this->data)) {
 	  	$this->redirect('index');
 	  }
-	  
+	  if($warned >0){
+	  $id_repo= $repo['Repository']['id'];
+	  $doc2= $this->Document->find('first', array('conditions' =>array('Document.id' => $id_wdoc2,'Document.repository_id' => $id_repo)));
+	  $this->data['Document2']=$doc2['Document'];
+	  }
 	  // tags
 	  $raw_tags = $this->Tag->find('all', array('conditions' => array('Tag.document_id' => $id), 'recursive' => -1));
 	  $tags = array();	  
 	  foreach($raw_tags as $t)
 		$tags[] = $t['Tag']['tag'];	  
 	  $this->data['Document']['tags'] = implode($tags,', ');
+	  if($warned >0){
+	  $raw_tags = $this->Tag->find('all', array('conditions' => array('Tag.document_id' => $id_wdoc2), 'recursive' => -1));
+	  $tags = array();	  
+	  foreach($raw_tags as $t)
+	  $tags[] = $t['Tag']['tag'];	  
+	  $this->data['Document2']['tags'] = implode($tags,', ');
+	   }
 	  
 	  // user
 	  $raw_user = $this->User->find('first', array('conditions' => array('User.id' => $this->data['Document']['user_id']), 'recursive' => -1));
 	  $this->data['User']['autor'] = $raw_user['User']['first_name'] . ' '. $raw_user['User']['last_name'] . ' ('.$raw_user['User']['email'].')';
+	  if($warned >0){
+	  $raw_user = $this->User->find('first', array('conditions' => array('User.id' => $this->data['Document2']['user_id']), 'recursive' => -1));
+	  $this->data['User']['autor2'] = $raw_user['User']['first_name'] . ' '. $raw_user['User']['last_name'] . ' ('.$raw_user['User']['email'].')';
+	  }
 	  
 	  // criteria
 	  $criterios_list = $this->Criteria->find('list', array('conditions' => array('Criteria.repository_id' => $repo['Repository']['id'])));
@@ -213,7 +282,12 @@ class AdminDocumentosController extends AppController {
 	  $folios = $this->Attachfile->find('all' , array('conditions' => array('Attachfile.document_id' => $this->data['Document']['id']), 'recursive' => -1, 'fields' => array("Attachfile.id","Attachfile.filename","Attachfile.type")));
 	  
 	  $this->set('data',$this->data);
-	  $this->set(compact('criterios_list', 'criterios_n', 'repo', 'menu', 'folios','constituents'));	  
+	  $this->set(compact('criterios_list', 'criterios_n', 'repo', 'menu', 'folios','constituents'));
+	  if($warned > 0){
+	  $this->set('id_wdoc1',$id_wdoc1);
+	  $this->set('id_wdoc2',$id_wdoc2);
+	  $this->render('edit_warneds');
+	  }	  
 	} else {
 	  // save stats info
 	  if($this->CriteriasDocument->save($this->data))
@@ -221,10 +295,30 @@ class AdminDocumentosController extends AppController {
 	  // save tags and basics
 	  $this->Tag->deleteAll(array('Tag.document_id' => $id));
 	  $this->data['Document']['id'] = $id;
+	  
+	  if($warned > 0){
+	  $this->Tag->deleteAll(array('Tag.document_id' => $id_wdoc2));
+	  $this->data['Document2']['id'] = $id_wdoc2;
+	  }
+
 	  if ($this->Document->saveWithTags($this->data)) {
+		//$this->Session->setFlash('Document "'. $this->data['Document']['title'] .'" edited successfully');
+		$str_doc1= "Document " .$this->data['Document']['title']. " edited successfully";
+		$str_doc2="";
+		if($warned > 0){
+		$str_doc2= "Document " .$this->data['Document2']['title']. " edited successfully";
+		$this->Session->setFlash(nl2br($str_doc1."\n".$str_doc2));
+		CakeLog::write('activity', 'Document '.$id_wdoc2.'\'s content modified');
+		}else{
 		$this->Session->setFlash('Document "'. $this->data['Document']['title'] .'" edited successfully');
+		}
 		CakeLog::write('activity', 'Document '.$id.'\'s content modified');
-		$this->redirect($this->data['Action']['current']);
+		  if($warned > 0){
+		  $this->set('id_wdoc1',$id_wdoc1);
+		  $this->set('id_wdoc2',$id_wdoc2);
+		  $this->render('edit_warneds');}
+		  else{
+		$this->redirect($this->data['Action']['current']);}
 	  }
 	  
 	}

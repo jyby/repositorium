@@ -23,6 +23,50 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `attachfiles`
+--
+
+CREATE TABLE IF NOT EXISTS `attachfiles` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `filename` varchar(45) NOT NULL,
+  `size` int(11) NOT NULL,
+  `type` varchar(45) NOT NULL,
+  `content` longblob NOT NULL,
+  `document_id` int(255) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `fk_folios_documents1` (`document_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `constituents`
+--
+
+CREATE TABLE IF NOT EXISTS `constituents` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `description` varchar(140) NOT NULL,
+  `sysname` varchar(45) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `constituents_kits`
+--
+
+CREATE TABLE IF NOT EXISTS `constituents_kits` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `constituent_id` int(255) NOT NULL,
+  `kit_id` int(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `criterias`
 --
 
@@ -47,7 +91,7 @@ CREATE TABLE IF NOT EXISTS `criterias` (
   `modified` datetime NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -65,7 +109,7 @@ CREATE TABLE IF NOT EXISTS `criterias_documents` (
   `validated` tinyint(1) NOT NULL,
   `challengeable` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -79,7 +123,7 @@ CREATE TABLE IF NOT EXISTS `criterias_users` (
   `criteria_id` int(255) NOT NULL,
   `challenge_size` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -96,9 +140,17 @@ CREATE TABLE IF NOT EXISTS `documents` (
   `modified` datetime NOT NULL,
   `repository_id` int(255) NOT NULL,
   `active` tinyint(1) NOT NULL DEFAULT '1',
-  `kit_id` INT(255) NOT NULL DEFAULT '0' ,
+  `kit_id` int(255) NOT NULL DEFAULT '0',
+  `warned` tinyint(1) NOT NULL,
+  `warned_score` int(11) NOT NULL,
+  `warned_documents` varchar(512) NOT NULL,
+  `warned_score_title` int(11) NOT NULL,
+  `warned_score_text` int(11) NOT NULL,
+  `warned_score_tags` int(11) NOT NULL,
+  `warned_score_files` int(11) NOT NULL,
+  `warned_score_files_sha` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -114,7 +166,32 @@ CREATE TABLE IF NOT EXISTS `experts` (
   `modified` datetime NOT NULL,
   `active` tinyint(4) NOT NULL DEFAULT '1',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `kits`
+--
+
+CREATE TABLE IF NOT EXISTS `kits` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `created` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `kits_restrictions`
+--
+
+CREATE TABLE IF NOT EXISTS `kits_restrictions` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `restriction_id` int(255) NOT NULL,
+  `kit_id` int(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- --------------------------------------------------------
 
@@ -136,9 +213,13 @@ CREATE TABLE IF NOT EXISTS `repositories` (
   `documentpack_size` int(255) NOT NULL,
   `challenge_reward` int(255) NOT NULL DEFAULT '0',
   `active` tinyint(4) NOT NULL DEFAULT '1',
-  `kit_id` INT(255) NOT NULL DEFAULT '0' ,
+  `kit_id` int(255) NOT NULL DEFAULT '0',
+  `pdr_tittle` int(11) NOT NULL,
+  `pdr_tags` int(11) NOT NULL,
+  `pdr_text` int(11) NOT NULL,
+  `pdr_files` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -152,6 +233,21 @@ CREATE TABLE IF NOT EXISTS `repositories_users` (
   `user_id` int(255) NOT NULL,
   `points` int(255) NOT NULL,
   `watching` tinyint(1) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Estructura de tabla para la tabla `restrictions`
+--
+
+CREATE TABLE IF NOT EXISTS `restrictions` (
+  `id` int(255) NOT NULL AUTO_INCREMENT,
+  `name` varchar(45) NOT NULL,
+  `description` varchar(140) NOT NULL,
+  `behaviorname` varchar(45) NOT NULL,
+  `constituent_id` int(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
@@ -168,7 +264,7 @@ CREATE TABLE IF NOT EXISTS `tags` (
   `created` datetime NOT NULL,
   `modified` datetime NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -190,87 +286,9 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
--- ----------------------------------------------------------
---
--- Estructura de tabla para la tabla `constituents`
---
-
-CREATE  TABLE IF NOT EXISTS `constituents` (
-  `id` INT(255) NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(45) NOT NULL ,
-  `description` VARCHAR(140) NOT NULL ,
-  `sysname` VARCHAR(45) NOT NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
--- ---------------------------------------------
---
--- Estructura de tabla para la tabla `kits'
---
-CREATE  TABLE IF NOT EXISTS `kits` (
-  `id` INT(255) NOT NULL AUTO_INCREMENT ,
-  `created` DATETIME NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB;
-
--- ----------------------------------------------
---
--- Estructura de tabla para la relacion entre kits y contituents
---
-CREATE  TABLE IF NOT EXISTS `constituents_kits` (
-  `id` INT(255) NOT NULL AUTO_INCREMENT ,
-  `constituent_id` INT(255) NOT NULL ,
-  `kit_id` INT(255) NOT NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
--- ---------------------------------------------
---
--- Estructura para la tabla `restictions`
---
-
-CREATE  TABLE IF NOT EXISTS `restrictions` (
-  `id` INT(255) NOT NULL AUTO_INCREMENT ,
-  `name` VARCHAR(45) NOT NULL ,
-  `description` VARCHAR(140) NOT NULL ,
-  `behaviorname` VARCHAR(45) NOT NULL ,
-  `constituent_id` INT(255) NOT NULL ,
-  PRIMARY KEY (`id`) )
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
--- ---------------------------------------------
---
--- Estructura para la relacion entre kits y restrictions
---
-
-CREATE  TABLE IF NOT EXISTS `kits_restrictions` (
-  `id` INT(255) NOT NULL AUTO_INCREMENT ,
-  `restriction_id` INT(255) NOT NULL ,
-  `kit_id` INT(255) NOT NULL ,
-  PRIMARY KEY (`id`))
-ENGINE = InnoDB;
-
--- ---------------------------------------------
---
--- Estructura para la relacion entre attachfiles y documents
---
-
-CREATE  TABLE IF NOT EXISTS `attachfiles` (
-  `id` INT(11) NOT NULL AUTO_INCREMENT ,
-  `filename` VARCHAR(45) NOT NULL ,
-  `size` INT(11) NOT NULL ,
-  `type` VARCHAR(45) NOT NULL ,
-  `content` LONGBLOB NOT NULL ,
-  `document_id` INT(255) NOT NULL ,
-  PRIMARY KEY (`id`) ,
-  INDEX `fk_folios_documents1` (`document_id` ASC))
-ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
-
-
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 
 -- -------------------------------------------------
 

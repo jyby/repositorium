@@ -62,6 +62,7 @@ class CriteriasDocument extends AppModel {
 		)
 	);
 	
+	
 	/* virtualFields ftw! */
 	var $virtualFields = array(
 	    	'total_respuestas' => 'total_answers_1 + total_answers_2',
@@ -161,10 +162,21 @@ class CriteriasDocument extends AppModel {
 					'CriteriasDocument.challengeable' => $preguntable,
 					'Document.user_id <>' => $usuario_id,
 					'Document.repository_id' => $repository_id
-				),
+				)
 			)
 		);
-	
+		
+		/* cgajardo: this will make attached files available in challenges view. */ 
+		foreach ($ids as $key => $id){
+			$files = ClassRegistry::init('Attachfile')->find('all', array(
+					'conditions' => array(
+						'Attachfile.document_id' => $id['Document']['id'] 
+					),
+					'fields' => array('Attachfile.id', 'Attachfile.filename') 
+			));
+			$ids[$key]['Files'] = $files; 
+		}
+		
 		// shuffles the result and then extract the first $quantity $ids
 		shuffle($ids);
 		$result = array_slice($ids, 0, $quantity);
