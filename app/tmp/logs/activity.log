@@ -1,0 +1,97 @@
+2011-12-16 22:19:03 Activity: User admin@example.com (2) has logged in
+2011-12-16 22:20:49 Activity: Repository [name="test"] created
+2011-12-17 01:39:47 Activity: User admin@example.com (2) has logged in
+2011-12-17 01:45:43 Activity: Repository [name="test"] created
+2011-12-17 02:43:15 Activity: Repository [name="file"] created
+2011-12-17 06:15:39 Activity: Repository [name="Test"] created
+2011-12-17 06:18:02 Activity: Repository [name="Test"] created
+2011-12-17 07:12:25 Activity: Criteria "meh" was added
+2011-12-17 21:01:02 Activity: User admin@example.com (2) has logged in
+2011-12-17 21:40:06 Activity: Criteria "Non-duplicated Data" was added
+2011-12-17 21:40:46 Activity: Document 1's content modified
+2011-12-17 21:42:24 Activity: CriteriasDocument id=2 modified: [field: validated, new value: 1]
+2011-12-17 21:44:33 Activity: Document 1 deleted
+2011-12-17 21:46:22 Activity: Repository [id=2] edited
+2011-12-17 22:15:47 Activity: User 3 created
+2011-12-17 22:15:47 Activity: User test@test.com (3) has logged in
+2011-12-18 00:23:35 Activity: User admin@example.com (2) has logged in
+2011-12-17 17:45:37 Activity: User admin@example.com (2) has logged in
+2011-12-17 17:45:58 Activity: User admin@example.com (2) has logged in
+2011-12-17 17:47:42 Activity: Criteria "Dummy" was added
+2011-12-17 17:49:40 Activity: Criteria "pregunta de prueba" was added
+2011-12-17 17:49:52 Activity: Document 48 deleted
+2011-12-17 17:50:29 Activity: Document 1 deleted
+2011-12-17 17:50:48 Activity: Repository [id=2] deleted
+2011-12-17 17:55:53 Activity: Document 64 deleted
+2011-12-17 17:57:15 Activity: Document 65 deleted
+2011-12-17 17:59:27 Activity: Repository [name="rafatest"] created
+2011-12-17 18:09:28 Activity: Repository [name="dogs"] created
+2011-12-17 18:10:42 Activity: Repository [id=3] edited
+2011-12-17 18:17:41 Activity: Criteria "Good story?" was added
+2011-12-17 18:18:10 Activity: Document 69's content modified
+2011-12-17 18:20:34 Activity: CriteriasDocument id=66 modified: [field: validated, new value: 1]
+2011-12-18 03:05:06 Activity: User 3 created
+2011-12-18 03:05:06 Activity: User jbarbay@dcc.uchile.cl (3) has logged in
+2011-12-18 03:08:20 Activity: Repository [name="Test by Jeremy"] created
+2011-12-18 06:43:04 Activity: User admin@example.com (2) has logged in
+2011-12-18 12:46:28 Activity: User admin@example.com (2) has logged in
+2011-12-18 12:47:00 Activity: User admin@example.com (2) has logged in
+2011-12-18 16:15:20 Activity: User admin@example.com (2) has logged in
+2011-12-18 17:54:26 Activity: User admin@example.com (2) has logged in
+2011-12-18 18:48:13 Activity: User admin@example.com (2) has logged in
+2011-12-18 18:49:49 Activity: User admin@example.com (2) has logged in
+2011-12-18 18:50:05 Activity: User admin@example.com (2) has logged in
+2011-12-18 18:50:36 Activity: Repository [name="sin archivos"] created
+2011-12-18 18:54:55 Activity: Criteria "valid" was added
+2011-12-18 19:00:19 Activity: User admin@example.com (2) has logged in
+2011-12-18 19:01:01 Activity: User admin@example.com (2) has logged in
+2011-12-18 19:01:52 Activity: User admin@example.com (2) has logged in
+2011-12-18 19:02:07 Activity: User admin@example.com (2) has logged in
+2011-12-18 19:02:26 Activity: User admin@example.com (2) has logged in
+2011-12-18 19:04:04 Activity: User admin@example.com (2) has logged in
+2011-12-18 19:04:24 Activity: User admin@example.com (2) has logged in
+2011-12-18 21:41:26 Activity: User admin@example.com (2) has logged in
+2011-12-18 22:05:16 Activity: Repository [id=1] edited
+2011-12-18 22:09:38 Activity: Repository [id=1] edited
+2011-12-18 22:12:47 Activity: Repository [id=2] edited
+2011-12-18 22:15:29 Activity: Criteria 2 was modified
+2011-12-18 22:16:20 Activity: Criteria 1 was modified
+2011-12-18 22:16:50 Activity: Repository [id=2] edited
+2011-12-18 22:17:04 Activity: Repository [id=1] edited
+2011-12-18 22:29:18 Activity: User admin@example.com (2) has logged in
+2011-12-18 22:38:55 Activity: User admin@example.com (2) has logged in
+2011-12-19 20:07:24 Activity: User admin@example.com (2) has logged in
+2011-12-19 20:41:31 Activity: Repository [name=""] created
+2011-12-19 20:41:49 Activity: Repository [name="las alcayagas nubelignas"] created
+2011-12-19 20:51:11 Activity: Repository [id=3] deleted
+2011-12-19 20:56:30 Activity: Repository [name="GGM"] created
+2011-12-20 07:43:29 Activity: User admin@example.com (2) has logged in
+2011-12-20 09:48:55 Activity: User 3 created
+2011-12-20 09:48:55 Activity: User jbarbay@dcc.uchile.cl (3) has logged in
+2011-12-20 11:49:10 Activity: User admin@example.com (2) has logged in
+2011-12-25 15:31:02 Activity: User jbarbay@dcc.uchile.cl (3) has logged in
+2011-12-25 15:31:58 Activity: Repository [name="Test by Jeremy"] created
+2011-12-25 15:37:38 Activity: Criteria "Test Criteria" was added
+2011-12-25 18:15:45 Activity: User admin@example.com (2) has logged in
+2011-12-29 09:43:09 Activity: User admin@example.com (2) has logged in
+2012-01-02 22:46:23 Activity: User admin@example.com (2) has logged in
+2012-01-03 19:14:03 Activity: User admin@example.com (2) has logged in
+2012-01-03 21:42:29 Activity: User admin@example.com (2) has logged in
+2012-01-05 07:24:14 Activity: User admin@example.com (2) has logged in
+2012-01-05 09:25:22 Activity: User admin@example.com (2) has logged in
+2012-01-06 16:32:09 Activity: User admin@example.com (2) has logged in
+2012-01-07 16:59:39 Activity: User admin@example.com (2) has logged in
+2012-01-08 15:38:34 Activity: User admin@example.com (2) has logged in
+2012-01-08 15:55:17 Activity: User admin@example.com (2) has logged in
+2012-01-08 16:00:09 Activity: User 4 created
+2012-01-08 16:00:09 Activity: User mbensan@gmail.com (4) has logged in
+2012-01-08 16:02:07 Activity: User mbensan@gmail.com (4) has logged in
+2012-01-08 16:03:14 Activity: Repository [name="repositorio_mati"] created
+2012-01-08 16:03:58 Activity: User admin@example.com (2) has logged in
+2012-01-09 00:26:30 Activity: Repository [name="prueba2"] created
+2012-01-08 21:52:35 Activity: User admin@example.com (2) has logged in
+2012-01-09 07:29:42 Activity: User admin@example.com (2) has logged in
+2012-01-09 12:54:49 Activity: Repository [name="shatest"] created
+2012-01-09 14:06:15 Activity: Repository [name="shashasha"] created
+2012-01-09 14:34:46 Activity: Repository [name="narmolarompe"] created
+2012-01-09 14:35:13 Activity: Criteria "is narmo crushing_" was added
